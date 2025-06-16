@@ -1,0 +1,47 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search",
+    "loading": "Loading..."
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password"
+  },
+  "modules": {
+    "permisos": {
+      "title": "Permissions",
+      "new": "New Permission",
+      "edit": "Edit Permission",
+      "delete": "Delete Permission",
+      "name": "Name",
+      "description": "Description",
+      "active": "Active"
+    },
+    "costos": {
+      "title": "Costs",
+      "new": "New Cost",
+      "edit": "Edit Cost",
+      "delete": "Delete Cost"
+    },
+    "camiones": {
+      "title": "Trucks",
+      "new": "New Truck",
+      "edit": "Edit Truck",
+      "delete": "Delete Truck"
+    },
+    "auditoria": {
+      "title": "Audit",
+      "view": "View Record",
+      "date": "Date",
+      "user": "User",
+      "action": "Action",
+      "details": "Details"
+    }
+  }
+} 

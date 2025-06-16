@@ -1,0 +1,8 @@
+-- Iniciar el backend
+python -m uvicorn app.main:app --reload
+
+--- Iniciar el frontend
+ng serve
+
+--- Finalizar el frontend
+taskkill /F /IM node.exe

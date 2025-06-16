@@ -1,0 +1,126 @@
+1. Resumen Ejecutivo
+Este documento describe el plan, arquitectura, pasos y consideraciones técnicas para migrar el sistema actual basado en ASP.NET Web Forms a una solución moderna compuesta por un frontend en Angular y un backend en Python usando FastAPI.
+La nueva solución estará organizada bajo una carpeta raíz llamada OneSite, con subcarpetas separadas para el backend y el frontend.
+El sistema será desplegado en AWS, bajo el dominio teg.1sitesoft.com y contará con certificado digital HTTPS.
+El frontend será responsive, multilenguaje (español/inglés), y utilizará componentes de UI reutilizables y una estructura para manejo de idiomas.
+2. Arquitectura Objetivo y Estructura de Carpetas
+OneSite/
+│
+├── backend/      # Backend Python con FastAPI
+│   ├── app/
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── db/
+│   │   └── __init__.py
+│   ├── main.py
+│   ├── requirements.txt
+│   └── alembic/ (opcional, para migraciones de BD)
+│
+└── frontend/     # Frontend Angular
+    ├── src/
+    │   ├── app/
+    │   │   ├── components/         # Componentes reutilizables (UI templates)
+    │   │   ├── pages/              # Vistas/páginas principales
+    │   │   ├── services/           # Servicios para consumo de API y utilidades
+    │   │   ├── guards/             # Guards para rutas protegidas
+    │   │   ├── models/             # Interfaces y modelos TypeScript
+    │   │   ├── i18n/               # Archivos y lógica de internacionalización
+    │   │   ├── app.module.ts
+    │   │   └── app-routing.module.ts
+    │   ├── assets/
+    │   │   └── i18n/               # Archivos JSON de traducción por idioma
+    │   ├── main.ts
+    │   └── index.html
+    ├── angular.json
+    ├── package.json
+    └── tsconfig.json
+3. Requerimientos Específicos del Frontend
+3.1. Responsive Design
+Uso de Angular Material o PrimeNG para componentes UI responsivos.
+Uso de Flex Layout o CSS Grid/Flexbox para adaptabilidad en móviles, tablets y escritorio.
+Pruebas en múltiples dispositivos y navegadores.
+3.2. Multilenguaje (Español/Inglés)
+Uso de @ngx-translate/core para internacionalización (i18n).
+Estructura de archivos de traducción en src/assets/i18n/es.json y src/assets/i18n/en.json.
+Servicio de idioma centralizado en app/i18n/.
+Soporte para cambio de idioma en tiempo real desde la UI.
+3.3. Estructura para Manejo de Idioma
+Carpeta app/i18n/ para servicios, pipes y helpers de idioma.
+Carpeta assets/i18n/ para archivos de recursos de traducción.
+Ejemplo de estructura:
+  src/
+    app/
+      i18n/
+        language.service.ts
+        language-switcher.component.ts
+        translate.pipe.ts
+    assets/
+      i18n/
+        es.json
+        en.json
+3.4. Componentes de UI Reutilizables (Plantillas)
+Carpeta app/components/ para componentes como:
+card-template/ (tarjetas reutilizables)
+table-template/ (tablas parametrizables)
+modal-template/ (modales genéricos)
+form-template/ (formularios reutilizables)
+navbar/, footer/, etc.
+Todos los componentes deben aceptar entradas (@Input) y emitir eventos (@Output) para máxima reutilización.
+Documentación y ejemplos de uso en Storybook o en la propia app.
+4. Estrategia de Migración
+4.1. Fases
+Análisis y Planeación
+Inventario de páginas, módulos y funcionalidades
+Identificación de dependencias y puntos críticos
+Priorización de módulos para migración incremental
+Diseño de la Nueva Arquitectura
+Modelado de datos y endpoints REST en FastAPI
+Diseño de componentes, plantillas y estructura i18n en Angular
+Implementación Gradual
+Desarrollo del backend FastAPI (modelos, rutas, esquemas, endpoints)
+Desarrollo del frontend Angular (componentes, vistas, integración con API, i18n)
+Pruebas unitarias y de integración
+Transición y Convivencia
+Implementación de proxies/rutas para convivir ambos sistemas durante la migración
+Migración progresiva de usuarios y módulos
+Despliegue y Cierre
+Pruebas finales
+Desactivación del sistema antiguo
+5. Detalle Técnico
+5.1. Backend (FastAPI) - OneSite/backend/
+Estructura y consideraciones igual que en versiones anteriores.
+CORS configurado para aceptar peticiones solo desde https://teg.1sitesoft.com.
+Endpoints RESTful, autenticación JWT, pruebas unitarias y de integración.
+5.2. Frontend (Angular) - OneSite/frontend/
+Responsive: Angular Material/PrimeNG, CSS moderno, pruebas en dispositivos.
+Multilenguaje: @ngx-translate/core, archivos JSON en assets/i18n/, servicio de idioma.
+Componentes reutilizables: En components/, documentados y parametrizables.
+Estructura i18n: Servicios y pipes en app/i18n/, recursos en assets/i18n/.
+Consumo de API: Angular HttpClient con interceptores para JWT.
+Ruteo: Rutas públicas y protegidas (guards para autenticación).
+UI/UX: Formularios reactivos, feedback visual, accesibilidad.
+6. Despliegue en AWS y Configuración de Dominio
+Frontend: Desplegado en S3 + CloudFront, HTTPS con ACM, dominio teg.1sitesoft.com.
+Backend: Desplegado en EC2, Elastic Beanstalk o ECS, detrás de Nginx/ALB, solo HTTPS.
+DNS: Route 53 para gestión de dominio.
+Certificado: ACM para HTTPS.
+CORS: Solo permite origen https://teg.1sitesoft.com.
+7. Pruebas y Calidad
+Pruebas unitarias y de integración en backend y frontend.
+Pruebas de usuario (UAT) para cada módulo migrado.
+Pruebas de responsividad y multilenguaje.
+Automatización de pruebas y despliegue (CI/CD).
+Pruebas de seguridad (escaneo de vulnerabilidades, pruebas de penetración).
+8. Recursos y Herramientas Sugeridas
+Backend: FastAPI, SQLAlchemy, Alembic, fastapi-jwt-auth, Pytest
+Frontend: Angular CLI, Angular Material, PrimeNG, @ngx-translate/core, RxJS, HttpClient, Storybook
+DevOps: Docker, Git, GitHub Actions/GitLab CI, Sentry, ELK Stack
+AWS: EC2, S3, CloudFront, Route 53, ACM, Elastic Beanstalk, RDS
+Documentación: Swagger/OpenAPI (FastAPI), Compodoc (Angular)
+9.Modulos
+-Permisos
+-Costos
+-Camiones
+-Auditoria
