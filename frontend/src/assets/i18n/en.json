@@ -11,7 +11,9 @@
     "login": "Login",
     "logout": "Logout",
     "username": "Username",
-    "password": "Password"
+    "password": "Password",
+    "username_required": "Username is required",
+    "password_required": "Password is required"
   },
   "modules": {
     "permisos": {

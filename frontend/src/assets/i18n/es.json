@@ -11,7 +11,9 @@
     "login": "Iniciar Sesión",
     "logout": "Cerrar Sesión",
     "username": "Usuario",
-    "password": "Contraseña"
+    "password": "Contraseña",
+    "username_required": "El usuario es requerido",
+    "password_required": "La contraseña es requerida"
   },
   "modules": {
     "permisos": {
