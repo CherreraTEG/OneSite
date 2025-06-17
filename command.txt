@@ -6,3 +6,6 @@ ng serve
 
 --- Finalizar el frontend
 taskkill /F /IM node.exe
+
+--- Limpiar cache
+npm cache clean --force
