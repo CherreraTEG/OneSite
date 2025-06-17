@@ -1,0 +1,67 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importar Material */
+@use '@angular/material' as mat;
+
+/* Importar fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Variables de colores corporativos */
+:root {
+  --color-primary: #545386;
+  --color-secondary: #C2DFEA;
+  --color-tertiary: #F4C7CE;
+  --color-quaternary: #D8D2C4;
+  
+  /* Variantes de colores */
+  --color-primary-light: lighten(#545386, 10%);
+  --color-primary-dark: darken(#545386, 10%);
+  --color-secondary-light: lighten(#C2DFEA, 10%);
+  --color-secondary-dark: darken(#C2DFEA, 10%);
+}
+
+/* Estilos globales */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Montserrat', 'Roboto', sans-serif;
+}
+
+/* Configuración de Material */
+@include mat.core();
+
+/* Clases de utilidad */
+.full-width {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+/* Estilos de scrollbar personalizados */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #C2DFEA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #545386;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #393869;
+}

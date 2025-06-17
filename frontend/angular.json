@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "onesite": {
+    "frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -13,19 +13,11 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
-      "i18n": {
-        "sourceLocale": "es",
-        "locales": {
-          "en": {
-            "translation": "src/assets/i18n/en.json"
-          }
-        }
-      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/onesite",
+            "outputPath": "dist/frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -35,6 +27,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -68,17 +61,46 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "frontend:build:development"
+          },
           "configurations": {
             "production": {
-              "browserTarget": "onesite:build:production"
+              "buildTarget": "frontend:build:production"
             },
             "development": {
-              "browserTarget": "onesite:build:development"
+              "buildTarget": "frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "src/styles.scss"
+            ]
+          }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "540e8472-4678-4ab3-a58f-9641542290c3"
   }
-} 
+}

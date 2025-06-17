@@ -1,0 +1,26 @@
+<div class="login-layout">
+  <div class="login-left">
+    <div class="logo-container">
+      <img src="assets/images/logo-elite.png" alt="Logo" class="logo" />
+      <h1 class="brand-title">THE ELITE<br>GROUP</h1>
+      <div class="brand-subtitle">INFORMATION TECHNOLOGY</div>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="lang-select">
+      <span>Idioma:</span>
+      <select>
+        <option>English</option>
+        <option>Español</option>
+      </select>
+    </div>
+    <div class="login-card">
+      <h2>Welcome to EliTech!</h2>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <input type="email" formControlName="username" placeholder="Email" />
+        <input type="password" formControlName="password" placeholder="Password" />
+        <button type="submit" [disabled]="loginForm.invalid">Log In</button>
+      </form>
+    </div>
+  </div>
+</div> 

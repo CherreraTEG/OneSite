@@ -2,6 +2,7 @@ from pydantic_settings import BaseSettings
 from typing import Optional, List
 from functools import lru_cache
 import os
+import json
 from dotenv import load_dotenv
 
 # Cargar variables de entorno desde el archivo .env
@@ -25,10 +26,15 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
     
     # Configuración de CORS
-    CORS_ORIGINS: List[str] = os.getenv("CORS_ORIGINS", "https://teg.1sitesoft.com").split(",")
+    CORS_ORIGINS: List[str] = json.loads(os.getenv("CORS_ORIGINS", '["http://localhost:4200"]'))
     CORS_CREDENTIALS: bool = os.getenv("CORS_CREDENTIALS", "True").lower() == "true"
-    CORS_METHODS: List[str] = os.getenv("CORS_METHODS", "*").split(",")
-    CORS_HEADERS: List[str] = os.getenv("CORS_HEADERS", "*").split(",")
+    CORS_METHODS: List[str] = json.loads(os.getenv("CORS_METHODS", '["*"]'))
+    CORS_HEADERS: List[str] = json.loads(os.getenv("CORS_HEADERS", '["*"]'))
+    
+    # Configuración de Active Directory
+    AD_SERVER: str = os.getenv("AD_SERVER", "ldap://localhost:389")
+    AD_BASE_DN: str = os.getenv("AD_BASE_DN", "DC=example,DC=com")
+    AD_DOMAIN: str = os.getenv("AD_DOMAIN", "example.com")
     
     # URL de la base de datos
     @property

@@ -1,38 +1,70 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-card',
+  standalone: true,
+  imports: [CommonModule, MatCardModule],
   template: `
-    <div class="card">
-      <div class="card-header" *ngIf="title">
-        <h3 class="card-title">{{ title }}</h3>
-      </div>
-      <div class="card-body">
+    <mat-card [class.elevated]="elevated" class="custom-card">
+      <mat-card-header *ngIf="title">
+        <mat-card-title>{{ title }}</mat-card-title>
+        <mat-card-subtitle *ngIf="subtitle">{{ subtitle }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
         <ng-content></ng-content>
-      </div>
-    </div>
+      </mat-card-content>
+      <mat-card-actions *ngIf="showActions">
+        <ng-content select="[cardActions]"></ng-content>
+      </mat-card-actions>
+    </mat-card>
   `,
   styles: [`
-    .card {
-      background: white;
+    .custom-card {
+      font-family: 'Montserrat', sans-serif;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 1rem;
+      margin: 16px;
+      transition: all 0.3s ease;
     }
-    .card-header {
-      padding: 1rem;
-      border-bottom: 1px solid #eee;
+
+    .custom-card.elevated {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .card-title {
-      margin: 0;
+
+    .custom-card:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    mat-card-header {
+      margin-bottom: 16px;
+    }
+
+    mat-card-title {
       font-size: 1.25rem;
-      color: #333;
+      font-weight: 600;
+      color: var(--color-primary);
     }
-    .card-body {
-      padding: 1rem;
+
+    mat-card-subtitle {
+      color: var(--color-primary-light);
+    }
+
+    mat-card-content {
+      padding: 16px 0;
+    }
+
+    mat-card-actions {
+      padding: 16px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
     }
   `]
 })
 export class CardComponent {
   @Input() title?: string;
+  @Input() subtitle?: string;
+  @Input() elevated = true;
+  @Input() showActions = false;
 } 

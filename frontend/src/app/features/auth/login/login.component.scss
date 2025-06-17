@@ -1,0 +1,119 @@
+.login-layout {
+  display: flex;
+  height: 100vh;
+  font-family: 'Montserrat', 'Roboto', sans-serif;
+}
+
+.login-left {
+  flex: 1;
+  background: #545386;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .logo-container {
+    text-align: center;
+    color: #fff;
+    .logo {
+      width: 200px;
+      margin-bottom: 32px;
+    }
+    .brand-title {
+      font-size: 2.7rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      line-height: 1.1;
+    }
+    .brand-subtitle {
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      margin-top: 16px;
+    }
+  }
+}
+
+.login-right {
+  flex: 1;
+  background: #C2DFEA;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  .lang-select {
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    color: #545386;
+    font-size: 0.95rem;
+    select {
+      margin-left: 8px;
+      border-radius: 4px;
+      border: 1px solid #545386;
+      padding: 2px 8px;
+      font-family: inherit;
+      background: #fff;
+      color: #545386;
+    }
+  }
+  .login-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(84, 83, 134, 0.10);
+    padding: 40px 32px 32px 32px;
+    width: 370px;
+    margin: auto 80px auto 0;
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #222;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      input {
+        font-family: inherit;
+        font-size: 1rem;
+        padding: 12px 14px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        background: #f8fafc;
+        outline: none;
+        transition: border 0.2s;
+        color: #545386;
+        &::placeholder {
+          color: #b0b0b0;
+        }
+        &:focus {
+          border: 1.5px solid #545386;
+        }
+      }
+      button {
+        margin-top: 10px;
+        width: 100%;
+        background: #545386cc;
+        color: #fff;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 0;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: background 0.2s;
+        &:hover {
+          background: #545386;
+        }
+        &:disabled {
+          background: #C2DFEA;
+          color: #888;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+} 
