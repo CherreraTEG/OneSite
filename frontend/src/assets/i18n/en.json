@@ -1,7 +1,7 @@
 {
   "LOGIN": {
-    "TITLE": "Welcome to EliTech!",
-    "EMAIL": "Email",
+    "TITLE": "Welcome to Onesite!",
+    "EMAIL": "Username",
     "PASSWORD": "Password",
     "SUBMIT": "Log In",
     "LANGUAGE": "Language"

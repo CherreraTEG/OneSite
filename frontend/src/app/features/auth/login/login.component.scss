@@ -40,7 +40,7 @@
   background: #C2DFEA;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   position: relative;
   .lang-select {
@@ -65,7 +65,7 @@
     box-shadow: 0 4px 24px rgba(84, 83, 134, 0.10);
     padding: 40px 32px 32px 32px;
     width: 370px;
-    margin: auto 80px auto 0;
+    margin: auto;
     h2 {
       font-size: 1.5rem;
       font-weight: 700;
