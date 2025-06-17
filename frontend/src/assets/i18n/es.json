@@ -1,0 +1,9 @@
+{
+  "LOGIN": {
+    "TITLE": "¡Bienvenido a EliTech!",
+    "EMAIL": "Correo electrónico",
+    "PASSWORD": "Contraseña",
+    "SUBMIT": "Iniciar sesión",
+    "LANGUAGE": "Idioma"
+  }
+} 

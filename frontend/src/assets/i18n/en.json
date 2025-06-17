@@ -1,0 +1,9 @@
+{
+  "LOGIN": {
+    "TITLE": "Welcome to EliTech!",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "SUBMIT": "Log In",
+    "LANGUAGE": "Language"
+  }
+} 
