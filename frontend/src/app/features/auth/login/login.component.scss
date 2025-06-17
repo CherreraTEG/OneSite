@@ -14,8 +14,11 @@
     text-align: center;
     color: #fff;
     .logo {
-      width: 200px;
-      margin-bottom: 32px;
+      width: 320px;
+      height: auto;
+      display: block;
+      margin: 0 auto 32px auto;
+      opacity: 1;
     }
     .brand-title {
       font-size: 2.7rem;
