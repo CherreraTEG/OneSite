@@ -1,0 +1,22 @@
+<nav [ngClass]="{'sidebar': true, 'collapsed': collapsed}">
+  <div class="sidebar-header">
+    <img src="assets/images/logo-elite.png" alt="Logo" class="logo" />
+    <button mat-icon-button class="collapse-btn" (click)="toggleSidebar()">
+      <mat-icon>{{ collapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    </button>
+  </div>
+  <ul class="sidebar-menu">
+    <li>
+      <mat-icon>local_shipping</mat-icon>
+      <span *ngIf="!collapsed">Trucks</span>
+    </li>
+    <li>
+      <mat-icon>attach_money</mat-icon>
+      <span *ngIf="!collapsed">Costs</span>
+    </li>
+    <li>
+      <mat-icon>bar_chart</mat-icon>
+      <span *ngIf="!collapsed">Reports</span>
+    </li>
+  </ul>
+</nav> 

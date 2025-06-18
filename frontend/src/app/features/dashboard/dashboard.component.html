@@ -1,0 +1,42 @@
+<app-sidebar></app-sidebar>
+<div class="dashboard-main-content">
+  <!-- Header Section -->
+  <header class="dashboard-header">
+    <div class="logo-section">
+      <h1>OneSite</h1>
+    </div>
+    <div class="user-section">
+      <span class="welcome-text">Welcome, {{userInfo.name}}</span>
+      <app-button>Logout</app-button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="dashboard-content">
+    <!-- Welcome Card -->
+    <app-card class="welcome-card">
+      <h2>Welcome to OneSite Dashboard</h2>
+      <p>Last login: {{userInfo.lastLogin}}</p>
+      <p>Role: {{userInfo.role}}</p>
+    </app-card>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+      <app-card *ngFor="let stat of quickStats" class="stat-card">
+        <div class="stat-icon">{{stat.icon}}</div>
+        <h3>{{stat.title}}</h3>
+        <p class="stat-value">{{stat.value}}</p>
+      </app-card>
+    </div>
+
+    <!-- Quick Actions -->
+    <app-card class="actions-card">
+      <h3>Quick Actions</h3>
+      <div class="actions-grid">
+        <app-button>Manage Users</app-button>
+        <app-button>View Reports</app-button>
+        <app-button>System Settings</app-button>
+      </div>
+    </app-card>
+  </main>
+</div> 

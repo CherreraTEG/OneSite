@@ -1,0 +1,94 @@
+.sidebar {
+  width: 240px;
+  background: #545386;
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+  z-index: 1000;
+
+  &.collapsed {
+    width: 72px;
+    .company-name {
+      display: none;
+    }
+    .sidebar-menu span {
+      display: none !important;
+    }
+  }
+
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 20px 16px 16px 16px;
+    position: relative;
+    .logo {
+      width: 56px;
+      height: 56px;
+      margin-right: 12px;
+      border-radius: 16px;
+      object-fit: contain;
+    }
+    .company-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .collapse-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      outline: none;
+      margin: 0 0 0 8px;
+    }
+  }
+
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 32px 0 0 0;
+    flex: 1;
+    li {
+      display: flex;
+      align-items: center;
+      padding: 14px 24px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 1.1rem;
+      font-weight: 500;
+      gap: 18px;
+      color: #fff;
+      span {
+        color: #fff;
+        display: inline;
+        opacity: 1;
+        transition: opacity 0.2s, display 0.2s;
+      }
+      &:hover {
+        background: #3a375e;
+      }
+      mat-icon {
+        font-size: 28px;
+        color: #fff;
+      }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    position: absolute;
+    height: 100%;
+    z-index: 2000;
+  }
+} 
