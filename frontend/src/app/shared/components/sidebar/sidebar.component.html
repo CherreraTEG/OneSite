@@ -7,15 +7,15 @@
   </div>
   <ul class="sidebar-menu">
     <li>
-      <mat-icon>local_shipping</mat-icon>
+      <app-truck-icon [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
       <span *ngIf="!collapsed">Trucks</span>
     </li>
     <li>
-      <mat-icon>attach_money</mat-icon>
+      <app-costs-icon [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
       <span *ngIf="!collapsed">Costs</span>
     </li>
     <li>
-      <mat-icon>bar_chart</mat-icon>
+      <app-reports-icon [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
       <span *ngIf="!collapsed">Reports</span>
     </li>
   </ul>
