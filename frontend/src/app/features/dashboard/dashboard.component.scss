@@ -7,9 +7,10 @@
 .dashboard-main-content {
   margin-left: 240px;
   transition: margin-left 0.3s cubic-bezier(0.4,0,0.2,1);
+  min-height: 100vh;
 }
 
-.sidebar.collapsed ~ .dashboard-main-content {
+.dashboard-main-content.sidebar-collapsed {
   margin-left: 72px;
 }
 
@@ -27,12 +28,16 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 
   .logo-section {
     h1 {
       margin: 0;
       font-size: 1.5rem;
       font-weight: 600;
+      transition: font-size 0.3s ease;
     }
   }
 
@@ -43,7 +48,18 @@
 
     .welcome-text {
       font-size: 1rem;
+      transition: opacity 0.3s ease;
     }
+  }
+}
+
+.dashboard-main-content.sidebar-collapsed .dashboard-header {
+  .logo-section h1 {
+    font-size: 1.3rem;
+  }
+  
+  .user-section .welcome-text {
+    opacity: 0.9;
   }
 }
 

@@ -1,5 +1,5 @@
-<app-sidebar></app-sidebar>
-<div class="dashboard-main-content">
+<app-sidebar (sidebarToggle)="onSidebarToggle($event)"></app-sidebar>
+<div class="dashboard-main-content" [class.sidebar-collapsed]="sidebarCollapsed">
   <!-- Header Section -->
   <header class="dashboard-header">
     <div class="logo-section">

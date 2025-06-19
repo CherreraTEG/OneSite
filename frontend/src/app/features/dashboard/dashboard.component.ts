@@ -24,4 +24,12 @@ export class DashboardComponent {
     { title: 'Active Sessions', value: '42', icon: '🟢' },
     { title: 'Pending Tasks', value: '15', icon: '📋' }
   ];
+
+  // Estado del sidebar
+  sidebarCollapsed = false;
+
+  // Método para recibir el estado del sidebar
+  onSidebarToggle(collapsed: boolean) {
+    this.sidebarCollapsed = collapsed;
+  }
 } 

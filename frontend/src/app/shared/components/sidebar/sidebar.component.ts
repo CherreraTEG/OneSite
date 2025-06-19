@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TruckIconComponent } from '../icons/truck-icon.component';
@@ -19,10 +19,13 @@ import { ReportsIconComponent } from '../icons/reports-icon.component';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent {
+  @Output() sidebarToggle = new EventEmitter<boolean>();
+  
   collapsed = false;
 
   toggleSidebar() {
     this.collapsed = !this.collapsed;
+    this.sidebarToggle.emit(this.collapsed);
   }
 
   getTooltipText(text: string): string {
