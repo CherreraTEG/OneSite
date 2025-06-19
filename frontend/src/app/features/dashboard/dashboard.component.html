@@ -1,42 +1,53 @@
-<app-sidebar (sidebarToggle)="onSidebarToggle($event)"></app-sidebar>
-<div class="dashboard-main-content" [class.sidebar-collapsed]="sidebarCollapsed">
-  <!-- Header Section -->
-  <header class="dashboard-header">
-    <div class="logo-section">
-      <h1>OneSite</h1>
-    </div>
-    <div class="user-section">
-      <span class="welcome-text">Welcome, {{userInfo.name}}</span>
-      <app-button>Logout</app-button>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="dashboard-content">
-    <!-- Welcome Card -->
-    <app-card class="welcome-card">
-      <h2>Welcome to OneSite Dashboard</h2>
-      <p>Last login: {{userInfo.lastLogin}}</p>
-      <p>Role: {{userInfo.role}}</p>
-    </app-card>
-
-    <!-- Quick Stats -->
-    <div class="stats-grid">
-      <app-card *ngFor="let stat of quickStats" class="stat-card">
-        <div class="stat-icon">{{stat.icon}}</div>
-        <h3>{{stat.title}}</h3>
-        <p class="stat-value">{{stat.value}}</p>
-      </app-card>
-    </div>
-
-    <!-- Quick Actions -->
-    <app-card class="actions-card">
-      <h3>Quick Actions</h3>
-      <div class="actions-grid">
-        <app-button>Manage Users</app-button>
-        <app-button>View Reports</app-button>
-        <app-button>System Settings</app-button>
+<div class="dashboard-layout">
+  <app-sidebar (sidebarToggle)="onSidebarToggle($event)"></app-sidebar>
+  
+  <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
+    <header class="dashboard-header">
+      <div class="header-left">
+        <h1>{{ 'DASHBOARD.TITLE' | translate }}</h1>
       </div>
-    </app-card>
-  </main>
+      <div class="header-right">
+        <span class="welcome-text">{{ 'COMMON.WELCOME' | translate }}, Usuario</span>
+        <app-language-selector></app-language-selector>
+        <button class="logout-btn" title="{{ 'COMMON.LOGOUT' | translate }}">
+          <app-logout-icon [size]="'20'" [color]="'#fff'" [stroke]="'#fff'"></app-logout-icon>
+        </button>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+      <div class="dashboard-content">
+        <div class="dashboard-intro">
+          <h2>{{ 'DASHBOARD.SUBTITLE' | translate }}</h2>
+        </div>
+
+        <div class="stats-grid">
+          <app-card 
+            *ngFor="let stat of stats" 
+            class="stat-card"
+            [style.border-left-color]="stat.color"
+          >
+            <div class="stat-content">
+              <div class="stat-icon" [style.color]="stat.color">
+                {{ stat.icon }}
+              </div>
+              <div class="stat-info">
+                <h3>{{ stat.title | translate }}</h3>
+                <p class="stat-value">{{ stat.value }}</p>
+              </div>
+            </div>
+          </app-card>
+        </div>
+
+        <div class="dashboard-actions">
+          <app-button variant="primary" size="large">
+            {{ 'PERMISSIONS.ADD_PERMISSION' | translate }}
+          </app-button>
+          <app-button variant="secondary" size="large">
+            {{ 'SIDEBAR.REPORTS' | translate }}
+          </app-button>
+        </div>
+      </div>
+    </main>
+  </div>
 </div> 

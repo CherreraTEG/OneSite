@@ -1,9 +1,56 @@
 {
-  "LOGIN": {
-    "TITLE": "¡Bienvenido a Onesite!",
-    "EMAIL": "Usuario",
+  "COMMON": {
+    "WELCOME": "Bienvenido",
+    "LOGOUT": "Cerrar Sesión",
+    "LANGUAGE": "Idioma",
+    "SPANISH": "Español",
+    "ENGLISH": "Inglés"
+  },
+  "SIDEBAR": {
+    "TRUCKS": "Camiones",
+    "COSTS": "Costos",
+    "REPORTS": "Reportes",
+    "PERMISSIONS": "Permisos"
+  },
+  "DASHBOARD": {
+    "TITLE": "Panel de Control",
+    "SUBTITLE": "Bienvenido al sistema OneSite",
+    "STATS": {
+      "TOTAL_TRUCKS": "Total de Camiones",
+      "ACTIVE_TRUCKS": "Camiones Activos",
+      "TOTAL_COSTS": "Costos Totales",
+      "MONTHLY_REPORTS": "Reportes del Mes"
+    }
+  },
+  "PERMISSIONS": {
+    "TITLE": "Gestión de Permisos",
+    "SUBTITLE": "Administra los permisos de los usuarios",
+    "ADD_PERMISSION": "Agregar Permiso",
+    "EDIT_PERMISSION": "Editar Permiso",
+    "DELETE_PERMISSION": "Eliminar Permiso",
+    "PERMISSION_NAME": "Nombre del Permiso",
+    "PERMISSION_DESCRIPTION": "Descripción",
+    "PERMISSION_TYPE": "Tipo de Permiso",
+    "SAVE": "Guardar",
+    "CANCEL": "Cancelar",
+    "SEARCH": "Buscar permisos..."
+  },
+  "AUTH": {
+    "LOGIN": "Iniciar Sesión",
+    "USERNAME": "Usuario",
     "PASSWORD": "Contraseña",
-    "SUBMIT": "Iniciar sesión",
-    "LANGUAGE": "Idioma"
+    "REMEMBER_ME": "Recordarme",
+    "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
+    "LOGIN_ERROR": "Error al iniciar sesión",
+    "INVALID_CREDENTIALS": "Credenciales inválidas"
+  },
+  "MESSAGES": {
+    "LOADING": "Cargando...",
+    "SAVING": "Guardando...",
+    "SUCCESS": "Operación exitosa",
+    "ERROR": "Error en la operación",
+    "CONFIRM_DELETE": "¿Estás seguro de que quieres eliminar este elemento?",
+    "YES": "Sí",
+    "NO": "No"
   }
 } 

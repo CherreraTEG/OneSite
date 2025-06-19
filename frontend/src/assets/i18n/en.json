@@ -1,9 +1,56 @@
 {
-  "LOGIN": {
-    "TITLE": "Welcome to Onesite!",
-    "EMAIL": "Username",
+  "COMMON": {
+    "WELCOME": "Welcome",
+    "LOGOUT": "Logout",
+    "LANGUAGE": "Language",
+    "SPANISH": "Spanish",
+    "ENGLISH": "English"
+  },
+  "SIDEBAR": {
+    "TRUCKS": "Trucks",
+    "COSTS": "Costs",
+    "REPORTS": "Reports",
+    "PERMISSIONS": "Permissions"
+  },
+  "DASHBOARD": {
+    "TITLE": "Dashboard",
+    "SUBTITLE": "Welcome to OneSite system",
+    "STATS": {
+      "TOTAL_TRUCKS": "Total Trucks",
+      "ACTIVE_TRUCKS": "Active Trucks",
+      "TOTAL_COSTS": "Total Costs",
+      "MONTHLY_REPORTS": "Monthly Reports"
+    }
+  },
+  "PERMISSIONS": {
+    "TITLE": "Permissions Management",
+    "SUBTITLE": "Manage user permissions",
+    "ADD_PERMISSION": "Add Permission",
+    "EDIT_PERMISSION": "Edit Permission",
+    "DELETE_PERMISSION": "Delete Permission",
+    "PERMISSION_NAME": "Permission Name",
+    "PERMISSION_DESCRIPTION": "Description",
+    "PERMISSION_TYPE": "Permission Type",
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "SEARCH": "Search permissions..."
+  },
+  "AUTH": {
+    "LOGIN": "Login",
+    "USERNAME": "Username",
     "PASSWORD": "Password",
-    "SUBMIT": "Log In",
-    "LANGUAGE": "Language"
+    "REMEMBER_ME": "Remember me",
+    "FORGOT_PASSWORD": "Forgot password?",
+    "LOGIN_ERROR": "Login error",
+    "INVALID_CREDENTIALS": "Invalid credentials"
+  },
+  "MESSAGES": {
+    "LOADING": "Loading...",
+    "SAVING": "Saving...",
+    "SUCCESS": "Operation successful",
+    "ERROR": "Operation error",
+    "CONFIRM_DELETE": "Are you sure you want to delete this item?",
+    "YES": "Yes",
+    "NO": "No"
   }
 } 

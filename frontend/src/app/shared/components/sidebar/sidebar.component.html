@@ -1,22 +1,25 @@
 <nav [ngClass]="{'sidebar': true, 'collapsed': collapsed}">
   <div class="sidebar-header">
     <img src="assets/images/logo-elite.png" alt="Logo" class="logo" />
-    <button mat-icon-button class="collapse-btn" (click)="toggleSidebar()" title="Colapsar/Expandir menú">
-      <mat-icon>{{ collapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+    <button class="collapse-btn" (click)="toggleSidebar()" title="Colapsar/Expandir menú">
+      <span class="collapse-icon">{{ collapsed ? '›' : '‹' }}</span>
     </button>
   </div>
   <ul class="sidebar-menu">
-    <li [title]="getTooltipText('Trucks - Gestión de camiones')" [class.collapsed]="collapsed">
-      <app-truck-icon [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
-      <span *ngIf="!collapsed">Trucks</span>
-    </li>
-    <li [title]="getTooltipText('Costs - Gestión de costos')" [class.collapsed]="collapsed">
-      <app-costs-icon [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
-      <span *ngIf="!collapsed">Costs</span>
-    </li>
-    <li [title]="getTooltipText('Reports - Reportes y estadísticas')" [class.collapsed]="collapsed">
-      <app-reports-icon [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
-      <span *ngIf="!collapsed">Reports</span>
+    <li 
+      *ngFor="let item of menuItems" 
+      [title]="getTooltipText(item.label | translate)" 
+      [class.collapsed]="collapsed"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+    >
+      <ng-container [ngSwitch]="item.icon">
+        <app-truck-icon *ngSwitchCase="'truck'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
+        <app-costs-icon *ngSwitchCase="'costs'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
+        <app-reports-icon *ngSwitchCase="'reports'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
+        <span *ngSwitchCase="'permissions'" class="permissions-icon">🔐</span>
+      </ng-container>
+      <span *ngIf="!collapsed">{{ item.label | translate }}</span>
     </li>
   </ul>
 </nav> 
