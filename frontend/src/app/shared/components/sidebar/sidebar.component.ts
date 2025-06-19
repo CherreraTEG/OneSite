@@ -24,4 +24,8 @@ export class SidebarComponent {
   toggleSidebar() {
     this.collapsed = !this.collapsed;
   }
+
+  getTooltipText(text: string): string {
+    return this.collapsed ? text : '';
+  }
 } 

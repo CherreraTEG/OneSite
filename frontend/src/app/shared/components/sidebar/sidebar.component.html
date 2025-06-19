@@ -1,20 +1,20 @@
 <nav [ngClass]="{'sidebar': true, 'collapsed': collapsed}">
   <div class="sidebar-header">
     <img src="assets/images/logo-elite.png" alt="Logo" class="logo" />
-    <button mat-icon-button class="collapse-btn" (click)="toggleSidebar()">
+    <button mat-icon-button class="collapse-btn" (click)="toggleSidebar()" title="Colapsar/Expandir menú">
       <mat-icon>{{ collapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
     </button>
   </div>
   <ul class="sidebar-menu">
-    <li>
+    <li [title]="getTooltipText('Trucks - Gestión de camiones')" [class.collapsed]="collapsed">
       <app-truck-icon [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
       <span *ngIf="!collapsed">Trucks</span>
     </li>
-    <li>
+    <li [title]="getTooltipText('Costs - Gestión de costos')" [class.collapsed]="collapsed">
       <app-costs-icon [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
       <span *ngIf="!collapsed">Costs</span>
     </li>
-    <li>
+    <li [title]="getTooltipText('Reports - Reportes y estadísticas')" [class.collapsed]="collapsed">
       <app-reports-icon [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
       <span *ngIf="!collapsed">Reports</span>
     </li>
