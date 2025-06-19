@@ -6,6 +6,15 @@
     "SPANISH": "Spanish",
     "ENGLISH": "English"
   },
+  "LOGIN": {
+    "TITLE": "Login",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "SUBMIT": "Sign In",
+    "LANGUAGE": "Language",
+    "REMEMBER_ME": "Remember me",
+    "FORGOT_PASSWORD": "Forgot your password?"
+  },
   "SIDEBAR": {
     "TRUCKS": "Trucks",
     "COSTS": "Costs",
@@ -40,9 +49,13 @@
     "USERNAME": "Username",
     "PASSWORD": "Password",
     "REMEMBER_ME": "Remember me",
-    "FORGOT_PASSWORD": "Forgot password?",
+    "FORGOT_PASSWORD": "Forgot your password?",
     "LOGIN_ERROR": "Login error",
-    "INVALID_CREDENTIALS": "Invalid credentials"
+    "INVALID_CREDENTIALS": "Invalid credentials",
+    "ERRORS": {
+      "REQUIRED": "This field is required",
+      "MIN_LENGTH": "Minimum 6 characters"
+    }
   },
   "MESSAGES": {
     "LOADING": "Loading...",

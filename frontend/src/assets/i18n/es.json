@@ -6,6 +6,15 @@
     "SPANISH": "Español",
     "ENGLISH": "Inglés"
   },
+  "LOGIN": {
+    "TITLE": "Iniciar Sesión",
+    "USERNAME": "Usuario",
+    "PASSWORD": "Contraseña",
+    "SUBMIT": "Ingresar",
+    "LANGUAGE": "Idioma",
+    "REMEMBER_ME": "Recordarme",
+    "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?"
+  },
   "SIDEBAR": {
     "TRUCKS": "Camiones",
     "COSTS": "Costos",
@@ -42,7 +51,11 @@
     "REMEMBER_ME": "Recordarme",
     "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
     "LOGIN_ERROR": "Error al iniciar sesión",
-    "INVALID_CREDENTIALS": "Credenciales inválidas"
+    "INVALID_CREDENTIALS": "Credenciales inválidas",
+    "ERRORS": {
+      "REQUIRED": "Este campo es requerido",
+      "MIN_LENGTH": "Mínimo 6 caracteres"
+    }
   },
   "MESSAGES": {
     "LOADING": "Cargando...",
