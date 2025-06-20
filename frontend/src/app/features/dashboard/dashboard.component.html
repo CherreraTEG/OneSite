@@ -20,33 +20,6 @@
         <div class="dashboard-intro">
           <h2>{{ 'DASHBOARD.SUBTITLE' | translate }}</h2>
         </div>
-
-        <div class="stats-grid">
-          <app-card 
-            *ngFor="let stat of stats" 
-            class="stat-card"
-            [style.border-left-color]="stat.color"
-          >
-            <div class="stat-content">
-              <div class="stat-icon" [style.color]="stat.color">
-                {{ stat.icon }}
-              </div>
-              <div class="stat-info">
-                <h3>{{ stat.title | translate }}</h3>
-                <p class="stat-value">{{ stat.value }}</p>
-              </div>
-            </div>
-          </app-card>
-        </div>
-
-        <div class="dashboard-actions">
-          <app-button variant="primary" size="large">
-            {{ 'PERMISSIONS.ADD_PERMISSION' | translate }}
-          </app-button>
-          <app-button variant="secondary" size="large">
-            {{ 'SIDEBAR.REPORTS' | translate }}
-          </app-button>
-        </div>
       </div>
     </main>
   </div>

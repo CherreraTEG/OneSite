@@ -23,7 +23,7 @@
   },
   "DASHBOARD": {
     "TITLE": "Dashboard",
-    "SUBTITLE": "Welcome to OneSite system",
+    "SUBTITLE": "Welcome to OneSite",
     "STATS": {
       "TOTAL_TRUCKS": "Total Trucks",
       "ACTIVE_TRUCKS": "Active Trucks",

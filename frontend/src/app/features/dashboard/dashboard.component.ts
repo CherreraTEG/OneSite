@@ -30,33 +30,6 @@ export class DashboardComponent {
     lastLogin: new Date().toLocaleDateString()
   };
 
-  stats = [
-    {
-      title: 'DASHBOARD.STATS.TOTAL_TRUCKS',
-      value: '150',
-      icon: '🚛',
-      color: '#1976d2'
-    },
-    {
-      title: 'DASHBOARD.STATS.ACTIVE_TRUCKS',
-      value: '127',
-      icon: '✅',
-      color: '#4caf50'
-    },
-    {
-      title: 'DASHBOARD.STATS.TOTAL_COSTS',
-      value: '$45,230',
-      icon: '💰',
-      color: '#ff9800'
-    },
-    {
-      title: 'DASHBOARD.STATS.MONTHLY_REPORTS',
-      value: '23',
-      icon: '📊',
-      color: '#9c27b0'
-    }
-  ];
-
   // Estado del sidebar
   sidebarCollapsed = false;
 
