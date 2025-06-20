@@ -1,5 +1,5 @@
 -- Iniciar el backend
-python -m uvicorn app.main:app --reload
+python -m uvicorn app.main:app --reload --reload-dir app
 
 --- Iniciar el frontend
 ng serve
@@ -9,3 +9,26 @@ taskkill /F /IM node.exe
 
 --- Limpiar cache
 npm cache clean --force
+
+--- cerrar rama
+git add .
+git commit -m "fix: dependencias y estructura para frontend angular"
+git push
+
+--- status
+git status
+
+-- crear rama
+git checkout -b feature/nueva-funcionalidad
+git push -u origin feature/nueva-funcionalidad
+
+---fusionar todas las ramas
+git checkout main
+git merge feature/logo
+
+eliminar rama
+
+---git branch -d feature/logo
+
+git checkout -b feature/idioma
+git push -u origin feature/idioma

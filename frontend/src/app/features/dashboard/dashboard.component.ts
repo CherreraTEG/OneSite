@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
-import { CardComponent } from '../../shared/components/card/card.component';
-import { ButtonComponent } from '../../shared/components/button/button.component';
 import { SidebarComponent } from '../../shared/components/sidebar/sidebar.component';
 import { LogoutIconComponent } from '../../shared/components/icons/logout-icon.component';
 import { LanguageSelectorComponent } from '../../shared/components/language-selector/language-selector.component';
@@ -11,12 +9,10 @@ import { LanguageSelectorComponent } from '../../shared/components/language-sele
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    CommonModule, 
-    TranslateModule, 
-    CardComponent, 
-    ButtonComponent, 
-    SidebarComponent, 
-    LogoutIconComponent, 
+    CommonModule,
+    TranslateModule,
+    SidebarComponent,
+    LogoutIconComponent,
     LanguageSelectorComponent
   ],
   templateUrl: './dashboard.component.html',
