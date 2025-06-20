@@ -33,7 +33,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18'
+        node-version: '20.x'
     - name: Install dependencies
       run: |
         cd frontend
@@ -52,4 +52,4 @@ jobs:
     - name: Build and push Docker images
       run: |
         docker build -t onesite-backend ./backend
-        docker build -t onesite-frontend ./frontend 
+        docker build -t onesite-frontend ./frontend
