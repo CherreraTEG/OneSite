@@ -5,6 +5,21 @@
       <span class="collapse-icon">{{ collapsed ? '›' : '‹' }}</span>
     </button>
   </div>
+
+  <div class="company-selector-container" [class.collapsed]="collapsed">
+    <span class="company-icon">🏢</span>
+    <select 
+      *ngIf="!collapsed" 
+      class="company-selector" 
+      (change)="onCompanyChange($event)"
+      [value]="selectedCompany"
+    >
+      <option *ngFor="let company of companies" [value]="company.id">
+        {{ company.name }}
+      </option>
+    </select>
+  </div>
+
   <ul class="sidebar-menu">
     <li 
       *ngFor="let item of menuItems" 

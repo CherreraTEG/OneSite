@@ -90,6 +90,47 @@
     }
   }
 
+  .company-selector-container {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 16px;
+    transition: padding 0.3s ease;
+
+    &.collapsed {
+      padding: 12px;
+      justify-content: center;
+    }
+
+    .company-icon {
+      font-size: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+
+    .company-selector {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      option {
+        background-color: #3f3f66;
+        color: white;
+      }
+    }
+  }
+
   .sidebar-menu {
     list-style: none;
     padding: 0;
