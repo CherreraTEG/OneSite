@@ -21,20 +21,48 @@
   </div>
 
   <ul class="sidebar-menu">
-    <li 
-      *ngFor="let item of menuItems" 
-      [title]="getTooltipText(item.label | translate)" 
-      [class.collapsed]="collapsed"
-      [routerLink]="item.route"
-      routerLinkActive="active"
-    >
-      <ng-container [ngSwitch]="item.icon">
-        <app-truck-icon *ngSwitchCase="'truck'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
-        <app-costs-icon *ngSwitchCase="'costs'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
-        <app-reports-icon *ngSwitchCase="'reports'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
-        <span *ngSwitchCase="'permissions'" class="permissions-icon">🔐</span>
-      </ng-container>
-      <span *ngIf="!collapsed">{{ item.label | translate }}</span>
-    </li>
+    <ng-container *ngFor="let item of menuItems">
+      <li
+        [title]="getTooltipText(item.label | translate)"
+        [class.collapsed]="collapsed"
+        [class.has-submenu]="hasSubItems(item)"
+        [class.expanded]="item.expanded"
+        [class.active]="isActive(item)"
+        (click)="onMenuItemClick(item)"
+      >
+        <div class="menu-item-content">
+          <ng-container [ngSwitch]="item.icon">
+            <app-truck-icon *ngSwitchCase="'truck'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
+            <app-costs-icon *ngSwitchCase="'costs'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
+            <app-reports-icon *ngSwitchCase="'reports'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
+            <span *ngSwitchCase="'permissions'" class="permissions-icon">🔐</span>
+            <span *ngSwitchCase="'ecommerce'" class="ecommerce-icon">🛒</span>
+            <span *ngSwitchCase="'groups'" class="groups-icon">👥</span>
+          </ng-container>
+          <span *ngIf="!collapsed" class="menu-label">{{ item.label | translate }}</span>
+        </div>
+        <span *ngIf="!collapsed && hasSubItems(item)" class="expand-icon">{{ item.expanded ? '▼' : '▶' }}</span>
+      </li>
+
+      <ul
+        *ngIf="hasSubItems(item) && item.expanded && !collapsed"
+        class="submenu"
+      >
+        <li
+          *ngFor="let subItem of item.subItems"
+          [routerLink]="subItem.route"
+          routerLinkActive="active"
+          class="submenu-item"
+        >
+          <ng-container [ngSwitch]="subItem.icon">
+            <app-truck-icon *ngSwitchCase="'truck'" [size]="'20'" [color]="'#fff'" [stroke]="'#fff'" />
+            <app-costs-icon *ngSwitchCase="'costs'" [size]="'20'" [color]="'#fff'" [stroke]="'#fff'" />
+            <span *ngSwitchCase="'ecommerce'" class="ecommerce-icon">🛒</span>
+            <app-groups-icon *ngSwitchCase="'groups'" [size]="'20'" [stroke]="'#fff'"></app-groups-icon>
+          </ng-container>
+          <span class="submenu-label">{{ subItem.label | translate }}</span>
+        </li>
+      </ul>
+    </ng-container>
   </ul>
 </nav> 

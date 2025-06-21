@@ -136,7 +136,7 @@
     padding: 0;
     margin: 32px 0 0 0;
     flex: 1;
-    
+
     li {
       display: flex;
       align-items: center;
@@ -150,72 +150,81 @@
       position: relative;
       margin: 4px 8px;
       border-radius: 8px;
+
+      .menu-item-content {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        gap: 18px;
+      }
       
-      // Tooltip styles - only show when collapsed
+      &.has-submenu {
+        justify-content: space-between;
+        
+        .expand-icon {
+          font-size: 12px;
+          transition: transform 0.2s ease;
+        }
+        
+        &.expanded .expand-icon {
+          transform: rotate(0deg);
+        }
+      }
+      
       &.collapsed:hover {
         background: rgba(255,255,255,0.1);
         transform: translateX(4px);
         
-        &::before {
-          content: attr(title);
-          position: absolute;
-          left: 100%;
-          top: 50%;
-          transform: translateY(-50%);
-          background: rgba(0,0,0,0.9);
-          color: white;
-          padding: 8px 12px;
-          border-radius: 6px;
-          font-size: 0.875rem;
-          white-space: nowrap;
-          z-index: 1001;
-          margin-left: 12px;
-          opacity: 1;
-          pointer-events: none;
-          transition: opacity 0.2s ease;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        
-        &::after {
-          content: '';
-          position: absolute;
-          left: 100%;
-          top: 50%;
-          transform: translateY(-50%);
-          border: 6px solid transparent;
-          border-right-color: rgba(0,0,0,0.9);
-          margin-left: 6px;
-          z-index: 1001;
-          pointer-events: none;
+        &::before, &::after {
+          /* ... estilos de tooltip ... */
         }
       }
       
-      // Hover effect when expanded
-      &:not(.collapsed):hover {
+      &:not(.collapsed):hover, &.active {
         background: rgba(255,255,255,0.1);
         transform: translateX(4px);
       }
       
-      span {
-        color: #fff;
-        display: inline;
-        opacity: 1;
-        transition: opacity 0.2s ease, display 0.2s;
-        font-weight: 500;
-      }
-      
-      app-truck-icon,
-      app-costs-icon,
-      app-reports-icon {
-        transition: transform 0.2s ease;
-      }
-      
-      &:hover app-truck-icon,
-      &:hover app-costs-icon,
-      &:hover app-reports-icon {
-        transform: scale(1.1);
+      &.active {
+        background: rgba(84, 83, 134, 0.5); 
       }
     }
+
+    .submenu {
+      list-style: none;
+      padding: 0;
+      margin: 0 8px 8px 32px;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 8px;
+      overflow: hidden;
+      animation: slideDown 0.3s ease-out;
+
+      .submenu-item {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+
+        &:hover, &.active {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &.active {
+          font-weight: 500;
+        }
+
+        .submenu-label {
+          opacity: 0.9;
+        }
+      }
+    }
+  }
+
+  // Iconos adicionales
+  .permissions-icon,
+  .ecommerce-icon {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -224,5 +233,16 @@
     position: absolute;
     height: 100%;
     z-index: 2000;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 } 

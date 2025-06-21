@@ -17,6 +17,9 @@
   },
   "SIDEBAR": {
     "TRUCKS": "Trucks",
+    "E_COMMERCE": "E-commerce",
+    "EXTRA_COSTS": "Extra Costs",
+    "DISPATCH_GROUPS": "Dispatch Groups",
     "COSTS": "Costs",
     "REPORTS": "Reports",
     "PERMISSIONS": "Permissions"
