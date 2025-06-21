@@ -7,6 +7,9 @@ import { TruckIconComponent } from '../icons/truck-icon.component';
 import { CostsIconComponent } from '../icons/costs-icon.component';
 import { ReportsIconComponent } from '../icons/reports-icon.component';
 import { GroupsIconComponent } from '../icons/groups-icon.component';
+import { PermissionsIconComponent } from '../icons/permissions-icon.component';
+import { EcommerceIconComponent } from '../icons/ecommerce-icon.component';
+import { CompanyIconComponent } from '../icons/company-icon.component';
 
 interface MenuItem {
   icon: string;
@@ -26,7 +29,10 @@ interface MenuItem {
     TruckIconComponent,
     CostsIconComponent,
     ReportsIconComponent,
-    GroupsIconComponent
+    GroupsIconComponent,
+    PermissionsIconComponent,
+    EcommerceIconComponent,
+    CompanyIconComponent
   ],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']

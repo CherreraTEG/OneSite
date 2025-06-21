@@ -7,7 +7,7 @@
   </div>
 
   <div class="company-selector-container" [class.collapsed]="collapsed">
-    <span class="company-icon">🏢</span>
+    <app-company-icon [stroke]="'#fff'" [size]="'24'"></app-company-icon>
     <select 
       *ngIf="!collapsed" 
       class="company-selector" 
@@ -32,12 +32,10 @@
       >
         <div class="menu-item-content">
           <ng-container [ngSwitch]="item.icon">
-            <app-truck-icon *ngSwitchCase="'truck'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
-            <app-costs-icon *ngSwitchCase="'costs'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
-            <app-reports-icon *ngSwitchCase="'reports'" [size]="'24'" [color]="'#fff'" [stroke]="'#fff'" />
-            <span *ngSwitchCase="'permissions'" class="permissions-icon">🔐</span>
-            <span *ngSwitchCase="'ecommerce'" class="ecommerce-icon">🛒</span>
-            <span *ngSwitchCase="'groups'" class="groups-icon">👥</span>
+            <app-truck-icon *ngSwitchCase="'truck'" [size]="'24'" [stroke]="'#fff'" />
+            <app-costs-icon *ngSwitchCase="'costs'" [size]="'24'" [stroke]="'#fff'" />
+            <app-reports-icon *ngSwitchCase="'reports'" [size]="'24'" [stroke]="'#fff'" />
+            <app-permissions-icon *ngSwitchCase="'permissions'" [size]="'24'" [stroke]="'#fff'" />
           </ng-container>
           <span *ngIf="!collapsed" class="menu-label">{{ item.label | translate }}</span>
         </div>
@@ -55,9 +53,8 @@
           class="submenu-item"
         >
           <ng-container [ngSwitch]="subItem.icon">
-            <app-truck-icon *ngSwitchCase="'truck'" [size]="'20'" [color]="'#fff'" [stroke]="'#fff'" />
-            <app-costs-icon *ngSwitchCase="'costs'" [size]="'20'" [color]="'#fff'" [stroke]="'#fff'" />
-            <span *ngSwitchCase="'ecommerce'" class="ecommerce-icon">🛒</span>
+            <app-ecommerce-icon *ngSwitchCase="'ecommerce'" [size]="'20'" [stroke]="'#fff'"></app-ecommerce-icon>
+            <app-costs-icon *ngSwitchCase="'costs'" [size]="'20'" [stroke]="'#fff'"></app-costs-icon>
             <app-groups-icon *ngSwitchCase="'groups'" [size]="'20'" [stroke]="'#fff'"></app-groups-icon>
           </ng-container>
           <span class="submenu-label">{{ subItem.label | translate }}</span>

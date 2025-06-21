@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-reports-icon',
+  selector: 'app-permissions-icon',
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -14,11 +14,11 @@ import { CommonModule } from '@angular/common';
       viewBox="0 0 24 24" 
       [attr.stroke-width]="strokeWidth"
       [attr.stroke]="stroke">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
     </svg>
-  `
+  `,
 })
-export class ReportsIconComponent {
+export class PermissionsIconComponent {
   @Input() size: string = '24';
   @Input() stroke: string = 'currentColor';
   @Input() strokeWidth: string = '1.5';

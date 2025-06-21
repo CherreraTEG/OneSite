@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-reports-icon',
+  selector: 'app-ecommerce-icon',
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -14,11 +14,11 @@ import { CommonModule } from '@angular/common';
       viewBox="0 0 24 24" 
       [attr.stroke-width]="strokeWidth"
       [attr.stroke]="stroke">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.823-6.423a.75.75 0 0 0-.11-.634l-1.34-1.341a.75.75 0 0 0-.635-.257H4.5M4.5 14.25 5.625 5.176m14.25 9.074-.21-1.473" />
     </svg>
-  `
+  `,
 })
-export class ReportsIconComponent {
+export class EcommerceIconComponent {
   @Input() size: string = '24';
   @Input() stroke: string = 'currentColor';
   @Input() strokeWidth: string = '1.5';

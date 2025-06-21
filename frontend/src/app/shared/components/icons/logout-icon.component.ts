@@ -1,23 +1,25 @@
 import { Component, Input } from '@angular/core';
-import { IconComponent } from '../icon/icon.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-logout-icon',
   standalone: true,
-  imports: [IconComponent],
+  imports: [CommonModule],
   template: `
-    <app-icon [size]="size" [color]="color" [stroke]="stroke" [strokeWidth]="strokeWidth">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M16 17L21 12L16 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </app-icon>
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      [attr.width]="size" 
+      [attr.height]="size"
+      fill="none" 
+      viewBox="0 0 24 24" 
+      [attr.stroke-width]="strokeWidth"
+      [attr.stroke]="stroke">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
+    </svg>
   `
 })
 export class LogoutIconComponent {
   @Input() size: string = '24';
-  @Input() color: string = 'currentColor';
   @Input() stroke: string = 'currentColor';
-  @Input() strokeWidth: string = '2';
+  @Input() strokeWidth: string = '1.5';
 } 

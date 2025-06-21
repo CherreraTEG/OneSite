@@ -1,23 +1,25 @@
 import { Component, Input } from '@angular/core';
-import { IconComponent } from '../icon/icon.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-costs-icon',
   standalone: true,
-  imports: [IconComponent],
+  imports: [CommonModule],
   template: `
-    <app-icon [size]="size" [color]="color" [stroke]="stroke" [strokeWidth]="strokeWidth">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M15 9.5C15 8.11929 13.6569 7 12 7C10.3431 7 9 8.11929 9 9.5C9 10.8807 10.3431 12 12 12C13.6569 12 15 13.1193 15 14.5C15 15.8807 13.6569 17 12 17C10.3431 17 9 15.8807 9 14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </app-icon>
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      [attr.width]="size" 
+      [attr.height]="size"
+      fill="none" 
+      viewBox="0 0 24 24" 
+      [attr.stroke-width]="strokeWidth"
+      [attr.stroke]="stroke">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>
   `
 })
 export class CostsIconComponent {
   @Input() size: string = '24';
-  @Input() color: string = 'currentColor';
   @Input() stroke: string = 'currentColor';
-  @Input() strokeWidth: string = '2';
+  @Input() strokeWidth: string = '1.5';
 } 
