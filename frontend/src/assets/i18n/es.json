@@ -26,6 +26,8 @@
     "REPORTS": "Reportes",
     "PERMISSIONS": "Permisos",
     "AUDITS": "Auditorías",
+    "AUDIT_TRUCKS": "Auditoría de Camiones",
+    "AUDIT_WAREHOUSES": "Auditoría de Bodegas",
     "DISPATCHES": "Despachos",
     "RPA": "RPA"
   },

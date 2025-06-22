@@ -109,7 +109,19 @@ export class SidebarComponent implements OnInit {
     { 
       icon: 'audit', 
       label: 'SIDEBAR.AUDITS', 
-      route: '/audits' 
+      expanded: false,
+      subItems: [
+        { 
+          icon: 'truck', 
+          label: 'SIDEBAR.AUDIT_TRUCKS', 
+          route: '/audits/trucks' 
+        },
+        { 
+          icon: 'audit', 
+          label: 'SIDEBAR.AUDIT_WAREHOUSES', 
+          route: '/audits/warehouses' 
+        }
+      ]
     },
     { 
       icon: 'dispatch', 

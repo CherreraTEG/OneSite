@@ -26,6 +26,8 @@
     "REPORTS": "Reports",
     "PERMISSIONS": "Permissions",
     "AUDITS": "Audits",
+    "AUDIT_TRUCKS": "Truck Audits",
+    "AUDIT_WAREHOUSES": "Warehouse Audits",
     "DISPATCHES": "Dispatches",
     "RPA": "RPA"
   },
