@@ -69,7 +69,19 @@ export class SidebarComponent implements OnInit {
     { 
       icon: 'truck', 
       label: 'SIDEBAR.TRUCKS', 
-      route: '/trucks'
+      expanded: false,
+      subItems: [
+        { 
+          icon: 'truck', 
+          label: 'SIDEBAR.TRUCK_CONTROL', 
+          route: '/trucks/control' 
+        },
+        { 
+          icon: 'truck', 
+          label: 'SIDEBAR.TRUCK_CONTROL_WMT', 
+          route: '/trucks/control-wmt' 
+        }
+      ]
     },
     { 
       icon: 'costs', 

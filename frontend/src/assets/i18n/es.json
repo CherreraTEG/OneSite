@@ -17,6 +17,8 @@
   },
   "SIDEBAR": {
     "TRUCKS": "Camiones",
+    "TRUCK_CONTROL": "Control de Camiones",
+    "TRUCK_CONTROL_WMT": "Control de Camiones WMT",
     "E_COMMERCE": "E-commerce",
     "EXTRA_COSTS": "Extra Costos",
     "DISPATCH_GROUPS": "Grupos de Despacho",
