@@ -1,15 +1,18 @@
 # Menú Desplegable de Costos - OneSite
 
 ## Descripción
-Este documento describe la implementación y funcionamiento del menú desplegable para la sección de Camiones en el sidebar de OneSite.
+Este documento describe la implementación y funcionamiento del menú desplegable para la sección de Costos en el sidebar de OneSite.
 
 ## Estructura del Menú
 
-### Menú Principal: Camiones
-El menú de Camiones incluye las siguientes subopciones:
-- **E-commerce** (`/trucks/ecommerce`)
-- **Extra Costos** (`/trucks/extra-costs`) 
-- **Grupos de Despacho** (`/trucks/dispatch-groups`)
+### Menú Principal: Costos
+El menú de Costos incluye las siguientes subopciones:
+- **E-commerce** (`/costs/ecommerce`)
+- **Extra Costos** (`/costs/extra-costs`) 
+- **Grupos de Despacho** (`/costs/dispatch-groups`)
+
+### Menú Simple: Camiones
+El menú de Camiones ahora es un enlace directo a `/trucks` sin subopciones.
 
 ## Implementación Técnica
 
@@ -60,7 +63,7 @@ interface MenuItem {
 ## Funcionalidades
 
 ### 1. Expansión/Colapso
-- Al hacer clic en "Camiones", el submenú se expande/colapsa
+- Al hacer clic en "Costos", el submenú se expande/colapsa
 - Icono de flecha indica el estado (▶ para cerrado, ▼ para abierto)
 - Animación suave durante la transición
 

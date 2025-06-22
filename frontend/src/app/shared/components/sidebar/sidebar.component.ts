@@ -63,29 +63,29 @@ export class SidebarComponent implements OnInit {
     { 
       icon: 'truck', 
       label: 'SIDEBAR.TRUCKS', 
+      route: '/trucks'
+    },
+    { 
+      icon: 'costs', 
+      label: 'SIDEBAR.COSTS', 
       expanded: false,
       subItems: [
         { 
           icon: 'ecommerce', 
           label: 'SIDEBAR.E_COMMERCE', 
-          route: '/trucks/ecommerce' 
+          route: '/costs/ecommerce' 
         },
         { 
           icon: 'costs', 
           label: 'SIDEBAR.EXTRA_COSTS', 
-          route: '/trucks/extra-costs' 
+          route: '/costs/extra-costs' 
         },
         { 
           icon: 'groups', 
           label: 'SIDEBAR.DISPATCH_GROUPS', 
-          route: '/trucks/dispatch-groups' 
+          route: '/costs/dispatch-groups' 
         }
       ]
-    },
-    { 
-      icon: 'costs', 
-      label: 'SIDEBAR.COSTS', 
-      route: '/costs' 
     },
     { 
       icon: 'reports', 
