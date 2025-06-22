@@ -1,24 +1,20 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-audit-icon',
   standalone: true,
+  imports: [CommonModule],
   template: `
     <svg 
+      xmlns="http://www.w3.org/2000/svg" 
       [attr.width]="size" 
-      [attr.height]="size" 
-      viewBox="0 0 24 24" 
+      [attr.height]="size"
       fill="none" 
-      [attr.stroke]="stroke"
-      stroke-width="2" 
-      stroke-linecap="round" 
-      stroke-linejoin="round"
-    >
-      <path d="M9 12l2 2 4-4"/>
-      <path d="M21 12c-1 0-2-1-2-2s1-2 2-2 2 1 2 2-1 2-2 2z"/>
-      <path d="M3 12c1 0 2-1 2-2s-1-2-2-2-2 1-2 2 1 2 2 2z"/>
-      <path d="M12 3c0 1-1 2-2 2s-2-1-2-2 1-2 2-2 2 1 2 2z"/>
-      <path d="M12 21c0-1 1-2 2-2s2 1 2 2-1 2-2 2-2-1-2-2z"/>
+      viewBox="0 0 24 24" 
+      [attr.stroke-width]="strokeWidth"
+      [attr.stroke]="stroke">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
     </svg>
   `,
   styles: [`
@@ -29,5 +25,6 @@ import { Component, Input } from '@angular/core';
 })
 export class AuditIconComponent {
   @Input() size: string = '24';
-  @Input() stroke: string = '#000';
+  @Input() stroke: string = 'currentColor';
+  @Input() strokeWidth: string = '1.5';
 } 
