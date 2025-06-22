@@ -6,9 +6,7 @@ import { CompanyStateService } from '../../../core/services/company-state.servic
 import { TruckIconComponent } from '../icons/truck-icon.component';
 import { CostsIconComponent } from '../icons/costs-icon.component';
 import { ReportsIconComponent } from '../icons/reports-icon.component';
-import { GroupsIconComponent } from '../icons/groups-icon.component';
 import { PermissionsIconComponent } from '../icons/permissions-icon.component';
-import { EcommerceIconComponent } from '../icons/ecommerce-icon.component';
 import { CompanyIconComponent } from '../icons/company-icon.component';
 import { AuditIconComponent } from '../icons/audit-icon.component';
 import { DispatchIconComponent } from '../icons/dispatch-icon.component';
@@ -32,9 +30,7 @@ interface MenuItem {
     TruckIconComponent,
     CostsIconComponent,
     ReportsIconComponent,
-    GroupsIconComponent,
     PermissionsIconComponent,
-    EcommerceIconComponent,
     CompanyIconComponent,
     AuditIconComponent,
     DispatchIconComponent,

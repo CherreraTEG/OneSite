@@ -55,11 +55,6 @@
           routerLinkActive="active"
           class="submenu-item"
         >
-          <ng-container [ngSwitch]="subItem.icon">
-            <app-ecommerce-icon *ngSwitchCase="'ecommerce'" [size]="'20'" [stroke]="'#fff'"></app-ecommerce-icon>
-            <app-costs-icon *ngSwitchCase="'costs'" [size]="'20'" [stroke]="'#fff'"></app-costs-icon>
-            <app-groups-icon *ngSwitchCase="'groups'" [size]="'20'" [stroke]="'#fff'"></app-groups-icon>
-          </ng-container>
           <span class="submenu-label">{{ subItem.label | translate }}</span>
         </li>
       </ul>
