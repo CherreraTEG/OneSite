@@ -56,6 +56,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.selectedCompany = this.companyStateService.getSelectedCompany();
+    console.log('Sidebar initialized with menu items:', this.menuItems);
   }
 
   menuItems: MenuItem[] = [
@@ -104,9 +105,12 @@ export class SidebarComponent implements OnInit {
   }
 
   onMenuItemClick(item: MenuItem) {
+    console.log('Menu item clicked:', item);
     if (this.hasSubItems(item)) {
+      console.log('Item has subitems, toggling submenu');
       this.toggleSubmenu(item);
     } else if (item.route) {
+      console.log('Navigating to route:', item.route);
       this.router.navigate([item.route]);
     }
   }
@@ -114,6 +118,7 @@ export class SidebarComponent implements OnInit {
   toggleSubmenu(item: MenuItem) {
     if (item.subItems) {
       item.expanded = !item.expanded;
+      console.log('Submenu toggled for item:', item.label, 'Expanded:', item.expanded);
     }
   }
 
@@ -137,6 +142,8 @@ export class SidebarComponent implements OnInit {
   }
 
   hasSubItems(item: MenuItem): boolean {
-    return !!(item.subItems && item.subItems.length > 0);
+    const hasSubItems = !!(item.subItems && item.subItems.length > 0);
+    console.log('Checking if item has subitems:', item.label, hasSubItems);
+    return hasSubItems;
   }
 } 
