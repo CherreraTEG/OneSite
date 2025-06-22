@@ -22,7 +22,10 @@
     "DISPATCH_GROUPS": "Grupos de Despacho",
     "COSTS": "Costos",
     "REPORTS": "Reportes",
-    "PERMISSIONS": "Permisos"
+    "PERMISSIONS": "Permisos",
+    "AUDITS": "Auditorías",
+    "DISPATCHES": "Despachos",
+    "RPA": "RPA"
   },
   "DASHBOARD": {
     "TITLE": "Panel de Control",

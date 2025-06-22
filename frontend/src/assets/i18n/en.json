@@ -22,7 +22,10 @@
     "DISPATCH_GROUPS": "Dispatch Groups",
     "COSTS": "Costs",
     "REPORTS": "Reports",
-    "PERMISSIONS": "Permissions"
+    "PERMISSIONS": "Permissions",
+    "AUDITS": "Audits",
+    "DISPATCHES": "Dispatches",
+    "RPA": "RPA"
   },
   "DASHBOARD": {
     "TITLE": "Dashboard",

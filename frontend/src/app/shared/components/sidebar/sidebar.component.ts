@@ -10,6 +10,9 @@ import { GroupsIconComponent } from '../icons/groups-icon.component';
 import { PermissionsIconComponent } from '../icons/permissions-icon.component';
 import { EcommerceIconComponent } from '../icons/ecommerce-icon.component';
 import { CompanyIconComponent } from '../icons/company-icon.component';
+import { AuditIconComponent } from '../icons/audit-icon.component';
+import { DispatchIconComponent } from '../icons/dispatch-icon.component';
+import { RpaIconComponent } from '../icons/rpa-icon.component';
 
 interface MenuItem {
   icon: string;
@@ -32,7 +35,10 @@ interface MenuItem {
     GroupsIconComponent,
     PermissionsIconComponent,
     EcommerceIconComponent,
-    CompanyIconComponent
+    CompanyIconComponent,
+    AuditIconComponent,
+    DispatchIconComponent,
+    RpaIconComponent
   ],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
@@ -91,6 +97,21 @@ export class SidebarComponent implements OnInit {
       icon: 'reports', 
       label: 'SIDEBAR.REPORTS', 
       route: '/reports' 
+    },
+    { 
+      icon: 'audit', 
+      label: 'SIDEBAR.AUDITS', 
+      route: '/audits' 
+    },
+    { 
+      icon: 'dispatch', 
+      label: 'SIDEBAR.DISPATCHES', 
+      route: '/dispatches' 
+    },
+    { 
+      icon: 'rpa', 
+      label: 'SIDEBAR.RPA', 
+      route: '/rpa' 
     },
     { 
       icon: 'permissions', 
