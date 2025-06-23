@@ -1,0 +1,121 @@
+{
+  "COMMON": {
+    "WELCOME": "Bienvenue",
+    "LOGOUT": "Déconnexion",
+    "LANGUAGE": "Langue",
+    "SPANISH": "Espagnol",
+    "ENGLISH": "Anglais",
+    "SAVE": "Enregistrer"
+  },
+  "LOGIN": {
+    "TITLE": "Bienvenue sur OneSite",
+    "SUBTITLE": "Connectez-vous pour continuer",
+    "LANGUAGE": "Langue",
+    "USERNAME": "Nom d'utilisateur",
+    "USERNAME_PLACEHOLDER": "Entrez votre nom d'utilisateur",
+    "PASSWORD": "Mot de passe",
+    "PASSWORD_PLACEHOLDER": "Entrez votre mot de passe",
+    "LOGIN_BUTTON": "Connexion",
+    "LOGGING_IN": "Connexion en cours...",
+    "ERROR": {
+      "TITLE": "Erreur d'authentification",
+      "MESSAGE": "Nom d'utilisateur ou mot de passe incorrect.",
+      "CLOSE": "Fermer"
+    }
+  },
+  "SIDEBAR": {
+    "MENU": {
+      "DASHBOARD": "Tableau de bord",
+      "TRUCKS": "Camions",
+      "TRUCKS_CONTROL": "Contrôle des camions",
+      "TRUCKS_CONTROL_WMT": "Contrôle des camions WMT",
+      "COSTS": "Coûts",
+      "E_COMMERCE": "E-commerce",
+      "EXTRA_COSTS": "Coûts supplémentaires",
+      "DISPATCH_GROUPS": "Groupes d'expédition",
+      "REPORTS": "Rapports",
+      "AUDITS": "Audits",
+      "AUDITS_TRUCKS": "Audit des camions",
+      "AUDITS_WAREHOUSE": "Audit d'entrepôt",
+      "DISPATCHES": "Expéditions",
+      "RPA": "RPA",
+      "PERMISSIONS": "Autorisations"
+    },
+    "PROFILE": {
+      "LOGOUT": "Déconnexion"
+    }
+  },
+  "LANGUAGES": {
+    "LANGUAGE": "Langue",
+    "SPANISH": "Espagnol",
+    "ENGLISH": "Anglais"
+  },
+  "DASHBOARD": {
+    "TITLE": "Tableau de bord",
+    "WELCOME": "Bienvenue sur OneSite !",
+    "DESCRIPTION": "Sélectionnez une option dans le menu latéral pour commencer."
+  },
+  "CONFIRMATION": {
+    "TITLE": "Confirmer la déconnexion",
+    "MESSAGE": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "YES": "Oui",
+    "NO": "Non"
+  },
+  "FORMS": {
+    "ERRORS": {
+      "REQUIRED": "Ce champ est requis"
+    },
+    "TRUCK_CONTROL": {
+      "TITLE": "Créer un camion",
+      "WAREHOUSE": "Entrepôt",
+      "WAREHOUSE_PLACEHOLDER": "Sélectionnez un entrepôt",
+      "SHIPDATE": "Date d'expédition",
+      "DELIVDATE": "Date de livraison",
+      "CUSTOMER": "Client",
+      "CARRIER": "Transporteur",
+      "CUSTOMER_FACILITY": "Installation client",
+      "LOAD_NUMBER": "Numéro de chargement",
+      "PICKUP_LOCATION": "Lieu de ramassage",
+      "PO": "Bon de commande",
+      "TIME_IN": "Heure d'arrivée",
+      "STATUS": "Statut",
+      "COMMENTS": "Commentaires",
+      "NUMBER_OF_COPIES": "Nombre de copies"
+    }
+  },
+  "PERMISSIONS": {
+    "TITLE": "Gestion des autorisations",
+    "SUBTITLE": "Gérer les autorisations des utilisateurs",
+    "ADD_PERMISSION": "Ajouter une autorisation",
+    "EDIT_PERMISSION": "Modifier l'autorisation",
+    "DELETE_PERMISSION": "Supprimer l'autorisation",
+    "PERMISSION_NAME": "Nom de l'autorisation",
+    "PERMISSION_DESCRIPTION": "Description",
+    "PERMISSION_TYPE": "Type d'autorisation",
+    "SAVE": "Enregistrer",
+    "CANCEL": "Annuler",
+    "SEARCH": "Rechercher des autorisations..."
+  },
+  "AUTH": {
+    "LOGIN": "Connexion",
+    "USERNAME": "Nom d'utilisateur",
+    "PASSWORD": "Mot de passe",
+    "REMEMBER_ME": "Se souvenir de moi",
+    "FORGOT_PASSWORD": "Mot de passe oublié ?",
+    "LOGIN_ERROR": "Erreur de connexion",
+    "INVALID_CREDENTIALS": "Identifiants invalides",
+    "ERRORS": {
+      "REQUIRED": "Ce champ est requis",
+      "MIN_LENGTH": "Minimum 6 caractères"
+    }
+  },
+  "MESSAGES": {
+    "LOADING": "Chargement...",
+    "SAVING": "Enregistrement...",
+    "SUCCESS": "Opération réussie",
+    "ERROR": "Erreur d'opération",
+    "CONFIRM_DELETE": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+    "YES": "Oui",
+    "NO": "Non"
+  }
+} 

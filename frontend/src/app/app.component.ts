@@ -16,13 +16,13 @@ export class AppComponent implements OnInit {
 
   constructor(private translate: TranslateService) {
     // Configurar idiomas disponibles
-    translate.addLangs(['en', 'es']);
+    translate.addLangs(['en', 'es', 'fr']);
     translate.setDefaultLang('es');
   }
 
   ngOnInit() {
     // Intentar usar el idioma del navegador, si no está disponible usar español
     const browserLang = this.translate.getBrowserLang();
-    this.translate.use(browserLang?.match(/en|es/) ? browserLang : 'es');
+    this.translate.use(browserLang?.match(/en|es|fr/) ? browserLang : 'es');
   }
 } 
