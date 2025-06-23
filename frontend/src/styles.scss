@@ -48,22 +48,31 @@ html, body {
 }
 
 /* Estilos de scrollbar personalizados */
+/* Scrollbar personalizado para toda la aplicación */
 ::-webkit-scrollbar {
   width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #C2DFEA;
+  background: rgba(44, 44, 84, 0.05); /* Ligeramente visible */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #545386;
-  border-radius: 4px;
+  background: rgba(84, 83, 134, 0.45); /* Color primario con transparencia */
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #393869;
+  background: rgba(84, 83, 134, 0.65); /* Más oscuro al pasar el ratón */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Para Firefox */
+html {
+  scrollbar-color: rgba(84, 83, 134, 0.45) rgba(44, 44, 84, 0.05);
+  scrollbar-width: thin;
 }
 
 html, body { height: 100%; }

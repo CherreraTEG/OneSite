@@ -4,41 +4,83 @@
     "LOGOUT": "Logout",
     "LANGUAGE": "Language",
     "SPANISH": "Spanish",
-    "ENGLISH": "English"
+    "ENGLISH": "English",
+    "SAVE": "Save"
   },
   "LOGIN": {
-    "TITLE": "Login",
-    "USERNAME": "Username",
-    "PASSWORD": "Password",
-    "SUBMIT": "Sign In",
+    "TITLE": "Welcome to OneSite",
+    "SUBTITLE": "Sign in to continue",
     "LANGUAGE": "Language",
-    "REMEMBER_ME": "Remember me",
-    "FORGOT_PASSWORD": "Forgot your password?"
+    "USERNAME": "Username",
+    "USERNAME_PLACEHOLDER": "Enter your username",
+    "PASSWORD": "Password",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "LOGIN_BUTTON": "Login",
+    "LOGGING_IN": "Logging in...",
+    "ERROR": {
+      "TITLE": "Authentication Error",
+      "MESSAGE": "Incorrect username or password.",
+      "CLOSE": "Close"
+    }
   },
   "SIDEBAR": {
-    "TRUCKS": "Trucks",
-    "TRUCK_CONTROL": "Truck Control",
-    "TRUCK_CONTROL_WMT": "Truck Control WMT",
-    "E_COMMERCE": "E-commerce",
-    "EXTRA_COSTS": "Extra Costs",
-    "DISPATCH_GROUPS": "Dispatch Groups",
-    "COSTS": "Costs",
-    "REPORTS": "Reports",
-    "PERMISSIONS": "Permissions",
-    "AUDITS": "Audits",
-    "AUDIT_TRUCKS": "Truck Audits",
-    "AUDIT_WAREHOUSES": "Warehouse Audits",
-    "DISPATCHES": "Dispatches",
-    "RPA": "RPA"
+    "MENU": {
+      "DASHBOARD": "Dashboard",
+      "TRUCKS": "Trucks",
+      "TRUCKS_CONTROL": "Trucks Control",
+      "TRUCKS_CONTROL_WMT": "Trucks Control WMT",
+      "COSTS": "Costs",
+      "E_COMMERCE": "E-commerce",
+      "EXTRA_COSTS": "Extra Costs",
+      "DISPATCH_GROUPS": "Dispatch Groups",
+      "REPORTS": "Reports",
+      "AUDITS": "Audits",
+      "AUDITS_TRUCKS": "Trucks Audit",
+      "AUDITS_WAREHOUSE": "Warehouse Audit",
+      "DISPATCHES": "Dispatches",
+      "RPA": "RPA",
+      "PERMISSIONS": "Permissions"
+    },
+    "PROFILE": {
+      "LOGOUT": "Logout"
+    }
+  },
+  "LANGUAGES": {
+    "LANGUAGE": "Language",
+    "SPANISH": "Spanish",
+    "ENGLISH": "English"
   },
   "DASHBOARD": {
     "TITLE": "Dashboard",
-    "SUBTITLE": "Welcome to OneSite",
-    "STATS": {
-      "TOTAL_TRUCKS": "Total Trucks",
-      "ACTIVE_TRUCKS": "Active Trucks",
-      "TOTAL_COSTS": "Total Costs",
-      "MONTHLY_REPORTS": "Monthly Reports"
+    "WELCOME": "Welcome to OneSite!",
+    "DESCRIPTION": "Select an option from the side menu to get started."
+  },
+  "CONFIRMATION": {
+    "TITLE": "Confirm Logout",
+    "MESSAGE": "Are you sure you want to log out?",
+    "YES": "Yes",
+    "NO": "No"
+  },
+  "FORMS": {
+    "ERRORS": {
+      "REQUIRED": "This field is required"
+    },
+    "TRUCK_CONTROL": {
+      "TITLE": "Create Truck",
+      "WAREHOUSE": "Warehouse",
+      "WAREHOUSE_PLACEHOLDER": "Select a warehouse",
+      "SHIPDATE": "Ship Date",
+      "DELIVDATE": "Delivery Date",
+      "CUSTOMER": "Customer",
+      "CARRIER": "Carrier",
+      "CUSTOMER_FACILITY": "Customer Facility",
+      "LOAD_NUMBER": "Load Number",
+      "PICKUP_LOCATION": "Pickup Location",
+      "PO": "Purchase Order",
+      "TIME_IN": "Time In",
+      "STATUS": "Status",
+      "COMMENTS": "Comments",
+      "NUMBER_OF_COPIES": "Number of Copies"
     }
   },
   "PERMISSIONS": {

@@ -1,0 +1,84 @@
+<app-card>
+  <h2 class="card-title">{{ 'FORMS.TRUCK_CONTROL.TITLE' | translate }}</h2>
+  <form [formGroup]="truckForm" (ngSubmit)="onSubmit()" class="truck-form">
+    <div class="form-grid">
+      <app-input
+        [control]="warehouseControl"
+        [label]="'FORMS.TRUCK_CONTROL.WAREHOUSE' | translate"
+        [placeholder]="'FORMS.TRUCK_CONTROL.WAREHOUSE_PLACEHOLDER' | translate">
+      </app-input>
+      
+      <app-input
+        [control]="shipDateControl"
+        [label]="'FORMS.TRUCK_CONTROL.SHIPDATE' | translate"
+        type="date">
+      </app-input>
+
+      <app-input
+        [control]="delivDateControl"
+        [label]="'FORMS.TRUCK_CONTROL.DELIVDATE' | translate"
+        type="date">
+      </app-input>
+
+      <app-input
+        [control]="customerControl"
+        [label]="'FORMS.TRUCK_CONTROL.CUSTOMER' | translate">
+      </app-input>
+
+      <app-input
+        [control]="carrierControl"
+        [label]="'FORMS.TRUCK_CONTROL.CARRIER' | translate">
+      </app-input>
+
+      <app-input
+        [control]="customerFacilityControl"
+        [label]="'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY' | translate">
+      </app-input>
+
+      <app-input
+        [control]="loadNumberControl"
+        [label]="'FORMS.TRUCK_CONTROL.LOAD_NUMBER' | translate">
+      </app-input>
+
+      <app-input
+        [control]="pickupLocationControl"
+        [label]="'FORMS.TRUCK_CONTROL.PICKUP_LOCATION' | translate"
+        [isTextarea]="true">
+      </app-input>
+
+      <app-input
+        [control]="poControl"
+        [label]="'FORMS.TRUCK_CONTROL.PO' | translate">
+      </app-input>
+
+      <app-input
+        [control]="timeInControl"
+        [label]="'FORMS.TRUCK_CONTROL.TIME_IN' | translate"
+        type="time">
+      </app-input>
+
+      <app-input
+        [control]="statusControl"
+        [label]="'FORMS.TRUCK_CONTROL.STATUS' | translate">
+      </app-input>
+
+      <app-input
+        [control]="commentsControl"
+        [label]="'FORMS.TRUCK_CONTROL.COMMENTS' | translate"
+        [isTextarea]="true">
+      </app-input>
+      
+      <app-input
+        [control]="numberOfCopiesControl"
+        [label]="'FORMS.TRUCK_CONTROL.NUMBER_OF_COPIES' | translate"
+        type="number">
+      </app-input>
+    </div>
+
+    <div class="form-actions">
+      <app-button type="submit" [disabled]="truckForm.invalid">
+        {{ 'COMMON.SAVE' | translate }}
+      </app-button>
+    </div>
+  </form>
+</app-card> 

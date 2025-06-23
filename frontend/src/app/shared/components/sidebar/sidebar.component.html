@@ -1,9 +1,11 @@
 <nav [ngClass]="{'sidebar': true, 'collapsed': collapsed}">
   <div class="sidebar-header">
     <img src="assets/images/logo-elite.png" alt="Logo" class="logo" />
-    <button class="collapse-btn" (click)="toggleSidebar()" title="Colapsar/Expandir menú">
-      <span class="collapse-icon">{{ collapsed ? '›' : '‹' }}</span>
-    </button>
+    <div class="collapse-btn-container">
+      <button class="collapse-btn" (click)="toggleSidebar.emit()" title="Colapsar/Expandir menú">
+        <span class="collapse-icon">{{ collapsed ? '›' : '‹' }}</span>
+      </button>
+    </div>
   </div>
 
   <div class="company-selector-container" [class.collapsed]="collapsed">
@@ -60,4 +62,7 @@
       </ul>
     </ng-container>
   </ul>
-</nav> 
+</nav>
+
+<!-- Métodos auxiliares -->
+<!-- isMobile() se implementa en el TS --> 

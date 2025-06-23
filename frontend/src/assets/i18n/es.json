@@ -1,79 +1,81 @@
 {
-  "COMMON": {
-    "WELCOME": "Bienvenido",
-    "LOGOUT": "Cerrar Sesión",
+  "SIDEBAR": {
+    "MENU": {
+      "DASHBOARD": "Panel de Control",
+      "TRUCKS": "Camiones",
+      "TRUCKS_CONTROL": "Control de camiones",
+      "TRUCKS_CONTROL_WMT": "Control de camiones WMT",
+      "COSTS": "Costos",
+      "E_COMMERCE": "E-commerce",
+      "EXTRA_COSTS": "Extra costos",
+      "DISPATCH_GROUPS": "Grupos de despacho",
+      "REPORTS": "Reportes",
+      "AUDITS": "Auditorías",
+      "AUDITS_TRUCKS": "Auditoria de camiones",
+      "AUDITS_WAREHOUSE": "Auditoria de bodegas",
+      "DISPATCHES": "Despachos",
+      "RPA": "RPA",
+      "PERMISSIONS": "Permisos"
+    },
+    "PROFILE": {
+      "LOGOUT": "Cerrar Sesión"
+    }
+  },
+  "LANGUAGES": {
     "LANGUAGE": "Idioma",
     "SPANISH": "Español",
     "ENGLISH": "Inglés"
   },
   "LOGIN": {
-    "TITLE": "Iniciar Sesión",
-    "USERNAME": "Usuario",
-    "PASSWORD": "Contraseña",
-    "SUBMIT": "Ingresar",
+    "TITLE": "Bienvenido a OneSite",
+    "SUBTITLE": "Inicia sesión para continuar",
     "LANGUAGE": "Idioma",
-    "REMEMBER_ME": "Recordarme",
-    "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?"
-  },
-  "SIDEBAR": {
-    "TRUCKS": "Camiones",
-    "TRUCK_CONTROL": "Control de Camiones",
-    "TRUCK_CONTROL_WMT": "Control de Camiones WMT",
-    "E_COMMERCE": "E-commerce",
-    "EXTRA_COSTS": "Extra Costos",
-    "DISPATCH_GROUPS": "Grupos de Despacho",
-    "COSTS": "Costos",
-    "REPORTS": "Reportes",
-    "PERMISSIONS": "Permisos",
-    "AUDITS": "Auditorías",
-    "AUDIT_TRUCKS": "Auditoría de Camiones",
-    "AUDIT_WAREHOUSES": "Auditoría de Bodegas",
-    "DISPATCHES": "Despachos",
-    "RPA": "RPA"
+    "USERNAME": "Usuario",
+    "USERNAME_PLACEHOLDER": "Ingresa tu usuario",
+    "PASSWORD": "Contraseña",
+    "PASSWORD_PLACEHOLDER": "Ingresa tu contraseña",
+    "LOGIN_BUTTON": "Iniciar Sesión",
+    "LOGGING_IN": "Iniciando sesión...",
+    "ERROR": {
+      "TITLE": "Error de autenticación",
+      "MESSAGE": "Usuario o contraseña incorrectos.",
+      "CLOSE": "Cerrar"
+    }
   },
   "DASHBOARD": {
     "TITLE": "Panel de Control",
-    "SUBTITLE": "Bienvenido a OneSite",
-    "STATS": {
-      "TOTAL_TRUCKS": "Total de Camiones",
-      "ACTIVE_TRUCKS": "Camiones Activos",
-      "TOTAL_COSTS": "Costos Totales",
-      "MONTHLY_REPORTS": "Reportes del Mes"
-    }
+    "WELCOME": "¡Bienvenido a OneSite!",
+    "DESCRIPTION": "Selecciona una opción del menú lateral para comenzar."
   },
-  "PERMISSIONS": {
-    "TITLE": "Gestión de Permisos",
-    "SUBTITLE": "Administra los permisos de los usuarios",
-    "ADD_PERMISSION": "Agregar Permiso",
-    "EDIT_PERMISSION": "Editar Permiso",
-    "DELETE_PERMISSION": "Eliminar Permiso",
-    "PERMISSION_NAME": "Nombre del Permiso",
-    "PERMISSION_DESCRIPTION": "Descripción",
-    "PERMISSION_TYPE": "Tipo de Permiso",
-    "SAVE": "Guardar",
-    "CANCEL": "Cancelar",
-    "SEARCH": "Buscar permisos..."
-  },
-  "AUTH": {
-    "LOGIN": "Iniciar Sesión",
-    "USERNAME": "Usuario",
-    "PASSWORD": "Contraseña",
-    "REMEMBER_ME": "Recordarme",
-    "FORGOT_PASSWORD": "¿Olvidaste tu contraseña?",
-    "LOGIN_ERROR": "Error al iniciar sesión",
-    "INVALID_CREDENTIALS": "Credenciales inválidas",
-    "ERRORS": {
-      "REQUIRED": "Este campo es requerido",
-      "MIN_LENGTH": "Mínimo 6 caracteres"
-    }
-  },
-  "MESSAGES": {
-    "LOADING": "Cargando...",
-    "SAVING": "Guardando...",
-    "SUCCESS": "Operación exitosa",
-    "ERROR": "Error en la operación",
-    "CONFIRM_DELETE": "¿Estás seguro de que quieres eliminar este elemento?",
+  "CONFIRMATION": {
+    "TITLE": "Confirmar Cierre de Sesión",
+    "MESSAGE": "¿Estás seguro de que quieres cerrar sesión?",
     "YES": "Sí",
     "NO": "No"
+  },
+  "FORMS": {
+    "ERRORS": {
+      "REQUIRED": "Este campo es requerido"
+    },
+    "TRUCK_CONTROL": {
+      "TITLE": "Crear Camión",
+      "WAREHOUSE": "Bodega",
+      "WAREHOUSE_PLACEHOLDER": "Seleccione una bodega",
+      "SHIPDATE": "Fecha de Envío",
+      "DELIVDATE": "Fecha de Entrega",
+      "CUSTOMER": "Cliente",
+      "CARRIER": "Transportista",
+      "CUSTOMER_FACILITY": "Instalación del Cliente",
+      "LOAD_NUMBER": "Número de Carga",
+      "PICKUP_LOCATION": "Lugar de Recogida",
+      "PO": "Orden de Compra",
+      "TIME_IN": "Hora de Entrada",
+      "STATUS": "Estado",
+      "COMMENTS": "Comentarios",
+      "NUMBER_OF_COPIES": "Número de Copias"
+    }
+  },
+  "COMMON": {
+    "SAVE": "Guardar"
   }
 } 

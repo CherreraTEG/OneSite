@@ -28,16 +28,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.companySubscription = this.companyStateService.selectedCompany$.subscribe((companyId: string) => {
       console.log(`Dashboard: La empresa ha cambiado a ${companyId}. Aquí se recargarían los datos.`);
-      // TODO: Aquí iría la lógica para recargar los datos del dashboard
-      // basados en el nuevo companyId.
     });
   }
 
   ngOnDestroy() {
-    // Es una buena práctica desuscribirse para evitar fugas de memoria.
     if (this.companySubscription) {
       this.companySubscription.unsubscribe();
     }
+  }
+
+  // El sidebar estará colapsado por defecto en pantallas pequeñas
+  sidebarCollapsed: boolean = window.innerWidth <= 900;
+
+  // Método para alternar el estado del sidebar
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 
   // Datos de ejemplo para el dashboard
@@ -48,15 +53,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   };
 
   // Estado del sidebar
-  sidebarCollapsed = false;
+  sidebarOpened = false;
 
   // Idioma actual
   currentLanguage = 'es';
-
-  // Método para recibir el estado del sidebar
-  onSidebarToggle(collapsed: boolean) {
-    this.sidebarCollapsed = collapsed;
-  }
 
   // Método para manejar el logout
   onLogout() {

@@ -1,5 +1,5 @@
 <div class="dashboard-layout">
-  <app-sidebar (sidebarToggle)="onSidebarToggle($event)"></app-sidebar>
+  <app-sidebar [collapsed]="sidebarCollapsed" (toggleSidebar)="toggleSidebar()"></app-sidebar>
   
   <div class="main-content" [class.sidebar-collapsed]="sidebarCollapsed">
     <header class="dashboard-header">
@@ -7,9 +7,13 @@
         <h1>{{ 'DASHBOARD.TITLE' | translate }}</h1>
       </div>
       <div class="header-right">
-        <span class="welcome-text">{{ 'COMMON.WELCOME' | translate }}, Usuario</span>
+        <span class="welcome-text">{{ 'DASHBOARD.WELCOME' | translate }}, Usuario</span>
         <app-language-selector></app-language-selector>
-        <button class="logout-btn" title="{{ 'COMMON.LOGOUT' | translate }}">
+        <button 
+          class="logout-btn" 
+          title="{{ 'SIDEBAR.PROFILE.LOGOUT' | translate }}"
+          [attr.aria-label]="'SIDEBAR.PROFILE.LOGOUT' | translate"
+        >
           <app-logout-icon [size]="'20'" [stroke]="'#fff'"></app-logout-icon>
         </button>
       </div>
@@ -18,7 +22,37 @@
     <main class="dashboard-main">
       <div class="dashboard-content">
         <div class="dashboard-intro">
-          <h2>{{ 'DASHBOARD.SUBTITLE' | translate }}</h2>
+          <h2>{{ 'DASHBOARD.DESCRIPTION' | translate }}</h2>
+          <p class="dashboard-subtitle">
+            Selecciona una opción del menú lateral para comenzar a trabajar con el sistema.
+          </p>
+        </div>
+        
+        <!-- Placeholder para futuras tarjetas de estadísticas -->
+        <div class="dashboard-stats">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">📊</div>
+              <div class="stat-content">
+                <h3>Estadísticas</h3>
+                <p>Próximamente</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🚛</div>
+              <div class="stat-content">
+                <h3>Camiones</h3>
+                <p>Próximamente</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">💰</div>
+              <div class="stat-content">
+                <h3>Costos</h3>
+                <p>Próximamente</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>

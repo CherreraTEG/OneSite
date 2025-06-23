@@ -17,7 +17,7 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <input type="text" formControlName="username" [placeholder]="'LOGIN.USERNAME' | translate" />
         <input type="password" formControlName="password" [placeholder]="'LOGIN.PASSWORD' | translate" />
-        <button type="submit" [disabled]="loginForm.invalid">{{ 'LOGIN.SUBMIT' | translate }}</button>
+        <button type="submit" [disabled]="loginForm.invalid">{{ 'LOGIN.LOGIN_BUTTON' | translate }}</button>
       </form>
     </div>
   </div>
