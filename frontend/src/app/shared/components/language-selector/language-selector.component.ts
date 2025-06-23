@@ -15,7 +15,8 @@ export class LanguageSelectorComponent implements OnInit {
   currentLanguage = 'es';
   languages = [
     { code: 'es', name: 'Español' },
-    { code: 'en', name: 'English' }
+    { code: 'en', name: 'English' },
+    { code: 'fr', name: 'Français' }
   ];
 
   constructor(private translateService: TranslateService) {}
