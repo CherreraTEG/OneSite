@@ -21,8 +21,9 @@
 }
 
 /* Estilos globales */
-html, body {
-  height: 100%;
+html, body, app-root, main, section, .main, .container, .layout, .dashboard-layout {
+  background-color: #f5f7fa !important;
+  min-height: 100vh;
   margin: 0;
   font-family: 'Montserrat', 'Roboto', sans-serif;
 }
@@ -73,6 +74,10 @@ html, body {
 html {
   scrollbar-color: rgba(84, 83, 134, 0.45) rgba(44, 44, 84, 0.05);
   scrollbar-width: thin;
+  --mat-sys-background: #f5f7fa !important;
+  --mat-sys-surface: #fff !important;
+  --mat-sys-surface-container-low: #fff !important;
+  --mat-card-elevated-container-color: #fff !important;
 }
 
 html, body { height: 100%; }
