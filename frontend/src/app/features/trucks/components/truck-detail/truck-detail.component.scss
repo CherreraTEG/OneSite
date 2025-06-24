@@ -1,0 +1,184 @@
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  .card-title {
+    margin: 0;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #6c757d;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+}
+
+.error-container {
+  text-align: center;
+  padding: 3rem;
+  color: #dc3545;
+
+  p {
+    margin-bottom: 1rem;
+  }
+}
+
+.truck-details {
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .detail-section {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+
+    &.full-width {
+      grid-column: 1 / -1;
+    }
+
+    h3 {
+      margin: 0 0 1rem 0;
+      color: #495057;
+      font-size: 1.1rem;
+      border-bottom: 2px solid #dee2e6;
+      padding-bottom: 0.5rem;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #e9ecef;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .detail-label {
+        font-weight: 600;
+        color: #495057;
+        min-width: 150px;
+      }
+
+      .detail-value {
+        color: #212529;
+        text-align: right;
+        flex: 1;
+        margin-left: 1rem;
+      }
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+
+      &.status-active {
+        background-color: #d4edda;
+        color: #155724;
+      }
+
+      &.status-inactive {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+
+      &.status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+
+      &.status-completed {
+        background-color: #d1ecf1;
+        color: #0c5460;
+      }
+    }
+
+    .comments-content {
+      background-color: white;
+      padding: 1rem;
+      border-radius: 4px;
+      border: 1px solid #dee2e6;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .audit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+
+    .action-buttons {
+      justify-content: center;
+    }
+  }
+
+  .truck-details {
+    .details-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .detail-section {
+      .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+
+        .detail-label {
+          min-width: auto;
+        }
+
+        .detail-value {
+          text-align: left;
+          margin-left: 0;
+        }
+      }
+
+      .audit-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+} 

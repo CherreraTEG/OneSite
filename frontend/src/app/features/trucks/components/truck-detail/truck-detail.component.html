@@ -1,0 +1,141 @@
+<app-card>
+  <div class="header-actions">
+    <h2 class="card-title">{{ 'TRUCKS.DETAIL.TITLE' | translate }}</h2>
+    <div class="action-buttons">
+      <app-button (click)="editTruck()" class="btn-edit">
+        {{ 'COMMON.EDIT' | translate }}
+      </app-button>
+      <app-button (click)="deleteTruck()" class="btn-delete">
+        {{ 'COMMON.DELETE' | translate }}
+      </app-button>
+      <app-button (click)="goBack()" class="btn-secondary">
+        {{ 'COMMON.BACK' | translate }}
+      </app-button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>{{ 'COMMON.LOADING' | translate }}</p>
+  </div>
+
+  <div *ngIf="error" class="error-container">
+    <p>{{ 'TRUCKS.DETAIL.ERROR' | translate }}</p>
+    <app-button (click)="goBack()" class="btn-secondary">
+      {{ 'COMMON.BACK' | translate }}
+    </app-button>
+  </div>
+
+  <div *ngIf="truck && !loading && !error" class="truck-details">
+    <div class="details-grid">
+      <div class="detail-section">
+        <h3>{{ 'TRUCKS.DETAIL.BASIC_INFO' | translate }}</h3>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.ID_EMPRESA' | translate }}:</span>
+          <span class="detail-value">{{ truck.id_empresa }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.ID_WAREHOUSE' | translate }}:</span>
+          <span class="detail-value">{{ truck.id_warehouse }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.CARRIER' | translate }}:</span>
+          <span class="detail-value">{{ truck.carrier }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY' | translate }}:</span>
+          <span class="detail-value">{{ truck.customer_facility || '-' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.ID_CUSTOMER' | translate }}:</span>
+          <span class="detail-value">{{ truck.id_customer || '-' }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>{{ 'TRUCKS.DETAIL.DATES' | translate }}</h3>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.SHIPDATE' | translate }}:</span>
+          <span class="detail-value">{{ formatDate(truck.ship_date) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.DELIVDATE' | translate }}:</span>
+          <span class="detail-value">{{ formatDate(truck.deliv_date) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.TIME_IN' | translate }}:</span>
+          <span class="detail-value">{{ formatTime(truck.time_in) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.TIME_OUT' | translate }}:</span>
+          <span class="detail-value">{{ formatTime(truck.time_out) }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>{{ 'TRUCKS.DETAIL.LOAD_INFO' | translate }}</h3>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.PO' | translate }}:</span>
+          <span class="detail-value">{{ truck.po || '-' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.QTY' | translate }}:</span>
+          <span class="detail-value">{{ truck.qty || '-' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.LOAD_NUMBER' | translate }}:</span>
+          <span class="detail-value">{{ truck.load_number || '-' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.DOOR' | translate }}:</span>
+          <span class="detail-value">{{ truck.door || '-' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.PICKUP_LOCATION' | translate }}:</span>
+          <span class="detail-value">{{ truck.pickup_location || '-' }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h3>{{ 'TRUCKS.DETAIL.STATUS_FILES' | translate }}</h3>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.ESTATUS' | translate }}:</span>
+          <span class="detail-value">
+            <span class="status-badge" [class]="'status-' + (truck.estatus?.toString() || '').toLowerCase()">
+              {{ truck.estatus || '-' }}
+            </span>
+          </span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.ESTADO_CARGUE' | translate }}:</span>
+          <span class="detail-value">{{ truck.estado_cargue || '-' }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.FILE_NAME' | translate }}:</span>
+          <span class="detail-value">{{ truck.file_name || '-' }}</span>
+        </div>
+      </div>
+
+      <div class="detail-section full-width" *ngIf="truck.comments">
+        <h3>{{ 'FORMS.TRUCK_CONTROL.COMMENTS' | translate }}</h3>
+        <div class="comments-content">
+          {{ truck.comments }}
+        </div>
+      </div>
+
+      <div class="detail-section full-width">
+        <h3>{{ 'TRUCKS.DETAIL.AUDIT_INFO' | translate }}</h3>
+        <div class="audit-grid">
+          <div class="detail-row">
+            <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.UPDATE_DATE' | translate }}:</span>
+            <span class="detail-value">{{ formatDate(truck.update_date) }}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">{{ 'FORMS.TRUCK_CONTROL.UPDATE_USER' | translate }}:</span>
+            <span class="detail-value">{{ truck.update_user || '-' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-card> 

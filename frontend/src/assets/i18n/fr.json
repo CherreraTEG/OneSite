@@ -5,7 +5,16 @@
     "LANGUAGE": "Langue",
     "SPANISH": "Espagnol",
     "ENGLISH": "Anglais",
-    "SAVE": "Enregistrer"
+    "SAVE": "Enregistrer",
+    "EDIT": "Modifier",
+    "DELETE": "Supprimer",
+    "VIEW": "Voir",
+    "BACK": "Retour",
+    "CLEAR": "Effacer",
+    "LOADING": "Chargement...",
+    "PREVIOUS": "Précédent",
+    "NEXT": "Suivant",
+    "ACTIONS": "Actions"
   },
   "LOGIN": {
     "TITLE": "Bienvenue sur OneSite",
@@ -67,6 +76,8 @@
     },
     "TRUCK_CONTROL": {
       "TITLE": "Créer un camion",
+      "ID_EMPRESA": "ID Entreprise",
+      "ID_WAREHOUSE": "ID Entrepôt",
       "WAREHOUSE": "Entrepôt",
       "WAREHOUSE_PLACEHOLDER": "Sélectionnez un entrepôt",
       "SHIPDATE": "Date d'expédition",
@@ -77,10 +88,42 @@
       "LOAD_NUMBER": "Numéro de chargement",
       "PICKUP_LOCATION": "Lieu de ramassage",
       "PO": "Bon de commande",
+      "QTY": "Quantité",
+      "ESTATUS": "Statut",
       "TIME_IN": "Heure d'arrivée",
-      "STATUS": "Statut",
+      "TIME_OUT": "Heure de départ",
+      "DOOR": "Porte",
       "COMMENTS": "Commentaires",
+      "ID_CUSTOMER": "ID Client",
+      "ESTADO_CARGUE": "État du chargement",
+      "FILE_NAME": "Nom du fichier",
+      "UPDATE_DATE": "Date de mise à jour",
+      "UPDATE_USER": "Utilisateur de mise à jour",
       "NUMBER_OF_COPIES": "Nombre de copies"
+    }
+  },
+  "TRUCKS": {
+    "LIST": {
+      "TITLE": "Liste des camions",
+      "CREATE_NEW": "Créer nouveau",
+      "FILTERS": "Filtres",
+      "SHOWING": "Affichage",
+      "OF": "sur",
+      "RECORDS": "enregistrements",
+      "NO_DATA": "Aucun enregistrement trouvé",
+      "SHIP_DATE_FROM": "Date d'expédition depuis",
+      "SHIP_DATE_TO": "Date d'expédition jusqu'à",
+      "DELIV_DATE_FROM": "Date de livraison depuis",
+      "DELIV_DATE_TO": "Date de livraison jusqu'à"
+    },
+    "DETAIL": {
+      "TITLE": "Détails du camion",
+      "BASIC_INFO": "Informations de base",
+      "DATES": "Dates et heures",
+      "LOAD_INFO": "Informations de chargement",
+      "STATUS_FILES": "Statut et fichiers",
+      "AUDIT_INFO": "Informations d'audit",
+      "ERROR": "Erreur lors du chargement du camion"
     }
   },
   "PERMISSIONS": {

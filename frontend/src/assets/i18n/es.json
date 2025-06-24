@@ -59,6 +59,8 @@
     },
     "TRUCK_CONTROL": {
       "TITLE": "Crear Camión",
+      "ID_EMPRESA": "ID Empresa",
+      "ID_WAREHOUSE": "ID Almacén",
       "WAREHOUSE": "Bodega",
       "WAREHOUSE_PLACEHOLDER": "Seleccione una bodega",
       "SHIPDATE": "Fecha de Envío",
@@ -69,13 +71,54 @@
       "LOAD_NUMBER": "Número de Carga",
       "PICKUP_LOCATION": "Lugar de Recogida",
       "PO": "Orden de Compra",
+      "QTY": "Cantidad",
+      "ESTATUS": "Estado",
       "TIME_IN": "Hora de Entrada",
-      "STATUS": "Estado",
+      "TIME_OUT": "Hora de Salida",
+      "DOOR": "Puerta",
       "COMMENTS": "Comentarios",
+      "ID_CUSTOMER": "ID Cliente",
+      "ESTADO_CARGUE": "Estado de Carga",
+      "FILE_NAME": "Nombre de Archivo",
+      "UPDATE_DATE": "Fecha de Actualización",
+      "UPDATE_USER": "Usuario de Actualización",
       "NUMBER_OF_COPIES": "Número de Copias"
     }
   },
+  "TRUCKS": {
+    "LIST": {
+      "TITLE": "Listado de Camiones",
+      "CREATE_NEW": "Crear Nuevo",
+      "FILTERS": "Filtros",
+      "SHOWING": "Mostrando",
+      "OF": "de",
+      "RECORDS": "registros",
+      "NO_DATA": "No se encontraron registros",
+      "SHIP_DATE_FROM": "Fecha de Envío Desde",
+      "SHIP_DATE_TO": "Fecha de Envío Hasta",
+      "DELIV_DATE_FROM": "Fecha de Entrega Desde",
+      "DELIV_DATE_TO": "Fecha de Entrega Hasta"
+    },
+    "DETAIL": {
+      "TITLE": "Detalle del Camión",
+      "BASIC_INFO": "Información Básica",
+      "DATES": "Fechas y Horarios",
+      "LOAD_INFO": "Información de Carga",
+      "STATUS_FILES": "Estado y Archivos",
+      "AUDIT_INFO": "Información de Auditoría",
+      "ERROR": "Error al cargar el camión"
+    }
+  },
   "COMMON": {
-    "SAVE": "Guardar"
+    "SAVE": "Guardar",
+    "EDIT": "Editar",
+    "DELETE": "Eliminar",
+    "VIEW": "Ver",
+    "BACK": "Volver",
+    "CLEAR": "Limpiar",
+    "LOADING": "Cargando...",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente",
+    "ACTIONS": "Acciones"
   }
 } 

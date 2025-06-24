@@ -2,77 +2,35 @@
   <h2 class="card-title">{{ 'FORMS.TRUCK_CONTROL.TITLE' | translate }}</h2>
   <form [formGroup]="truckForm" (ngSubmit)="onSubmit()" class="truck-form">
     <div class="form-grid">
-      <app-input
-        [control]="warehouseControl"
-        [label]="'FORMS.TRUCK_CONTROL.WAREHOUSE' | translate"
-        [placeholder]="'FORMS.TRUCK_CONTROL.WAREHOUSE_PLACEHOLDER' | translate">
-      </app-input>
-      
-      <app-input
-        [control]="shipDateControl"
-        [label]="'FORMS.TRUCK_CONTROL.SHIPDATE' | translate"
-        type="date">
-      </app-input>
+      <app-input [control]="idEmpresaControl" [label]="'FORMS.TRUCK_CONTROL.ID_EMPRESA' | translate" required></app-input>
+      <app-input [control]="idWarehouseControl" [label]="'FORMS.TRUCK_CONTROL.ID_WAREHOUSE' | translate" required></app-input>
+      <app-input [control]="shipDateControl" [label]="'FORMS.TRUCK_CONTROL.SHIPDATE' | translate" type="date" required></app-input>
+      <app-input [control]="delivDateControl" [label]="'FORMS.TRUCK_CONTROL.DELIVDATE' | translate" type="date"></app-input>
+      <app-input [control]="carrierControl" [label]="'FORMS.TRUCK_CONTROL.CARRIER' | translate" required></app-input>
+      <app-input [control]="customerFacilityControl" [label]="'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY' | translate"></app-input>
+      <app-input [control]="poControl" [label]="'FORMS.TRUCK_CONTROL.PO' | translate"></app-input>
+      <app-input [control]="qtyControl" [label]="'FORMS.TRUCK_CONTROL.QTY' | translate" type="number"></app-input>
+      <app-input [control]="estatusControl" [label]="'FORMS.TRUCK_CONTROL.ESTATUS' | translate"></app-input>
+      <app-input [control]="timeInControl" [label]="'FORMS.TRUCK_CONTROL.TIME_IN' | translate" type="time"></app-input>
+      <app-input [control]="doorControl" [label]="'FORMS.TRUCK_CONTROL.DOOR' | translate"></app-input>
+      <app-input [control]="timeOutControl" [label]="'FORMS.TRUCK_CONTROL.TIME_OUT' | translate" type="time"></app-input>
+      <app-input [control]="commentsControl" [label]="'FORMS.TRUCK_CONTROL.COMMENTS' | translate" [isTextarea]="true"></app-input>
+      <app-input [control]="pickupLocationControl" [label]="'FORMS.TRUCK_CONTROL.PICKUP_LOCATION' | translate"></app-input>
+      <app-input [control]="loadNumberControl" [label]="'FORMS.TRUCK_CONTROL.LOAD_NUMBER' | translate"></app-input>
+      <app-input [control]="idCustomerControl" [label]="'FORMS.TRUCK_CONTROL.ID_CUSTOMER' | translate"></app-input>
+      <app-input [control]="estadoCargueControl" [label]="'FORMS.TRUCK_CONTROL.ESTADO_CARGUE' | translate"></app-input>
+      <app-input [control]="fileNameControl" [label]="'FORMS.TRUCK_CONTROL.FILE_NAME' | translate"></app-input>
+    </div>
 
-      <app-input
-        [control]="delivDateControl"
-        [label]="'FORMS.TRUCK_CONTROL.DELIVDATE' | translate"
-        type="date">
-      </app-input>
-
-      <app-input
-        [control]="customerControl"
-        [label]="'FORMS.TRUCK_CONTROL.CUSTOMER' | translate">
-      </app-input>
-
-      <app-input
-        [control]="carrierControl"
-        [label]="'FORMS.TRUCK_CONTROL.CARRIER' | translate">
-      </app-input>
-
-      <app-input
-        [control]="customerFacilityControl"
-        [label]="'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY' | translate">
-      </app-input>
-
-      <app-input
-        [control]="loadNumberControl"
-        [label]="'FORMS.TRUCK_CONTROL.LOAD_NUMBER' | translate">
-      </app-input>
-
-      <app-input
-        [control]="pickupLocationControl"
-        [label]="'FORMS.TRUCK_CONTROL.PICKUP_LOCATION' | translate"
-        [isTextarea]="true">
-      </app-input>
-
-      <app-input
-        [control]="poControl"
-        [label]="'FORMS.TRUCK_CONTROL.PO' | translate">
-      </app-input>
-
-      <app-input
-        [control]="timeInControl"
-        [label]="'FORMS.TRUCK_CONTROL.TIME_IN' | translate"
-        type="time">
-      </app-input>
-
-      <app-input
-        [control]="statusControl"
-        [label]="'FORMS.TRUCK_CONTROL.STATUS' | translate">
-      </app-input>
-
-      <app-input
-        [control]="commentsControl"
-        [label]="'FORMS.TRUCK_CONTROL.COMMENTS' | translate"
-        [isTextarea]="true">
-      </app-input>
-      
-      <app-input
-        [control]="numberOfCopiesControl"
-        [label]="'FORMS.TRUCK_CONTROL.NUMBER_OF_COPIES' | translate"
-        type="number">
-      </app-input>
+    <div *ngIf="isEditMode" class="form-grid form-audit">
+      <div class="audit-field">
+        <label>{{ 'FORMS.TRUCK_CONTROL.UPDATE_DATE' | translate }}</label>
+        <input type="text" [value]="updateDate" readonly class="readonly-input" />
+      </div>
+      <div class="audit-field">
+        <label>{{ 'FORMS.TRUCK_CONTROL.UPDATE_USER' | translate }}</label>
+        <input type="text" [value]="updateUser" readonly class="readonly-input" />
+      </div>
     </div>
 
     <div class="form-actions">

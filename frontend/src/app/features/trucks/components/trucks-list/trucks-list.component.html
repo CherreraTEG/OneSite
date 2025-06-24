@@ -1,0 +1,124 @@
+<app-card>
+  <div class="header-actions">
+    <h2 class="card-title">{{ 'TRUCKS.LIST.TITLE' | translate }}</h2>
+    <app-button (click)="createNewTruck()" class="btn-primary">
+      {{ 'TRUCKS.LIST.CREATE_NEW' | translate }}
+    </app-button>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters-section">
+    <h3>{{ 'TRUCKS.LIST.FILTERS' | translate }}</h3>
+    <form [formGroup]="filterForm" class="filters-form">
+      <div class="filters-grid">
+        <app-input [control]="idEmpresaFilterControl" [label]="'FORMS.TRUCK_CONTROL.ID_EMPRESA' | translate"></app-input>
+        <app-input [control]="idWarehouseFilterControl" [label]="'FORMS.TRUCK_CONTROL.ID_WAREHOUSE' | translate"></app-input>
+        <app-input [control]="carrierFilterControl" [label]="'FORMS.TRUCK_CONTROL.CARRIER' | translate"></app-input>
+        <app-input [control]="customerFacilityFilterControl" [label]="'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY' | translate"></app-input>
+        <app-input [control]="estatusFilterControl" [label]="'FORMS.TRUCK_CONTROL.ESTATUS' | translate"></app-input>
+        <app-input [control]="shipDateFromFilterControl" [label]="'TRUCKS.LIST.SHIP_DATE_FROM' | translate" type="date"></app-input>
+        <app-input [control]="shipDateToFilterControl" [label]="'TRUCKS.LIST.SHIP_DATE_TO' | translate" type="date"></app-input>
+        <app-input [control]="delivDateFromFilterControl" [label]="'TRUCKS.LIST.DELIV_DATE_FROM' | translate" type="date"></app-input>
+        <app-input [control]="delivDateToFilterControl" [label]="'TRUCKS.LIST.DELIV_DATE_TO' | translate" type="date"></app-input>
+      </div>
+      <div class="filter-actions">
+        <app-button type="button" (click)="clearFilters()" class="btn-secondary">
+          {{ 'COMMON.CLEAR' | translate }}
+        </app-button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Tabla de resultados -->
+  <div class="results-section">
+    <div class="results-header">
+      <span class="results-count">
+        {{ 'TRUCKS.LIST.SHOWING' | translate }} {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ getMaxItems() }} {{ 'TRUCKS.LIST.OF' | translate }} {{ totalItems }} {{ 'TRUCKS.LIST.RECORDS' | translate }}
+      </span>
+    </div>
+
+    <div class="table-container" *ngIf="!loading; else loadingTemplate">
+      <table class="trucks-table" *ngIf="paginatedTrucks.length > 0; else noDataTemplate">
+        <thead>
+          <tr>
+            <th>{{ 'FORMS.TRUCK_CONTROL.ID_EMPRESA' | translate }}</th>
+            <th>{{ 'FORMS.TRUCK_CONTROL.ID_WAREHOUSE' | translate }}</th>
+            <th>{{ 'FORMS.TRUCK_CONTROL.SHIPDATE' | translate }}</th>
+            <th>{{ 'FORMS.TRUCK_CONTROL.CARRIER' | translate }}</th>
+            <th>{{ 'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY' | translate }}</th>
+            <th>{{ 'FORMS.TRUCK_CONTROL.ESTATUS' | translate }}</th>
+            <th>{{ 'COMMON.ACTIONS' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let truck of paginatedTrucks">
+            <td>{{ truck.id_empresa }}</td>
+            <td>{{ truck.id_warehouse }}</td>
+            <td>{{ truck.ship_date | date:'shortDate' }}</td>
+            <td>{{ truck.carrier }}</td>
+            <td>{{ truck.customer_facility }}</td>
+            <td>
+              <span class="status-badge" [class]="'status-' + (truck.estatus?.toString() || '').toLowerCase()">
+                {{ truck.estatus }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <div class="action-buttons">
+                <button class="btn-icon btn-view" (click)="viewTruck(truck)" title="{{ 'COMMON.VIEW' | translate }}">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-icon btn-edit" (click)="editTruck(truck)" title="{{ 'COMMON.EDIT' | translate }}">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-icon btn-delete" (click)="deleteTruck(truck)" title="{{ 'COMMON.DELETE' | translate }}">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button 
+        class="btn-page" 
+        [disabled]="currentPage === 1"
+        (click)="changePage(currentPage - 1)">
+        {{ 'COMMON.PREVIOUS' | translate }}
+      </button>
+      
+      <div class="page-numbers">
+        <button 
+          *ngFor="let page of pages"
+          class="btn-page" 
+          [class.active]="page === currentPage"
+          (click)="changePage(page)">
+          {{ page }}
+        </button>
+      </div>
+      
+      <button 
+        class="btn-page" 
+        [disabled]="currentPage === totalPages"
+        (click)="changePage(currentPage + 1)">
+        {{ 'COMMON.NEXT' | translate }}
+      </button>
+    </div>
+  </div>
+</app-card>
+
+<!-- Templates -->
+<ng-template #loadingTemplate>
+  <div class="loading-container">
+    <div class="spinner"></div>
+    <p>{{ 'COMMON.LOADING' | translate }}</p>
+  </div>
+</ng-template>
+
+<ng-template #noDataTemplate>
+  <div class="no-data">
+    <p>{{ 'TRUCKS.LIST.NO_DATA' | translate }}</p>
+  </div>
+</ng-template> 

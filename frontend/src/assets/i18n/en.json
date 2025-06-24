@@ -5,7 +5,16 @@
     "LANGUAGE": "Language",
     "SPANISH": "Spanish",
     "ENGLISH": "English",
-    "SAVE": "Save"
+    "SAVE": "Save",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "VIEW": "View",
+    "BACK": "Back",
+    "CLEAR": "Clear",
+    "LOADING": "Loading...",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next",
+    "ACTIONS": "Actions"
   },
   "LOGIN": {
     "TITLE": "Welcome to OneSite",
@@ -67,6 +76,8 @@
     },
     "TRUCK_CONTROL": {
       "TITLE": "Create Truck",
+      "ID_EMPRESA": "Company ID",
+      "ID_WAREHOUSE": "Warehouse ID",
       "WAREHOUSE": "Warehouse",
       "WAREHOUSE_PLACEHOLDER": "Select a warehouse",
       "SHIPDATE": "Ship Date",
@@ -77,10 +88,42 @@
       "LOAD_NUMBER": "Load Number",
       "PICKUP_LOCATION": "Pickup Location",
       "PO": "Purchase Order",
+      "QTY": "Quantity",
+      "ESTATUS": "Status",
       "TIME_IN": "Time In",
-      "STATUS": "Status",
+      "TIME_OUT": "Time Out",
+      "DOOR": "Door",
       "COMMENTS": "Comments",
+      "ID_CUSTOMER": "Customer ID",
+      "ESTADO_CARGUE": "Load Status",
+      "FILE_NAME": "File Name",
+      "UPDATE_DATE": "Update Date",
+      "UPDATE_USER": "Update User",
       "NUMBER_OF_COPIES": "Number of Copies"
+    }
+  },
+  "TRUCKS": {
+    "LIST": {
+      "TITLE": "Trucks List",
+      "CREATE_NEW": "Create New",
+      "FILTERS": "Filters",
+      "SHOWING": "Showing",
+      "OF": "of",
+      "RECORDS": "records",
+      "NO_DATA": "No records found",
+      "SHIP_DATE_FROM": "Ship Date From",
+      "SHIP_DATE_TO": "Ship Date To",
+      "DELIV_DATE_FROM": "Delivery Date From",
+      "DELIV_DATE_TO": "Delivery Date To"
+    },
+    "DETAIL": {
+      "TITLE": "Truck Details",
+      "BASIC_INFO": "Basic Information",
+      "DATES": "Dates and Times",
+      "LOAD_INFO": "Load Information",
+      "STATUS_FILES": "Status and Files",
+      "AUDIT_INFO": "Audit Information",
+      "ERROR": "Error loading truck"
     }
   },
   "PERMISSIONS": {
