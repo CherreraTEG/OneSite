@@ -18,6 +18,12 @@
   --color-primary-dark: darken(#545386, 10%);
   --color-secondary-light: lighten(#C2DFEA, 10%);
   --color-secondary-dark: darken(#C2DFEA, 10%);
+
+  /* Sobrescribir variables de Angular Material para inputs y labels */
+  --mdc-outlined-text-field-label-text-color: #545386 !important;
+  --mdc-outlined-text-field-input-text-placeholder-color: #545386 !important;
+  --mat-form-field-outlined-label-text-color: #545386 !important;
+  --mat-sys-on-surface-variant: #545386 !important;
 }
 
 /* Estilos globales */
@@ -82,3 +88,22 @@ html {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Estilos globales para todos los inputs y placeholders */
+input, textarea, .mat-input-element {
+  color: #222 !important;
+  font-size: 1rem;
+  font-family: 'Montserrat', 'Roboto', sans-serif;
+}
+
+/* Forzar color de placeholder en Angular Material y nativos */
+::ng-deep .mat-input-element::placeholder,
+::ng-deep input.mat-input-element::placeholder,
+::ng-deep textarea.mat-input-element::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: #545386 !important;
+  opacity: 1 !important;
+  font-size: 1rem;
+  font-family: 'Montserrat', 'Roboto', sans-serif;
+}

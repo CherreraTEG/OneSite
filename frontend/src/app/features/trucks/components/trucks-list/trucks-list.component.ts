@@ -8,6 +8,9 @@ import { InputComponent } from '@shared/components/input/input.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { TrucksService } from '../../trucks.service';
 import { Truck } from '../../truck.model';
+import { SidebarComponent } from '@shared/components/sidebar/sidebar.component';
+import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
+import { LogoutIconComponent } from '@shared/components/icons/logout-icon.component';
 
 @Component({
   selector: 'app-trucks-list',
@@ -18,7 +21,10 @@ import { Truck } from '../../truck.model';
     TranslateModule,
     CardComponent,
     InputComponent,
-    ButtonComponent
+    ButtonComponent,
+    SidebarComponent,
+    LanguageSelectorComponent,
+    LogoutIconComponent
   ],
   templateUrl: './trucks-list.component.html',
   styleUrls: ['./trucks-list.component.scss']
@@ -31,6 +37,14 @@ export class TrucksListComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 10;
   totalItems = 0;
+
+  // Estado del sidebar
+  sidebarCollapsed: boolean = window.innerWidth <= 900;
+
+  // Método para alternar el estado del sidebar
+  toggleSidebar() {
+    this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
 
   constructor(
     private trucksService: TrucksService,
