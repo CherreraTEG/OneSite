@@ -16,7 +16,7 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule
   ],
   template: `
-    <mat-form-field appearance="outline" class="custom-input-field">
+    <mat-form-field appearance="outline" class="custom-input-field" floatLabel="always">
       <mat-label>{{ label }}</mat-label>
       <ng-container *ngIf="!isTextarea; else textarea">
         <input matInput [type]="type" [formControl]="control" [placeholder]="placeholder">
