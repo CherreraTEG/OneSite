@@ -2,13 +2,13 @@
   <div class="header-actions">
     <h2 class="card-title">{{ 'TRUCKS.DETAIL.TITLE' | translate }}</h2>
     <div class="action-buttons">
-      <app-button (click)="editTruck()" class="btn-edit">
+      <app-button (click)="editTruck()" variant="primary">
         {{ 'COMMON.EDIT' | translate }}
       </app-button>
-      <app-button (click)="deleteTruck()" class="btn-delete">
+      <app-button (click)="deleteTruck()" variant="primary">
         {{ 'COMMON.DELETE' | translate }}
       </app-button>
-      <app-button (click)="goBack()" class="btn-secondary">
+      <app-button (click)="goBack()" variant="secondary">
         {{ 'COMMON.BACK' | translate }}
       </app-button>
     </div>
@@ -21,7 +21,7 @@
 
   <div *ngIf="error" class="error-container">
     <p>{{ 'TRUCKS.DETAIL.ERROR' | translate }}</p>
-    <app-button (click)="goBack()" class="btn-secondary">
+    <app-button (click)="goBack()" variant="secondary">
       {{ 'COMMON.BACK' | translate }}
     </app-button>
   </div>

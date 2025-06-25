@@ -11,6 +11,8 @@ import { Truck } from '../../truck.model';
 import { SidebarComponent } from '@shared/components/sidebar/sidebar.component';
 import { LanguageSelectorComponent } from '@shared/components/language-selector/language-selector.component';
 import { LogoutIconComponent } from '@shared/components/icons/logout-icon.component';
+import { PlusIconComponent } from '@shared/components/icons/plus-icon.component';
+import { XMarkIconComponent } from '@shared/components/icons/x-mark-icon.component';
 
 @Component({
   selector: 'app-trucks-list',
@@ -24,7 +26,9 @@ import { LogoutIconComponent } from '@shared/components/icons/logout-icon.compon
     ButtonComponent,
     SidebarComponent,
     LanguageSelectorComponent,
-    LogoutIconComponent
+    LogoutIconComponent,
+    PlusIconComponent,
+    XMarkIconComponent
   ],
   templateUrl: './trucks-list.component.html',
   styleUrls: ['./trucks-list.component.scss']
@@ -44,6 +48,24 @@ export class TrucksListComponent implements OnInit {
   // Método para alternar el estado del sidebar
   toggleSidebar() {
     this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  plusIconColor: string = '#545386';
+
+  // Referencia para el botón NEW
+  isNewButtonHovered = false;
+
+  onNewButtonMouseEnter() {
+    this.plusIconColor = '#fff';
+  }
+  onNewButtonMouseLeave() {
+    this.plusIconColor = '#545386';
+  }
+
+  filtersCollapsed = true;
+
+  toggleFiltersCollapse() {
+    this.filtersCollapsed = !this.filtersCollapsed;
   }
 
   constructor(

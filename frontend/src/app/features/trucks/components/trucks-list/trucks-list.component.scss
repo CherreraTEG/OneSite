@@ -26,14 +26,20 @@
   padding: 1.5rem;
   background-color: #fff;
   border-radius: 12px;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 2px solid #545386;
+  box-shadow: 0 6px 24px rgba(84, 83, 134, 0.12);
 
   h3 {
     margin: 0 0 1rem 0;
-    color: #545386;
+    color: #fff;
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 700;
+    background: #545386;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px 8px 0 0;
+    display: inline-block;
+    box-shadow: 0 2px 8px rgba(84, 83, 134, 0.10);
+    letter-spacing: 1px;
   }
 
   .filters-form {
@@ -403,12 +409,16 @@
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(84, 83, 134, 0.15);
   padding: 0 32px;
-  height: 44px;
+  height: 36px;
+  min-height: 32px;
+  line-height: 1.1;
   font-size: 1.08rem;
   letter-spacing: 0.5px;
   transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
   text-transform: uppercase;
   outline: none;
+  display: flex;
+  align-items: center;
   &:hover, &:focus {
     background: linear-gradient(90deg, #3d3c6e 60%, #545386 100%);
     box-shadow: 0 4px 16px rgba(84, 83, 134, 0.22);
@@ -416,6 +426,7 @@
   }
 }
 
+/*
 .btn-secondary {
   background: #fff;
   color: #545386 !important;
@@ -438,6 +449,7 @@
     transform: translateY(-1px) scale(1.02);
   }
 }
+*/
 
 // Fondo sólido para el botón principal (sin gradiente)
 ::ng-deep .btn-primary,

@@ -105,7 +105,7 @@
   "TRUCKS": {
     "LIST": {
       "TITLE": "Liste des camions",
-      "CREATE_NEW": "Créer nouveau",
+      "CREATE_NEW": "NEW",
       "FILTERS": "Filtres",
       "SHOWING": "Affichage",
       "OF": "sur",
