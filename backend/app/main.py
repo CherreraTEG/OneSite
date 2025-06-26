@@ -9,13 +9,13 @@ app = FastAPI(
     version=settings.VERSION
 )
 
-# Configuración de CORS
+# Configuración de CORS - Permitir todas las conexiones durante desarrollo
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=settings.CORS_CREDENTIALS,
-    allow_methods=settings.CORS_METHODS,
-    allow_headers=settings.CORS_HEADERS,
+    allow_origins=["*"],  # Permitir todos los orígenes durante desarrollo
+    allow_credentials=False,  # Cambiar a False cuando allow_origins=["*"]
+    allow_methods=["*"],  # Permitir todos los métodos
+    allow_headers=["*"],  # Permitir todos los headers
 )
 
 # Incluir las rutas API

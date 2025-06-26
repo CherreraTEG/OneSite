@@ -2,7 +2,7 @@
 python -m uvicorn app.main:app --reload --reload-dir app
 
 --- Iniciar el frontend
-ng serve
+ng serve --proxy-config proxy.conf.json
 
 --- Finalizar el frontend
 taskkill /F /IM node.exe

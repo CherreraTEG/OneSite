@@ -34,8 +34,8 @@ app-card {
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 4px 10px;
 }
 
 .form-audit {
@@ -93,12 +93,6 @@ app-button {
   }
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
 app-card .custom-card {
   background: #fff;
   border-radius: 16px;
@@ -113,6 +107,8 @@ app-card .custom-card {
   background: var(--color-secondary);
   border-radius: 8px;
   font-family: 'Montserrat', 'Roboto', sans-serif;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
 }
 
 ::ng-deep .mat-form-field-outline {
@@ -125,7 +121,29 @@ app-card .custom-card {
   font-size: 1rem;
 }
 
-::ng-deep .mat-input-element, ::ng-deep textarea.mat-input-element {
+::ng-deep .mat-mdc-form-field-infix,
+::ng-deep .mat-mdc-input-element,
+::ng-deep .mat-mdc-form-field-input-control,
+::ng-deep .mdc-text-field__input {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  min-height: 34px !important;
+  height: 34px !important;
+  line-height: 1.2 !important;
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mat-input-element, ::ng-deep textarea.mat-input-element, ::ng-deep .mdc-text-field__input {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+  min-height: 24px !important;
+  height: 24px !important;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
   color: #222;
   font-size: 1rem;
   font-family: 'Montserrat', 'Roboto', sans-serif;
@@ -167,4 +185,57 @@ app-card .custom-card {
   background: var(--color-secondary);
   color: #888;
   cursor: not-allowed;
+}
+
+.popup-header {
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  background: var(--color-primary, #545386);
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 1.25rem;
+  h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+}
+
+.date-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  
+  app-input {
+    flex: 1;
+    ::ng-deep input[type='date'] {
+      padding-right: 2.5rem !important;
+    }
+  }
+  
+  .calendar-button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    
+    &:hover {
+      background-color: rgba(84, 83, 134, 0.1);
+    }
+    
+    &:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
 } 

@@ -1,11 +1,44 @@
 <app-card>
-  <h2 class="card-title">{{ 'FORMS.TRUCK_CONTROL.TITLE' | translate }}</h2>
+  <div class="popup-header">
+    <h2>Create truck</h2>
+  </div>
   <form [formGroup]="truckForm" (ngSubmit)="onSubmit()" class="truck-form">
     <div class="form-grid">
-      <app-input [control]="idEmpresaControl" [label]="'FORMS.TRUCK_CONTROL.ID_EMPRESA' | translate" required></app-input>
       <app-input [control]="idWarehouseControl" [label]="'FORMS.TRUCK_CONTROL.ID_WAREHOUSE' | translate" required></app-input>
-      <app-input [control]="shipDateControl" [label]="'FORMS.TRUCK_CONTROL.SHIPDATE' | translate" type="date" required></app-input>
-      <app-input [control]="delivDateControl" [label]="'FORMS.TRUCK_CONTROL.DELIVDATE' | translate" type="date"></app-input>
+      <div class="date-input-container">
+        <app-input 
+          #shipDateInput
+          [control]="shipDateControl" 
+          [label]="'FORMS.TRUCK_CONTROL.SHIPDATE' | translate" 
+          type="date" 
+          required>
+          <button 
+            type="button" 
+            matSuffix
+            class="calendar-button" 
+            (click)="openCalendar('ship')" 
+            title="Abrir calendario">
+            <app-calendar-icon [size]="'20'" [stroke]="'#545386'"></app-calendar-icon>
+          </button>
+        </app-input>
+      </div>
+      <div class="date-input-container">
+        <app-input 
+          #delivDateInput
+          [control]="delivDateControl" 
+          [label]="'FORMS.TRUCK_CONTROL.DELIVDATE' | translate" 
+          type="date" 
+          required>
+          <button 
+            type="button" 
+            matSuffix
+            class="calendar-button" 
+            (click)="openCalendar('deliv')" 
+            title="Abrir calendario">
+            <app-calendar-icon [size]="'20'" [stroke]="'#545386'"></app-calendar-icon>
+          </button>
+        </app-input>
+      </div>
       <app-input [control]="carrierControl" [label]="'FORMS.TRUCK_CONTROL.CARRIER' | translate" required></app-input>
       <app-input [control]="customerFacilityControl" [label]="'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY' | translate"></app-input>
       <app-input [control]="poControl" [label]="'FORMS.TRUCK_CONTROL.PO' | translate"></app-input>
@@ -20,6 +53,7 @@
       <app-input [control]="idCustomerControl" [label]="'FORMS.TRUCK_CONTROL.ID_CUSTOMER' | translate"></app-input>
       <app-input [control]="estadoCargueControl" [label]="'FORMS.TRUCK_CONTROL.ESTADO_CARGUE' | translate"></app-input>
       <app-input [control]="fileNameControl" [label]="'FORMS.TRUCK_CONTROL.FILE_NAME' | translate"></app-input>
+      <app-input [control]="idEmpresaControl" [label]="'FORMS.TRUCK_CONTROL.ID_EMPRESA' | translate" required></app-input>
     </div>
 
     <div *ngIf="isEditMode" class="form-grid form-audit">
@@ -34,9 +68,8 @@
     </div>
 
     <div class="form-actions">
-      <app-button type="submit" [disabled]="truckForm.invalid">
-        {{ 'COMMON.SAVE' | translate }}
-      </app-button>
+      <app-button type="submit" variant="primary">{{ 'COMMON.SAVE' | translate }}</app-button>
+      <app-button type="button" variant="secondary" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</app-button>
     </div>
   </form>
 </app-card> 

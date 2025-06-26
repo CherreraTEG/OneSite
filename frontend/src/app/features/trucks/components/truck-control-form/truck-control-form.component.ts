@@ -1,12 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Optional, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { CardComponent } from '@shared/components/card/card.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
+import { CalendarIconComponent } from '@shared/components/icons/calendar-icon.component';
 import { TrucksService } from '../../trucks.service';
 import { Truck } from '../../truck.model';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CompanyStateService } from '../../../../core/services/company-state.service';
 
 @Component({
   selector: 'app-truck-control-form',
@@ -17,20 +21,30 @@ import { Truck } from '../../truck.model';
     TranslateModule,
     CardComponent,
     InputComponent,
-    ButtonComponent
+    ButtonComponent,
+    CalendarIconComponent
   ],
   templateUrl: './truck-control-form.component.html',
   styleUrls: ['./truck-control-form.component.scss']
 })
 export class TruckControlFormComponent implements OnInit {
   @Input() truck?: Truck; // Para edición
+  @ViewChild('shipDateInput', { static: false }) shipDateInput!: InputComponent;
+  @ViewChild('delivDateInput', { static: false }) delivDateInput!: InputComponent;
   truckForm!: FormGroup;
   isEditMode = false;
   // Campos de auditoría
   updateDate?: string;
   updateUser?: string;
 
-  constructor(private fb: FormBuilder, private trucksService: TrucksService) { }
+  constructor(
+    private fb: FormBuilder,
+    private trucksService: TrucksService,
+    private snackBar: MatSnackBar,
+    private companyStateService: CompanyStateService,
+    @Optional() private dialogRef?: MatDialogRef<TruckControlFormComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data?: any
+  ) { }
 
   ngOnInit(): void {
     this.truckForm = this.fb.group({
@@ -57,6 +71,14 @@ export class TruckControlFormComponent implements OnInit {
       this.isEditMode = true;
       this.updateDate = this.truck.update_date;
       this.updateUser = this.truck.update_user;
+    }
+  }
+
+  openCalendar(field: 'ship' | 'deliv'): void {
+    if (field === 'ship' && this.shipDateInput) {
+      this.shipDateInput.showPicker();
+    } else if (field === 'deliv' && this.delivDateInput) {
+      this.delivDateInput.showPicker();
     }
   }
 
@@ -135,12 +157,42 @@ export class TruckControlFormComponent implements OnInit {
 
   onSubmit() {
     if (this.truckForm.valid) {
-      const truckData: Truck = this.truckForm.value;
+      const truckData: Truck = {
+        ...this.truckForm.value,
+        id_empresa: parseInt(this.companyStateService.getSelectedCompany())
+      };
+      
       if (this.isEditMode && this.truck?.id) {
-        this.trucksService.updateTruck(this.truck.id, truckData).subscribe();
+        this.trucksService.updateTruck(this.truck.id, truckData).subscribe({
+          next: () => {
+            this.snackBar.open('Camión actualizado exitosamente', 'Cerrar', { duration: 3000 });
+            if (this.dialogRef) {
+              this.dialogRef.close(true);
+            }
+          },
+          error: () => {
+            this.snackBar.open('Error al actualizar el camión', 'Cerrar', { duration: 3000 });
+          }
+        });
       } else {
-        this.trucksService.createTruck(truckData).subscribe();
+        this.trucksService.createTruck(truckData).subscribe({
+          next: () => {
+            this.snackBar.open('Camión guardado exitosamente', 'Cerrar', { duration: 3000 });
+            if (this.dialogRef) {
+              this.dialogRef.close(true);
+            }
+          },
+          error: () => {
+            this.snackBar.open('Error al guardar el camión', 'Cerrar', { duration: 3000 });
+          }
+        });
       }
+    }
+  }
+
+  onCancel(): void {
+    if (this.dialogRef) {
+      this.dialogRef.close();
     }
   }
 } 

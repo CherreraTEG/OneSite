@@ -13,6 +13,8 @@ import { LanguageSelectorComponent } from '@shared/components/language-selector/
 import { LogoutIconComponent } from '@shared/components/icons/logout-icon.component';
 import { PlusIconComponent } from '@shared/components/icons/plus-icon.component';
 import { XMarkIconComponent } from '@shared/components/icons/x-mark-icon.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { TruckControlFormComponent } from '../truck-control-form/truck-control-form.component';
 
 @Component({
   selector: 'app-trucks-list',
@@ -28,7 +30,8 @@ import { XMarkIconComponent } from '@shared/components/icons/x-mark-icon.compone
     LanguageSelectorComponent,
     LogoutIconComponent,
     PlusIconComponent,
-    XMarkIconComponent
+    XMarkIconComponent,
+    MatDialogModule
   ],
   templateUrl: './trucks-list.component.html',
   styleUrls: ['./trucks-list.component.scss']
@@ -71,7 +74,8 @@ export class TrucksListComponent implements OnInit {
   constructor(
     private trucksService: TrucksService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {
     this.filterForm = this.fb.group({
       id_empresa: [''],
@@ -169,7 +173,23 @@ export class TrucksListComponent implements OnInit {
   }
 
   createNewTruck(): void {
-    this.router.navigate(['/trucks/control']);
+    this.openTruckControlDialog();
+  }
+
+  openTruckControlDialog(): void {
+    const dialogRef = this.dialog.open(TruckControlFormComponent, {
+      width: '98vw',
+      maxWidth: '900px',
+      maxHeight: '90vh',
+      panelClass: 'truck-control-dialog',
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.loadTrucks();
+      }
+    });
   }
 
   get paginatedTrucks(): Truck[] {
