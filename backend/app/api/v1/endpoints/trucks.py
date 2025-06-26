@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Path
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.schemas.trucks import Truck, TruckCreate, TruckUpdate
@@ -84,7 +84,7 @@ def read_trucks(
     tags=["trucks"]
 )
 def read_truck(
-    truck_id: int = Query(..., description="ID único del camión", ge=1),
+    truck_id: int = Path(..., description="ID único del camión", ge=1),
     db: Session = Depends(get_db)
 ):
     """
@@ -186,7 +186,7 @@ def create_truck(
     tags=["trucks"]
 )
 def update_truck(
-    truck_id: int = Query(..., description="ID único del camión a actualizar", ge=1),
+    truck_id: int = Path(..., description="ID único del camión a actualizar", ge=1),
     truck: TruckUpdate = None,
     db: Session = Depends(get_db)
 ):
@@ -236,7 +236,7 @@ def update_truck(
     tags=["trucks"]
 )
 def delete_truck(
-    truck_id: int = Query(..., description="ID único del camión a eliminar", ge=1),
+    truck_id: int = Path(..., description="ID único del camión a eliminar", ge=1),
     db: Session = Depends(get_db)
 ):
     """
@@ -277,8 +277,8 @@ def delete_truck(
     tags=["trucks"]
 )
 def read_trucks_by_empresa_and_warehouse(
-    id_empresa: int = Query(..., description="ID de la empresa", ge=1),
-    id_warehouse: int = Query(..., description="ID del almacén", ge=1),
+    id_empresa: int = Path(..., description="ID de la empresa", ge=1),
+    id_warehouse: int = Path(..., description="ID del almacén", ge=1),
     db: Session = Depends(get_db)
 ):
     """
@@ -311,8 +311,8 @@ def read_trucks_by_empresa_and_warehouse(
     tags=["trucks"]
 )
 def read_trucks_by_empresa_warehouse_and_dates(
-    id_empresa: int = Query(..., description="ID de la empresa", ge=1),
-    id_warehouse: int = Query(..., description="ID del almacén", ge=1),
+    id_empresa: int = Path(..., description="ID de la empresa", ge=1),
+    id_warehouse: int = Path(..., description="ID del almacén", ge=1),
     date_from: date = Query(..., description="Fecha de inicio (YYYY-MM-DD)"),
     date_to: date = Query(..., description="Fecha de fin (YYYY-MM-DD)"),
     db: Session = Depends(get_db)
@@ -349,7 +349,7 @@ def read_trucks_by_empresa_warehouse_and_dates(
     tags=["trucks"]
 )
 def read_trucks_by_warehouse_and_dates(
-    id_warehouse: int = Query(..., description="ID del almacén", ge=1),
+    id_warehouse: int = Path(..., description="ID del almacén", ge=1),
     date_from: date = Query(..., description="Fecha de inicio (YYYY-MM-DD)"),
     date_to: date = Query(..., description="Fecha de fin (YYYY-MM-DD)"),
     db: Session = Depends(get_db)
@@ -385,7 +385,7 @@ def read_trucks_by_warehouse_and_dates(
     tags=["trucks"]
 )
 def read_trucks_by_carrier(
-    carrier: str = Query(..., description="Nombre del transportista"),
+    carrier: str = Path(..., description="Nombre del transportista"),
     db: Session = Depends(get_db)
 ):
     """
@@ -417,7 +417,7 @@ def read_trucks_by_carrier(
     tags=["trucks"]
 )
 def read_truck_by_load_number(
-    load_number: str = Query(..., description="Número de carga del camión"),
+    load_number: str = Path(..., description="Número de carga del camión"),
     db: Session = Depends(get_db)
 ):
     """
