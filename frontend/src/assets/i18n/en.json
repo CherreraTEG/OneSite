@@ -14,7 +14,8 @@
     "LOADING": "Loading...",
     "PREVIOUS": "Previous",
     "NEXT": "Next",
-    "ACTIONS": "Actions"
+    "ACTIONS": "Actions",
+    "CANCEL": "Cancel"
   },
   "LOGIN": {
     "TITLE": "Welcome to OneSite",
@@ -105,7 +106,7 @@
   "TRUCKS": {
     "LIST": {
       "TITLE": "Trucks List",
-      "CREATE_NEW": "NEW",
+      "CREATE_NEW": "New",
       "FILTERS": "Filters",
       "SHOWING": "Showing",
       "OF": "of",

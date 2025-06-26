@@ -392,7 +392,7 @@
 
 .trucks-main {
   flex: 1;
-  padding: 2rem;
+  padding: 0.5rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -424,6 +424,14 @@
     box-shadow: 0 4px 16px rgba(84, 83, 134, 0.22);
     transform: translateY(-2px) scale(1.03);
   }
+}
+
+.btn-primary:focus:not(:hover),
+.btn-primary:focus-visible:not(:hover) {
+  background: #545386 !important;
+  color: #fff !important;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(84, 83, 134, 0.15) !important;
 }
 
 /*

@@ -14,7 +14,8 @@
     "LOADING": "Chargement...",
     "PREVIOUS": "Précédent",
     "NEXT": "Suivant",
-    "ACTIONS": "Actions"
+    "ACTIONS": "Actions",
+    "CANCEL": "Annuler"
   },
   "LOGIN": {
     "TITLE": "Bienvenue sur OneSite",
@@ -105,7 +106,7 @@
   "TRUCKS": {
     "LIST": {
       "TITLE": "Liste des camions",
-      "CREATE_NEW": "NEW",
+      "CREATE_NEW": "Nouveau",
       "FILTERS": "Filtres",
       "SHOWING": "Affichage",
       "OF": "sur",

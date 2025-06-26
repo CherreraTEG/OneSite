@@ -11,11 +11,12 @@ app-card, .truck-form, .form-grid, .form-actions {
 
 app-card {
   background: #fff !important;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  padding: 2rem;
-  margin: 2rem auto;
+  padding: 0;
+  margin: 0;
   max-width: 900px;
+  overflow: hidden;
 }
 
 .card-title {
@@ -29,13 +30,14 @@ app-card {
 .truck-form {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
+  padding: 0 2rem 1.2rem 2rem;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 4px 10px;
+  gap: 4px 6px;
 }
 
 .form-audit {
@@ -69,7 +71,7 @@ app-card {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 0.5rem;
 }
 
 app-button {
@@ -190,8 +192,8 @@ app-card .custom-card {
 .popup-header {
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
   background: var(--color-primary, #545386);
-  border-radius: 12px 12px 0 0;
-  margin-bottom: 1.25rem;
+  border-radius: 8px 8px 0 0;
+  margin: 0 0 1.25rem 0;
   h2 {
     margin: 0;
     font-size: 2rem;

@@ -69,7 +69,7 @@ export class SidebarComponent implements OnInit {
         { 
           icon: 'truck', 
           label: 'SIDEBAR.MENU.TRUCKS_CONTROL', 
-          route: '/trucks/control' 
+          route: '/trucks'
         },
         { 
           icon: 'truck', 

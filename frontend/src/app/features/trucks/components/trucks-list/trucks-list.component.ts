@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -53,22 +53,21 @@ export class TrucksListComponent implements OnInit {
     this.sidebarCollapsed = !this.sidebarCollapsed;
   }
 
-  plusIconColor: string = '#545386';
-
-  // Referencia para el botón NEW
-  isNewButtonHovered = false;
-
-  onNewButtonMouseEnter() {
-    this.plusIconColor = '#fff';
-  }
-  onNewButtonMouseLeave() {
-    this.plusIconColor = '#545386';
-  }
-
   filtersCollapsed = true;
 
   toggleFiltersCollapse() {
     this.filtersCollapsed = !this.filtersCollapsed;
+  }
+
+  @ViewChild('btn', { static: false }) newButton!: ButtonComponent;
+
+  newButtonIconColor: string = '#545386';
+
+  onNewButtonMouseEnter() {
+    this.newButtonIconColor = '#fff';
+  }
+  onNewButtonMouseLeave() {
+    this.newButtonIconColor = '#545386';
   }
 
   constructor(
@@ -186,6 +185,11 @@ export class TrucksListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      setTimeout(() => {
+        if (this.newButton) {
+          this.newButton.blur();
+        }
+      });
       if (result === true) {
         this.loadTrucks();
       }

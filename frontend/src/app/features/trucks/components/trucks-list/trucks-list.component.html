@@ -17,8 +17,8 @@
       <app-card>
         <div class="header-actions">
           <!-- <h2 class="card-title">{{ 'TRUCKS.LIST.TITLE' | translate }}</h2> -->
-          <app-button #btn (click)="createNewTruck()" variant="primary" [iconColorStates]="{ normal: '#545386', hover: '#fff' }">
-            <app-plus-icon icon [size]="'16'" [stroke]="btn.iconColor" style="margin-right: 8px;"></app-plus-icon>
+          <app-button #btn (click)="createNewTruck()" variant="primary" (mouseenter)="onNewButtonMouseEnter()" (mouseleave)="onNewButtonMouseLeave()">
+            <app-plus-icon icon [size]="'16'" [stroke]="newButtonIconColor" style="margin-right: 8px;"></app-plus-icon>
             {{ 'TRUCKS.LIST.CREATE_NEW' | translate }}
           </app-button>
         </div>
@@ -51,8 +51,8 @@
                 <app-input [control]="delivDateToFilterControl" [label]="'TRUCKS.LIST.DELIV_DATE_TO' | translate" type="date"></app-input>
               </div>
               <div class="filter-actions">
-                <app-button #btnClear type="button" (click)="clearFilters()" variant="primary" [iconColorStates]="{ normal: '#545386', hover: '#fff' }">
-                  <app-x-mark-icon icon [size]="'16'" [stroke]="btnClear.iconColor" style="margin-right: 8px;"></app-x-mark-icon>
+                <app-button #btnClear type="button" (click)="clearFilters()" variant="primary">
+                  <app-x-mark-icon icon [size]="'16'" [stroke]="'#545386'" style="margin-right: 8px;"></app-x-mark-icon>
                   {{ 'COMMON.CLEAR' | translate }}
                 </app-button>
               </div>

@@ -1,19 +1,16 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-button',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, CommonModule],
   template: `
-    <button mat-raised-button
-            [color]="color"
-            [disabled]="disabled"
-            [type]="type"
-            [class]="variantClass.join(' ')"
-            (mouseenter)="onMouseEnter()"
-            (mouseleave)="onMouseLeave()">
-      <ng-content select="[icon]"></ng-content>
+    <button #nativeButton
+      [type]="type"
+      [ngClass]="variant"
+      (click)="onClick.emit($event)">
       <ng-content></ng-content>
     </button>
   `,
@@ -86,35 +83,12 @@ import { MatButtonModule } from '@angular/material/button';
   `]
 })
 export class ButtonComponent {
-  @Input() color: 'primary' | 'accent' | 'warn' = 'primary';
-  @Input() disabled = false;
-  @Input() type: 'button' | 'submit' | 'reset' = 'button';
-  @Input() variant: 'primary' | 'secondary' = 'primary';
-  /**
-   * iconColorStates: { normal: string, hover: string }
-   * Si se define, el botón gestionará el color del icono automáticamente
-   */
-  @Input() iconColorStates?: { normal: string, hover: string };
-  iconColor: string = '';
+  @ViewChild('nativeButton', { static: true }) nativeButton!: ElementRef<HTMLButtonElement>;
+  @Input() type: string = 'button';
+  @Input() variant: string = 'primary';
+  @Output() onClick = new EventEmitter<Event>();
 
-  get variantClass() {
-    return [this.variant, 'custom-button'];
-  }
-
-  ngOnInit() {
-    if (this.iconColorStates) {
-      this.iconColor = this.iconColorStates.normal;
-    }
-  }
-
-  onMouseEnter() {
-    if (this.iconColorStates) {
-      this.iconColor = this.iconColorStates.hover;
-    }
-  }
-  onMouseLeave() {
-    if (this.iconColorStates) {
-      this.iconColor = this.iconColorStates.normal;
-    }
+  blur() {
+    this.nativeButton.nativeElement.blur();
   }
 } 
