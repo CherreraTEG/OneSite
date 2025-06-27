@@ -78,6 +78,7 @@
     },
     "TRUCK_CONTROL": {
       "TITLE": "Create Truck",
+      "ID": "ID",
       "ID_EMPRESA": "Company ID",
       "ID_WAREHOUSE": "Warehouse ID",
       "WAREHOUSE": "Warehouse",
@@ -123,7 +124,9 @@
         "TITLE": "Select Columns",
         "DESCRIPTION": "Check the columns you want to display in the table:",
         "SELECT_ALL": "Select All",
-        "DESELECT_ALL": "Deselect All"
+        "DESELECT_ALL": "Deselect All",
+        "SELECT_COMMON": "Common Columns",
+        "SELECTED": "Selected"
       }
     },
     "DETAIL": {

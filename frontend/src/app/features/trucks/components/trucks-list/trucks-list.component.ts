@@ -54,12 +54,27 @@ export class TrucksListComponent implements OnInit {
 
   // Configuración de columnas
   columns: ColumnConfig[] = [
+    { key: 'id', label: 'FORMS.TRUCK_CONTROL.ID', visible: false },
     { key: 'id_empresa', label: 'FORMS.TRUCK_CONTROL.ID_EMPRESA', visible: true },
     { key: 'id_warehouse', label: 'FORMS.TRUCK_CONTROL.ID_WAREHOUSE', visible: true },
     { key: 'ship_date', label: 'FORMS.TRUCK_CONTROL.SHIPDATE', visible: true },
+    { key: 'deliv_date', label: 'FORMS.TRUCK_CONTROL.DELIVDATE', visible: true },
     { key: 'carrier', label: 'FORMS.TRUCK_CONTROL.CARRIER', visible: true },
     { key: 'customer_facility', label: 'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY', visible: true },
-    { key: 'estatus', label: 'FORMS.TRUCK_CONTROL.ESTATUS', visible: true }
+    { key: 'po', label: 'FORMS.TRUCK_CONTROL.PO', visible: false },
+    { key: 'qty', label: 'FORMS.TRUCK_CONTROL.QTY', visible: false },
+    { key: 'estatus', label: 'FORMS.TRUCK_CONTROL.ESTATUS', visible: true },
+    { key: 'time_in', label: 'FORMS.TRUCK_CONTROL.TIME_IN', visible: false },
+    { key: 'door', label: 'FORMS.TRUCK_CONTROL.DOOR', visible: false },
+    { key: 'time_out', label: 'FORMS.TRUCK_CONTROL.TIME_OUT', visible: false },
+    { key: 'comments', label: 'FORMS.TRUCK_CONTROL.COMMENTS', visible: false },
+    { key: 'pickup_location', label: 'FORMS.TRUCK_CONTROL.PICKUP_LOCATION', visible: false },
+    { key: 'load_number', label: 'FORMS.TRUCK_CONTROL.LOAD_NUMBER', visible: false },
+    { key: 'id_customer', label: 'FORMS.TRUCK_CONTROL.ID_CUSTOMER', visible: false },
+    { key: 'estado_cargue', label: 'FORMS.TRUCK_CONTROL.ESTADO_CARGUE', visible: false },
+    { key: 'update_date', label: 'FORMS.TRUCK_CONTROL.UPDATE_DATE', visible: false },
+    { key: 'update_user', label: 'FORMS.TRUCK_CONTROL.UPDATE_USER', visible: false },
+    { key: 'file_name', label: 'FORMS.TRUCK_CONTROL.FILE_NAME', visible: false }
   ];
 
   // Estado del sidebar

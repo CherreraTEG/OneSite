@@ -59,6 +59,7 @@
     },
     "TRUCK_CONTROL": {
       "TITLE": "Crear Camión",
+      "ID": "ID",
       "ID_EMPRESA": "ID Empresa",
       "ID_WAREHOUSE": "ID Almacén",
       "WAREHOUSE": "Bodega",
@@ -104,7 +105,9 @@
         "TITLE": "Seleccionar Columnas",
         "DESCRIPTION": "Marca las columnas que deseas mostrar en la tabla:",
         "SELECT_ALL": "Seleccionar Todo",
-        "DESELECT_ALL": "Deseleccionar Todo"
+        "DESELECT_ALL": "Deseleccionar Todo",
+        "SELECT_COMMON": "Columnas Comunes",
+        "SELECTED": "Seleccionadas"
       }
     },
     "DETAIL": {

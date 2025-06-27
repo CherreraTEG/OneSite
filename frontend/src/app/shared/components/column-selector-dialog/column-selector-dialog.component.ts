@@ -37,7 +37,19 @@ interface ColumnConfig {
       <div class="dialog-content">
         <p class="description">{{ 'TRUCKS.LIST.COLUMN_SELECTOR.DESCRIPTION' | translate }}</p>
         
-        <div class="columns-list">
+        <div class="quick-actions">
+          <app-button (click)="selectAll()" variant="secondary" size="small">
+            {{ 'TRUCKS.LIST.COLUMN_SELECTOR.SELECT_ALL' | translate }}
+          </app-button>
+          <app-button (click)="deselectAll()" variant="secondary" size="small">
+            {{ 'TRUCKS.LIST.COLUMN_SELECTOR.DESELECT_ALL' | translate }}
+          </app-button>
+          <app-button (click)="selectCommon()" variant="secondary" size="small">
+            {{ 'TRUCKS.LIST.COLUMN_SELECTOR.SELECT_COMMON' | translate }}
+          </app-button>
+        </div>
+        
+        <div class="columns-grid">
           <div class="column-item" *ngFor="let column of columns">
             <label class="checkbox-label">
               <input 
@@ -54,12 +66,9 @@ interface ColumnConfig {
       </div>
       
       <div class="dialog-actions">
-        <app-button (click)="selectAll()" variant="secondary">
-          {{ 'TRUCKS.LIST.COLUMN_SELECTOR.SELECT_ALL' | translate }}
-        </app-button>
-        <app-button (click)="deselectAll()" variant="secondary">
-          {{ 'TRUCKS.LIST.COLUMN_SELECTOR.DESELECT_ALL' | translate }}
-        </app-button>
+        <div class="selected-count">
+          {{ 'TRUCKS.LIST.COLUMN_SELECTOR.SELECTED' | translate }}: {{ visibleColumnsCount }}
+        </div>
         <div class="spacer"></div>
         <app-button (click)="close()" variant="secondary">
           {{ 'COMMON.CANCEL' | translate }}
@@ -78,6 +87,7 @@ interface ColumnConfig {
       max-height: 80vh;
       display: flex;
       flex-direction: column;
+      width: 500px;
     }
 
     .dialog-header {
@@ -123,14 +133,31 @@ interface ColumnConfig {
       font-size: 0.9rem;
     }
 
-    .columns-list {
+    .quick-actions {
       display: flex;
-      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .quick-actions app-button {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .columns-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 0.75rem;
+      max-height: 400px;
+      overflow-y: auto;
     }
 
     .column-item {
-      padding: 0.5rem 0;
+      padding: 0.5rem;
+      border-radius: 6px;
+      background: #16213e;
+      border: 1px solid #0f3460;
     }
 
     .checkbox-label {
@@ -138,8 +165,8 @@ interface ColumnConfig {
       align-items: center;
       cursor: pointer;
       gap: 0.75rem;
-      padding: 0.5rem;
-      border-radius: 6px;
+      padding: 0.25rem;
+      border-radius: 4px;
       transition: background-color 0.2s ease;
     }
 
@@ -180,7 +207,8 @@ interface ColumnConfig {
 
     .column-label {
       color: #fff;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+      line-height: 1.2;
     }
 
     .dialog-actions {
@@ -191,6 +219,11 @@ interface ColumnConfig {
       background: #16213e;
       border-top: 1px solid #0f3460;
       gap: 0.75rem;
+    }
+
+    .selected-count {
+      color: #a0a0a0;
+      font-size: 0.9rem;
     }
 
     .spacer {
@@ -212,6 +245,10 @@ export class ColumnSelectorDialogComponent {
     this.columns = data.columns.map(col => ({ ...col }));
   }
 
+  get visibleColumnsCount(): number {
+    return this.columns.filter(col => col.visible).length;
+  }
+
   toggleColumn(column: ColumnConfig): void {
     column.visible = !column.visible;
   }
@@ -222,6 +259,14 @@ export class ColumnSelectorDialogComponent {
 
   deselectAll(): void {
     this.columns.forEach(col => col.visible = false);
+  }
+
+  selectCommon(): void {
+    // Columnas comúnmente usadas
+    const commonColumns = ['id_empresa', 'id_warehouse', 'ship_date', 'carrier', 'customer_facility', 'estatus'];
+    this.columns.forEach(col => {
+      col.visible = commonColumns.includes(col.key);
+    });
   }
 
   save(): void {

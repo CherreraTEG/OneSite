@@ -89,8 +89,19 @@
                   <td *ngFor="let column of visibleColumns">
                     <ng-container [ngSwitch]="column.key">
                       <span *ngSwitchCase="'ship_date'">{{ getTruckValue(truck, column.key) | date:'shortDate' }}</span>
+                      <span *ngSwitchCase="'deliv_date'">{{ getTruckValue(truck, column.key) | date:'shortDate' }}</span>
+                      <span *ngSwitchCase="'update_date'">{{ getTruckValue(truck, column.key) | date:'short' }}</span>
+                      <span *ngSwitchCase="'time_in'">{{ getTruckValue(truck, column.key) | date:'shortTime' }}</span>
+                      <span *ngSwitchCase="'time_out'">{{ getTruckValue(truck, column.key) | date:'shortTime' }}</span>
+                      <span *ngSwitchCase="'qty'">{{ getTruckValue(truck, column.key) | number:'1.0-2' }}</span>
                       <span *ngSwitchCase="'estatus'" class="status-badge" [class]="'status-' + (getTruckValue(truck, column.key)?.toString() || '').toLowerCase()">
                         {{ getTruckValue(truck, column.key) }}
+                      </span>
+                      <span *ngSwitchCase="'estado_cargue'" class="status-badge" [class]="'status-' + (getTruckValue(truck, column.key)?.toString() || '').toLowerCase()">
+                        {{ getTruckValue(truck, column.key) }}
+                      </span>
+                      <span *ngSwitchCase="'comments'" class="comments-cell" [title]="getTruckValue(truck, column.key)">
+                        {{ getTruckValue(truck, column.key) | slice:0:50 }}{{ (getTruckValue(truck, column.key)?.length || 0) > 50 ? '...' : '' }}
                       </span>
                       <span *ngSwitchDefault>{{ getTruckValue(truck, column.key) }}</span>
                     </ng-container>
