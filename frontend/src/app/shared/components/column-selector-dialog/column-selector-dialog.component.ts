@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { ButtonComponent } from '../button/button.component';
-import { CardComponent } from '../card/card.component';
 
 interface ColumnConfig {
   key: string;
@@ -20,8 +19,7 @@ interface ColumnConfig {
     FormsModule,
     TranslateModule,
     MatDialogModule,
-    ButtonComponent,
-    CardComponent
+    ButtonComponent
   ],
   template: `
     <div class="column-selector-dialog">
@@ -81,14 +79,17 @@ interface ColumnConfig {
   `,
   styles: [`
     .column-selector-dialog {
-      background: #1a1a2e;
-      border-radius: 8px;
+      background: #fff;
+      border-radius: 14px;
       overflow: hidden;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
-      width: 600px;
       max-width: 95vw;
+      box-shadow: 0 8px 32px rgba(60,60,60,0.18);
+      border: 1px solid var(--color-secondary);
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
 
     .dialog-header {
@@ -96,14 +97,14 @@ interface ColumnConfig {
       justify-content: space-between;
       align-items: center;
       padding: 0.75rem 1rem;
-      background: #16213e;
-      border-bottom: 1px solid #0f3460;
+      background: var(--color-secondary);
+      border-bottom: 1px solid var(--color-secondary);
       flex-shrink: 0;
     }
 
     .dialog-header h2 {
       margin: 0;
-      color: #fff;
+      color: var(--color-primary);
       font-size: 1.1rem;
       font-weight: 600;
     }
@@ -111,7 +112,7 @@ interface ColumnConfig {
     .close-btn {
       background: none;
       border: none;
-      color: #545386;
+      color: var(--color-primary);
       cursor: pointer;
       padding: 0.25rem;
       border-radius: 4px;
@@ -119,8 +120,8 @@ interface ColumnConfig {
     }
 
     .close-btn:hover {
-      background: #0f3460;
-      color: #fff;
+      background: var(--color-tertiary);
+      color: var(--color-primary);
     }
 
     .dialog-content {
@@ -128,12 +129,13 @@ interface ColumnConfig {
       flex: 1;
       overflow-y: auto;
       min-height: 0;
+      background: #fff;
     }
 
     .description {
-      color: #a0a0a0;
+      color: var(--color-primary);
       margin-bottom: 1rem;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
     }
 
     .quick-actions {
@@ -156,13 +158,16 @@ interface ColumnConfig {
       gap: 0.5rem;
       max-height: 50vh;
       overflow-y: auto;
+      overflow-x: hidden;
+      max-width: 100%;
+      box-sizing: border-box;
     }
 
     .column-item {
       padding: 0.25rem;
       border-radius: 4px;
-      background: #16213e;
-      border: 1px solid #0f3460;
+      background: #fff;
+      border: 1px solid var(--color-secondary);
     }
 
     .checkbox-label {
@@ -176,7 +181,7 @@ interface ColumnConfig {
     }
 
     .checkbox-label:hover {
-      background: #0f3460;
+      background: var(--color-tertiary);
     }
 
     .checkbox-input {
@@ -186,16 +191,17 @@ interface ColumnConfig {
     .checkbox-custom {
       width: 16px;
       height: 16px;
-      border: 2px solid #545386;
+      border: 2px solid var(--color-primary);
       border-radius: 3px;
       position: relative;
       transition: all 0.2s ease;
       flex-shrink: 0;
+      background: #fff;
     }
 
     .checkbox-input:checked + .checkbox-custom {
-      background: #545386;
-      border-color: #545386;
+      background: var(--color-primary);
+      border-color: var(--color-primary);
     }
 
     .checkbox-input:checked + .checkbox-custom::after {
@@ -205,14 +211,14 @@ interface ColumnConfig {
       top: 1px;
       width: 5px;
       height: 8px;
-      border: solid white;
+      border: solid #fff;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
     }
 
     .column-label {
-      color: #fff;
-      font-size: 0.85rem;
+      color: var(--color-primary);
+      font-size: 0.95rem;
       line-height: 1.2;
     }
 
@@ -221,15 +227,15 @@ interface ColumnConfig {
       justify-content: space-between;
       align-items: center;
       padding: 0.75rem 1rem;
-      background: #16213e;
-      border-top: 1px solid #0f3460;
+      background: #fff;
+      border-top: 1px solid var(--color-secondary);
       gap: 0.75rem;
       flex-shrink: 0;
     }
 
     .selected-count {
-      color: #a0a0a0;
-      font-size: 0.85rem;
+      color: var(--color-primary);
+      font-size: 0.95rem;
     }
 
     .spacer {
@@ -238,7 +244,7 @@ interface ColumnConfig {
 
     .dialog-actions app-button {
       min-width: 70px;
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       padding: 0.5rem 1rem;
     }
   `]
