@@ -15,6 +15,13 @@ import { PlusIconComponent } from '@shared/components/icons/plus-icon.component'
 import { XMarkIconComponent } from '@shared/components/icons/x-mark-icon.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TruckControlFormComponent } from '../truck-control-form/truck-control-form.component';
+import { ColumnSelectorDialogComponent } from '../../../../shared/components/column-selector-dialog/column-selector-dialog.component';
+
+interface ColumnConfig {
+  key: string;
+  label: string;
+  visible: boolean;
+}
 
 @Component({
   selector: 'app-trucks-list',
@@ -44,6 +51,16 @@ export class TrucksListComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 10;
   totalItems = 0;
+
+  // Configuración de columnas
+  columns: ColumnConfig[] = [
+    { key: 'id_empresa', label: 'FORMS.TRUCK_CONTROL.ID_EMPRESA', visible: true },
+    { key: 'id_warehouse', label: 'FORMS.TRUCK_CONTROL.ID_WAREHOUSE', visible: true },
+    { key: 'ship_date', label: 'FORMS.TRUCK_CONTROL.SHIPDATE', visible: true },
+    { key: 'carrier', label: 'FORMS.TRUCK_CONTROL.CARRIER', visible: true },
+    { key: 'customer_facility', label: 'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY', visible: true },
+    { key: 'estatus', label: 'FORMS.TRUCK_CONTROL.ESTATUS', visible: true }
+  ];
 
   // Estado del sidebar
   sidebarCollapsed: boolean = window.innerWidth <= 900;
@@ -90,8 +107,60 @@ export class TrucksListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadColumnPreferences();
     this.loadTrucks();
     this.setupFilterListener();
+  }
+
+  // Método helper para acceder dinámicamente a las propiedades del objeto Truck
+  getTruckValue(truck: Truck, key: string): any {
+    return (truck as any)[key];
+  }
+
+  // Cargar preferencias de columnas desde localStorage
+  loadColumnPreferences(): void {
+    const savedColumns = localStorage.getItem('trucks-table-columns');
+    if (savedColumns) {
+      try {
+        const parsedColumns = JSON.parse(savedColumns);
+        this.columns = this.columns.map(col => ({
+          ...col,
+          visible: parsedColumns[col.key] !== undefined ? parsedColumns[col.key] : col.visible
+        }));
+      } catch (error) {
+        console.error('Error cargando preferencias de columnas:', error);
+      }
+    }
+  }
+
+  // Guardar preferencias de columnas en localStorage
+  saveColumnPreferences(): void {
+    const columnPreferences = this.columns.reduce((acc, col) => {
+      acc[col.key] = col.visible;
+      return acc;
+    }, {} as Record<string, boolean>);
+    
+    localStorage.setItem('trucks-table-columns', JSON.stringify(columnPreferences));
+  }
+
+  // Obtener columnas visibles
+  get visibleColumns(): ColumnConfig[] {
+    return this.columns.filter(col => col.visible);
+  }
+
+  // Abrir modal de selección de columnas
+  openColumnSelector(): void {
+    const dialogRef = this.dialog.open(ColumnSelectorDialogComponent, {
+      width: '400px',
+      data: { columns: [...this.columns] }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.columns = result;
+        this.saveColumnPreferences();
+      }
+    });
   }
 
   loadTrucks(): void {

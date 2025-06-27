@@ -17,10 +17,18 @@
       <app-card>
         <div class="header-actions">
           <!-- <h2 class="card-title">{{ 'TRUCKS.LIST.TITLE' | translate }}</h2> -->
-          <app-button #btn (click)="createNewTruck()" variant="primary" (mouseenter)="onNewButtonMouseEnter()" (mouseleave)="onNewButtonMouseLeave()">
-            <app-plus-icon icon [size]="'16'" [stroke]="newButtonIconColor" style="margin-right: 8px;"></app-plus-icon>
-            {{ 'TRUCKS.LIST.CREATE_NEW' | translate }}
-          </app-button>
+          <div class="action-buttons">
+            <app-button (click)="openColumnSelector()" variant="secondary" title="{{ 'TRUCKS.LIST.COLUMN_SELECTOR.BUTTON_TITLE' | translate }}">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16" style="margin-right: 8px;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+              </svg>
+              {{ 'TRUCKS.LIST.COLUMN_SELECTOR.BUTTON' | translate }}
+            </app-button>
+            <app-button #btn (click)="createNewTruck()" variant="primary" (mouseenter)="onNewButtonMouseEnter()" (mouseleave)="onNewButtonMouseLeave()">
+              <app-plus-icon icon [size]="'16'" [stroke]="newButtonIconColor" style="margin-right: 8px;"></app-plus-icon>
+              {{ 'TRUCKS.LIST.CREATE_NEW' | translate }}
+            </app-button>
+          </div>
         </div>
 
         <!-- Filtros -->
@@ -72,37 +80,41 @@
             <table class="trucks-table" *ngIf="paginatedTrucks.length > 0; else noDataTemplate">
               <thead>
                 <tr>
-                  <th>{{ 'FORMS.TRUCK_CONTROL.ID_EMPRESA' | translate }}</th>
-                  <th>{{ 'FORMS.TRUCK_CONTROL.ID_WAREHOUSE' | translate }}</th>
-                  <th>{{ 'FORMS.TRUCK_CONTROL.SHIPDATE' | translate }}</th>
-                  <th>{{ 'FORMS.TRUCK_CONTROL.CARRIER' | translate }}</th>
-                  <th>{{ 'FORMS.TRUCK_CONTROL.CUSTOMER_FACILITY' | translate }}</th>
-                  <th>{{ 'FORMS.TRUCK_CONTROL.ESTATUS' | translate }}</th>
+                  <th *ngFor="let column of visibleColumns">{{ column.label | translate }}</th>
                   <th>{{ 'COMMON.ACTIONS' | translate }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let truck of paginatedTrucks">
-                  <td>{{ truck.id_empresa }}</td>
-                  <td>{{ truck.id_warehouse }}</td>
-                  <td>{{ truck.ship_date | date:'shortDate' }}</td>
-                  <td>{{ truck.carrier }}</td>
-                  <td>{{ truck.customer_facility }}</td>
-                  <td>
-                    <span class="status-badge" [class]="'status-' + (truck.estatus?.toString() || '').toLowerCase()">
-                      {{ truck.estatus }}
-                    </span>
+                  <td *ngFor="let column of visibleColumns">
+                    <ng-container [ngSwitch]="column.key">
+                      <span *ngSwitchCase="'ship_date'">{{ getTruckValue(truck, column.key) | date:'shortDate' }}</span>
+                      <span *ngSwitchCase="'estatus'" class="status-badge" [class]="'status-' + (getTruckValue(truck, column.key)?.toString() || '').toLowerCase()">
+                        {{ getTruckValue(truck, column.key) }}
+                      </span>
+                      <span *ngSwitchDefault>{{ getTruckValue(truck, column.key) }}</span>
+                    </ng-container>
                   </td>
                   <td class="actions-cell">
                     <div class="action-buttons">
                       <button class="btn-icon btn-view" (click)="viewTruck(truck)" title="{{ 'COMMON.VIEW' | translate }}">
-                        <i class="fas fa-eye"></i>
+                        <!-- Heroicon: Eye -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
                       </button>
                       <button class="btn-icon btn-edit" (click)="editTruck(truck)" title="{{ 'COMMON.EDIT' | translate }}">
-                        <i class="fas fa-edit"></i>
+                        <!-- Heroicon: Pencil -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 3.487a2.25 2.25 0 113.182 3.182L7.5 19.213l-4 1 1-4 12.362-12.726z" />
+                        </svg>
                       </button>
                       <button class="btn-icon btn-delete" (click)="deleteTruck(truck)" title="{{ 'COMMON.DELETE' | translate }}">
-                        <i class="fas fa-trash"></i>
+                        <!-- Heroicon: Trash -->
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3m5 0H6" />
+                        </svg>
                       </button>
                     </div>
                   </td>

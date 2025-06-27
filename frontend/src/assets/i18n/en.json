@@ -15,7 +15,8 @@
     "PREVIOUS": "Previous",
     "NEXT": "Next",
     "ACTIONS": "Actions",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "CLOSE": "Close"
   },
   "LOGIN": {
     "TITLE": "Welcome to OneSite",
@@ -115,7 +116,15 @@
       "SHIP_DATE_FROM": "Ship Date From",
       "SHIP_DATE_TO": "Ship Date To",
       "DELIV_DATE_FROM": "Delivery Date From",
-      "DELIV_DATE_TO": "Delivery Date To"
+      "DELIV_DATE_TO": "Delivery Date To",
+      "COLUMN_SELECTOR": {
+        "BUTTON": "Columns",
+        "BUTTON_TITLE": "Select visible columns",
+        "TITLE": "Select Columns",
+        "DESCRIPTION": "Check the columns you want to display in the table:",
+        "SELECT_ALL": "Select All",
+        "DESELECT_ALL": "Deselect All"
+      }
     },
     "DETAIL": {
       "TITLE": "Truck Details",

@@ -10,7 +10,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
 
   .card-title {
     margin: 0;
@@ -191,10 +192,11 @@
           align-items: center;
           justify-content: center;
           transition: all 0.2s ease;
-          background-color: #545386;
-          color: #fff;
+          background-color: #C2DFEA;
+          color: #545386;
           &:hover {
-            background-color: #22223b;
+            background-color: #545386;
+            color: #fff;
           }
         }
       }
@@ -392,9 +394,7 @@
 
 .trucks-main {
   flex: 1;
-  padding: 0.5rem 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 0.5rem 1.5rem;
   width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -471,4 +471,31 @@
   color: #fff !important;
   border: none !important;
   box-shadow: 0 2px 8px rgba(84, 83, 134, 0.15) !important;
+}
+
+.action-buttons .btn-icon {
+  background-color: #C2DFEA;
+  color: #545386;
+  transition: background 0.2s, color 0.2s;
+}
+.action-buttons .btn-icon:hover,
+.action-buttons .btn-icon:focus {
+  background-color: #545386;
+  color: #fff;
+}
+.action-buttons .btn-icon svg {
+  color: inherit !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  transition: color 0.2s, stroke 0.2s;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.action-buttons app-button {
+  min-width: auto;
 } 

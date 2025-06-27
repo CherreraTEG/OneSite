@@ -97,7 +97,15 @@
       "SHIP_DATE_FROM": "Fecha de Envío Desde",
       "SHIP_DATE_TO": "Fecha de Envío Hasta",
       "DELIV_DATE_FROM": "Fecha de Entrega Desde",
-      "DELIV_DATE_TO": "Fecha de Entrega Hasta"
+      "DELIV_DATE_TO": "Fecha de Entrega Hasta",
+      "COLUMN_SELECTOR": {
+        "BUTTON": "Columnas",
+        "BUTTON_TITLE": "Seleccionar columnas visibles",
+        "TITLE": "Seleccionar Columnas",
+        "DESCRIPTION": "Marca las columnas que deseas mostrar en la tabla:",
+        "SELECT_ALL": "Seleccionar Todo",
+        "DESELECT_ALL": "Deseleccionar Todo"
+      }
     },
     "DETAIL": {
       "TITLE": "Detalle del Camión",
@@ -120,6 +128,7 @@
     "PREVIOUS": "Anterior",
     "NEXT": "Siguiente",
     "ACTIONS": "Acciones",
-    "CANCEL": "Cancelar"
+    "CANCEL": "Cancelar",
+    "CLOSE": "Cerrar"
   }
 } 
