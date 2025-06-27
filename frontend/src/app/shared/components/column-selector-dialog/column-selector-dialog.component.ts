@@ -84,25 +84,27 @@ interface ColumnConfig {
       background: #1a1a2e;
       border-radius: 8px;
       overflow: hidden;
-      max-height: 80vh;
+      max-height: 90vh;
       display: flex;
       flex-direction: column;
-      width: 500px;
+      width: 600px;
+      max-width: 95vw;
     }
 
     .dialog-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 1.5rem;
+      padding: 0.75rem 1rem;
       background: #16213e;
       border-bottom: 1px solid #0f3460;
+      flex-shrink: 0;
     }
 
     .dialog-header h2 {
       margin: 0;
       color: #fff;
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 600;
     }
 
@@ -111,7 +113,7 @@ interface ColumnConfig {
       border: none;
       color: #545386;
       cursor: pointer;
-      padding: 0.5rem;
+      padding: 0.25rem;
       border-radius: 4px;
       transition: all 0.2s ease;
     }
@@ -122,40 +124,43 @@ interface ColumnConfig {
     }
 
     .dialog-content {
-      padding: 1.5rem;
+      padding: 1rem;
       flex: 1;
       overflow-y: auto;
+      min-height: 0;
     }
 
     .description {
       color: #a0a0a0;
-      margin-bottom: 1.5rem;
-      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
     }
 
     .quick-actions {
       display: flex;
       gap: 0.5rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       flex-wrap: wrap;
     }
 
     .quick-actions app-button {
       flex: 1;
-      min-width: 120px;
+      min-width: 100px;
+      font-size: 0.8rem;
+      padding: 0.5rem;
     }
 
     .columns-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 0.75rem;
-      max-height: 400px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.5rem;
+      max-height: 50vh;
       overflow-y: auto;
     }
 
     .column-item {
-      padding: 0.5rem;
-      border-radius: 6px;
+      padding: 0.25rem;
+      border-radius: 4px;
       background: #16213e;
       border: 1px solid #0f3460;
     }
@@ -164,9 +169,9 @@ interface ColumnConfig {
       display: flex;
       align-items: center;
       cursor: pointer;
-      gap: 0.75rem;
+      gap: 0.5rem;
       padding: 0.25rem;
-      border-radius: 4px;
+      border-radius: 3px;
       transition: background-color 0.2s ease;
     }
 
@@ -179,10 +184,10 @@ interface ColumnConfig {
     }
 
     .checkbox-custom {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       border: 2px solid #545386;
-      border-radius: 4px;
+      border-radius: 3px;
       position: relative;
       transition: all 0.2s ease;
       flex-shrink: 0;
@@ -196,10 +201,10 @@ interface ColumnConfig {
     .checkbox-input:checked + .checkbox-custom::after {
       content: '';
       position: absolute;
-      left: 5px;
-      top: 2px;
-      width: 6px;
-      height: 10px;
+      left: 4px;
+      top: 1px;
+      width: 5px;
+      height: 8px;
       border: solid white;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
@@ -207,7 +212,7 @@ interface ColumnConfig {
 
     .column-label {
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       line-height: 1.2;
     }
 
@@ -215,15 +220,16 @@ interface ColumnConfig {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 1.5rem;
+      padding: 0.75rem 1rem;
       background: #16213e;
       border-top: 1px solid #0f3460;
       gap: 0.75rem;
+      flex-shrink: 0;
     }
 
     .selected-count {
       color: #a0a0a0;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
     .spacer {
@@ -231,7 +237,9 @@ interface ColumnConfig {
     }
 
     .dialog-actions app-button {
-      min-width: 80px;
+      min-width: 70px;
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
     }
   `]
 })

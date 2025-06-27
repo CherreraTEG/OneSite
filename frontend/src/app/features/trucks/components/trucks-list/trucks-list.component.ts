@@ -166,7 +166,9 @@ export class TrucksListComponent implements OnInit {
   // Abrir modal de selección de columnas
   openColumnSelector(): void {
     const dialogRef = this.dialog.open(ColumnSelectorDialogComponent, {
-      width: '400px',
+      width: '600px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
       data: { columns: [...this.columns] }
     });
 
