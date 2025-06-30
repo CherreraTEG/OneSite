@@ -5,6 +5,7 @@
     "LANGUAGE": "Langue",
     "SPANISH": "Espagnol",
     "ENGLISH": "Anglais",
+    "FRENCH": "Français",
     "SAVE": "Enregistrer",
     "EDIT": "Modifier",
     "DELETE": "Supprimer",
@@ -28,6 +29,20 @@
     "PASSWORD_PLACEHOLDER": "Entrez votre mot de passe",
     "LOGIN_BUTTON": "Connexion",
     "LOGGING_IN": "Connexion en cours...",
+    "SUCCESS_MESSAGE": "Connexion réussie !",
+    "ERROR_GENERIC": "Erreur de connexion. Veuillez réessayer.",
+    "ERROR_INVALID_CREDENTIALS": "Nom d'utilisateur ou mot de passe incorrect.",
+    "ERROR_ACCOUNT_LOCKED": "Compte verrouillé en raison de plusieurs tentatives échouées. Contactez l'administrateur.",
+    "ERROR_ACCOUNT_LOCKED_WITH_TIME": "Compte verrouillé en raison de plusieurs tentatives échouées. Temps restant : {minutes} minutes.",
+    "ERROR_USER_NOT_FOUND": "Utilisateur introuvable dans le système.",
+    "ERROR_TOO_MANY_ATTEMPTS": "Trop de tentatives échouées. Veuillez réessayer plus tard.",
+    "ERROR_SERVER_UNAVAILABLE": "Serveur indisponible. Veuillez réessayer plus tard.",
+    "USERNAME_REQUIRED": "Le nom d'utilisateur est requis",
+    "PASSWORD_REQUIRED": "Le mot de passe est requis",
+    "PASSWORD_MIN_LENGTH": "Le mot de passe doit contenir au moins 6 caractères",
+    "TEST_CONNECTION": "Tester la connexion",
+    "CONNECTION_SUCCESS": "Connexion réussie avec le serveur",
+    "CONNECTION_ERROR": "Erreur de connexion avec le serveur",
     "ERROR": {
       "TITLE": "Erreur d'authentification",
       "MESSAGE": "Nom d'utilisateur ou mot de passe incorrect.",
@@ -59,7 +74,8 @@
   "LANGUAGES": {
     "LANGUAGE": "Langue",
     "SPANISH": "Espagnol",
-    "ENGLISH": "Anglais"
+    "ENGLISH": "Anglais",
+    "FRENCH": "Français"
   },
   "DASHBOARD": {
     "TITLE": "Tableau de bord",
