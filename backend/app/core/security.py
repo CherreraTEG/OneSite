@@ -243,14 +243,18 @@ class LDAPAuth:
             
         Returns:
             Dict con la información del usuario si la autenticación es exitosa
-            None si la autenticación falla
+            Dict con error específico si la autenticación falla
         """
         try:
             # Verificar si la cuenta está bloqueada
             if self.account_lockout.is_account_locked(username):
                 self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
                 logger.warning(f"Intento de login en cuenta bloqueada: {username}")
-                return None
+                return {
+                    "error": "account_locked",
+                    "message": "Cuenta bloqueada por múltiples intentos fallidos",
+                    "username": username
+                }
             
             # Formatear el nombre de usuario para LDAP
             user_dn = f"{username}@{settings.AD_DOMAIN}"
@@ -280,18 +284,30 @@ class LDAPAuth:
                 else:
                     logger.warning("Usuario no encontrado en el Directorio Activo")
                     self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
-                    return None
+                    return {
+                        "error": "user_not_found",
+                        "message": "Usuario no encontrado en el Directorio Activo",
+                        "username": username
+                    }
             else:
                 logger.error("La autenticacion LDAP fallo")
                 self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
                 self.account_lockout.record_failed_attempt(username)
-                return None
+                return {
+                    "error": "invalid_credentials",
+                    "message": "Credenciales incorrectas",
+                    "username": username
+                }
                 
         except Exception as e:
             logger.error(f"Error en la autenticacion LDAP: {str(e)}")
             self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
             self.account_lockout.record_failed_attempt(username)
-            return None
+            return {
+                "error": "ldap_error",
+                "message": "Error de conexión con el Directorio Activo",
+                "username": username
+            }
         finally:
             if 'conn' in locals():
                 conn.unbind()

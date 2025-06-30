@@ -85,6 +85,12 @@ export class LoginComponent {
             
             if (error.status === 401) {
               errorMessage = this.translate.instant('LOGIN.ERROR_INVALID_CREDENTIALS');
+            } else if (error.status === 423) {
+              // Usuario bloqueado
+              errorMessage = this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED');
+            } else if (error.status === 404) {
+              // Usuario no encontrado
+              errorMessage = this.translate.instant('LOGIN.ERROR_USER_NOT_FOUND');
             } else if (error.status === 429) {
               errorMessage = this.translate.instant('LOGIN.ERROR_TOO_MANY_ATTEMPTS');
             } else if (error.status === 0 || error.status === 503) {
@@ -103,7 +109,10 @@ export class LoginComponent {
             this.snackBar.open(
               errorMessage,
               this.translate.instant('COMMON.CLOSE'),
-              { duration: 5000, panelClass: ['error-snackbar'] }
+              { 
+                duration: error.status === 423 ? 8000 : 5000, // Más tiempo para usuarios bloqueados
+                panelClass: ['error-snackbar']
+              }
             );
           }
         });

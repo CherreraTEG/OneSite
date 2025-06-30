@@ -109,12 +109,44 @@ async def _authenticate_user(request: Request, username: str, password: str):
         )
     
     # Intentar autenticar con LDAP
-    user = ldap_auth.authenticate(username, password, client_ip, user_agent)
+    auth_result = ldap_auth.authenticate(username, password, client_ip, user_agent)
     
-    if not user:
+    # Verificar si hay error específico
+    if auth_result and "error" in auth_result:
+        error_type = auth_result["error"]
+        error_message = auth_result["message"]
+        
+        if error_type == "account_locked":
+            raise HTTPException(
+                status_code=status.HTTP_423_LOCKED,
+                detail=error_message,
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        elif error_type == "user_not_found":
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=error_message,
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        elif error_type == "ldap_error":
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=error_message,
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        else:
+            # Error genérico de credenciales
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=error_message,
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+    
+    # Si no hay resultado, es un error genérico
+    if not auth_result:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciales incorrectas o cuenta bloqueada",
+            detail="Credenciales incorrectas",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
@@ -122,13 +154,13 @@ async def _authenticate_user(request: Request, username: str, password: str):
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={
-            "sub": user["username"],
-            "user_id": user.get("employee_id"),
-            "email": user["email"],
-            "full_name": user["full_name"],
-            "roles": user["roles"],
-            "permissions": user["permissions"],
-            "department": user.get("department")
+            "sub": auth_result["username"],
+            "user_id": auth_result.get("employee_id"),
+            "email": auth_result["email"],
+            "full_name": auth_result["full_name"],
+            "roles": auth_result["roles"],
+            "permissions": auth_result["permissions"],
+            "department": auth_result.get("department")
         },
         expires_delta=access_token_expires
     )
@@ -138,12 +170,12 @@ async def _authenticate_user(request: Request, username: str, password: str):
         "token_type": "bearer",
         "expires_in": settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         "user": {
-            "username": user["username"],
-            "email": user["email"],
-            "full_name": user["full_name"],
-            "department": user.get("department"),
-            "roles": user["roles"],
-            "permissions": user["permissions"]
+            "username": auth_result["username"],
+            "email": auth_result["email"],
+            "full_name": auth_result["full_name"],
+            "department": auth_result.get("department"),
+            "roles": auth_result["roles"],
+            "permissions": auth_result["permissions"]
         }
     }
 
