@@ -43,7 +43,7 @@ class UserInfo(BaseModel):
 @router.post("/login", response_model=TokenResponse)
 async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends()):
     """
-    Autenticación de usuario contra el Directorio Activo con rate limiting
+    Autenticación de usuario contra el Directorio Activo con rate limiting (OAuth2 Form)
     
     Args:
         request: Objeto Request de FastAPI para obtener IP del cliente
@@ -55,12 +55,43 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
     Raises:
         HTTPException: Si las credenciales son inválidas o se excede el rate limit
     """
+    return await _authenticate_user(request, form_data.username, form_data.password)
+
+@router.post("/login-json", response_model=TokenResponse)
+async def login_json(request: Request, credentials: LoginCredentials):
+    """
+    Autenticación de usuario contra el Directorio Activo con rate limiting (JSON)
+    
+    Args:
+        request: Objeto Request de FastAPI para obtener IP del cliente
+        credentials: Credenciales en formato JSON
+        
+    Returns:
+        Token JWT y datos del usuario si la autenticación es exitosa
+        
+    Raises:
+        HTTPException: Si las credenciales son inválidas o se excede el rate limit
+    """
+    return await _authenticate_user(request, credentials.username, credentials.password)
+
+async def _authenticate_user(request: Request, username: str, password: str):
+    """
+    Función común para autenticación de usuarios
+    
+    Args:
+        request: Objeto Request de FastAPI
+        username: Nombre de usuario
+        password: Contraseña
+        
+    Returns:
+        Token JWT y datos del usuario
+    """
     # Obtener información del cliente
     client_ip = request.client.host if request.client else "unknown"
     user_agent = request.headers.get("user-agent", "unknown")
     
     # Validar que los campos no estén vacíos
-    if not form_data.username or not form_data.password:
+    if not username or not password:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Usuario y contraseña son requeridos",
@@ -69,7 +100,7 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
     
     # Validar formato de username
     try:
-        LoginCredentials(username=form_data.username, password=form_data.password)
+        LoginCredentials(username=username, password=password)
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -78,7 +109,7 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
         )
     
     # Intentar autenticar con LDAP
-    user = ldap_auth.authenticate(form_data.username, form_data.password, client_ip, user_agent)
+    user = ldap_auth.authenticate(username, password, client_ip, user_agent)
     
     if not user:
         raise HTTPException(

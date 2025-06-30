@@ -48,6 +48,9 @@ export class LoginComponent {
     if (this.loginForm.valid && !this.isLoading) {
       this.isLoading = true;
       
+      // Deshabilitar el formulario durante el login
+      this.loginForm.disable();
+      
       const credentials = {
         username: this.loginForm.get('username')?.value,
         password: this.loginForm.get('password')?.value
@@ -57,6 +60,8 @@ export class LoginComponent {
         .pipe(
           finalize(() => {
             this.isLoading = false;
+            // Habilitar el formulario después del login
+            this.loginForm.enable();
           })
         )
         .subscribe({
@@ -84,6 +89,15 @@ export class LoginComponent {
               errorMessage = this.translate.instant('LOGIN.ERROR_TOO_MANY_ATTEMPTS');
             } else if (error.status === 0 || error.status === 503) {
               errorMessage = this.translate.instant('LOGIN.ERROR_SERVER_UNAVAILABLE');
+            } else if (error.status === 400) {
+              // Manejar errores de validación del backend
+              if (error.error && error.error.detail) {
+                if (Array.isArray(error.error.detail)) {
+                  errorMessage = error.error.detail.join(', ');
+                } else {
+                  errorMessage = error.error.detail;
+                }
+              }
             }
 
             this.snackBar.open(

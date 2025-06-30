@@ -61,7 +61,7 @@ export class AuthService {
       'Content-Type': 'application/json'
     });
 
-    return this.http.post<LoginResponse>(`${this.apiUrl}/api/v1/auth/login`, credentials, { headers })
+    return this.http.post<LoginResponse>(`${this.apiUrl}/api/v1/auth/login-json`, credentials, { headers })
       .pipe(
         tap(response => {
           // Guardar token y usuario
