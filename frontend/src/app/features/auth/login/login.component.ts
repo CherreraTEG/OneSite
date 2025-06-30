@@ -42,11 +42,7 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      // TODO: Implementar lógica de autenticación
-      console.log('Form submitted:', this.loginForm.value);
-      this.snackBar.open('Inicio de sesión exitoso', 'Cerrar', {
-        duration: 3000
-      });
+      // Lógica de login
     }
   }
 } 

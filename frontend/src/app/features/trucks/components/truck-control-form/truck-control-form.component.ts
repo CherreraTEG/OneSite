@@ -158,8 +158,7 @@ export class TruckControlFormComponent implements OnInit {
   onSubmit() {
     if (this.truckForm.valid) {
       const truckData: Truck = {
-        ...this.truckForm.value,
-        id_empresa: parseInt(this.companyStateService.getSelectedCompany())
+        ...this.truckForm.value
       };
       
       if (this.isEditMode && this.truck?.id) {

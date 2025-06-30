@@ -204,7 +204,6 @@ export class TrucksListComponent implements OnInit {
 
   applyFilters(): void {
     const filters = this.filterForm.value;
-    console.log('Registros antes de filtrar:', this.trucks.length, this.trucks);
     this.filteredTrucks = this.trucks.filter(truck => {
       return (
         (!filters.id_empresa || truck.id_empresa?.toString().includes(filters.id_empresa)) &&
@@ -216,7 +215,6 @@ export class TrucksListComponent implements OnInit {
         this.filterByDateRange(truck.deliv_date, filters.deliv_date_from, filters.deliv_date_to)
       );
     });
-    console.log('Registros después de filtrar:', this.filteredTrucks.length, this.filteredTrucks);
     this.totalItems = this.filteredTrucks.length;
     this.ensureAtLeastOneColumnVisible();
   }
@@ -359,7 +357,6 @@ export class TrucksListComponent implements OnInit {
     if (this.visibleColumns.length === 0 && this.columns.length > 0) {
       this.columns[0].visible = true;
       this.saveColumnPreferences();
-      console.warn('No había columnas visibles, se activó la primera por defecto.');
     }
   }
 } 

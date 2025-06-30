@@ -25,9 +25,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private companyStateService: CompanyStateService) {}
 
-  ngOnInit() {
-    this.companySubscription = this.companyStateService.selectedCompany$.subscribe((companyId: string) => {
-      console.log(`Dashboard: La empresa ha cambiado a ${companyId}. Aquí se recargarían los datos.`);
+  ngOnInit(): void {
+    this.companyStateService.selectedCompany$.subscribe((companyId: string) => {
+      // La empresa ha cambiado, aquí se recargarían los datos
     });
   }
 
@@ -59,15 +59,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   currentLanguage = 'es';
 
   // Método para manejar el logout
-  onLogout() {
-    console.log('Logout clicked');
-    // Aquí puedes agregar la lógica de logout
+  onLogout(): void {
+    // Lógica de logout
   }
 
   // Método para manejar el cambio de idioma
-  onLanguageChange(languageCode: string) {
+  onLanguageChange(languageCode: string): void {
     this.currentLanguage = languageCode;
-    console.log('Language changed to:', languageCode);
-    // Aquí puedes agregar la lógica para cambiar el idioma de la aplicación
+    // Cambio de idioma
   }
 } 
