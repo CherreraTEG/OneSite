@@ -63,16 +63,6 @@
         >
           {{ 'LOGIN.TEST_CONNECTION' | translate }}
         </button>
-        
-        <!-- Botón de debug de traducciones (solo para desarrollo) -->
-        <button 
-          type="button" 
-          (click)="debugTranslations()" 
-          class="test-connection-button"
-          *ngIf="!isLoading"
-        >
-          Debug Traducciones
-        </button>
       </form>
     </div>
   </div>
