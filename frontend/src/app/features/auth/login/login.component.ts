@@ -140,4 +140,12 @@ export class LoginComponent {
       }
     });
   }
+
+  // Método para debug de traducciones
+  debugTranslations(): void {
+    console.log('Idioma actual:', this.currentLang);
+    console.log('Traducción ERROR_ACCOUNT_LOCKED:', this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED'));
+    console.log('Traducción ERROR_INVALID_CREDENTIALS:', this.translate.instant('LOGIN.ERROR_INVALID_CREDENTIALS'));
+    console.log('Todas las traducciones LOGIN:', this.translate.instant('LOGIN'));
+  }
 } 
