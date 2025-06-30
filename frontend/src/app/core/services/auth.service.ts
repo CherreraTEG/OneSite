@@ -130,4 +130,8 @@ export class AuthService {
   testConnection(): Observable<any> {
     return this.http.get(`${this.apiUrl}/health`);
   }
+
+  checkAccountStatus(username: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/api/v1/auth/account-status/${username}`);
+  }
 } 

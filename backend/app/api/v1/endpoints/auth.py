@@ -258,4 +258,30 @@ async def validate_token(current_user: dict = Depends(get_current_user)):
         "valid": True,
         "user": current_user["sub"],
         "expires_in": current_user.get("exp")
-    } 
+    }
+
+@router.get("/account-status/{username}")
+async def get_account_status(username: str):
+    """
+    Obtiene el estado de bloqueo de una cuenta
+    
+    Args:
+        username: Nombre de usuario a verificar
+        
+    Returns:
+        Información del estado de la cuenta
+    """
+    try:
+        from app.core.security import ldap_auth
+        lockout_info = ldap_auth.account_lockout.get_account_lockout_info(username)
+        
+        return {
+            "username": username,
+            "status": "locked" if lockout_info["is_locked"] else "active",
+            "lockout_info": lockout_info
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error obteniendo estado de cuenta: {str(e)}"
+        ) 

@@ -40,6 +40,7 @@
     "ERROR_GENERIC": "Error al iniciar sesión. Inténtalo de nuevo.",
     "ERROR_INVALID_CREDENTIALS": "Usuario o contraseña incorrectos.",
     "ERROR_ACCOUNT_LOCKED": "Cuenta bloqueada por múltiples intentos fallidos. Contacta al administrador.",
+    "ERROR_ACCOUNT_LOCKED_WITH_TIME": "Cuenta bloqueada por múltiples intentos fallidos. Tiempo restante: {minutes} minutos.",
     "ERROR_USER_NOT_FOUND": "Usuario no encontrado en el sistema.",
     "ERROR_TOO_MANY_ATTEMPTS": "Demasiados intentos fallidos. Inténtalo más tarde.",
     "ERROR_SERVER_UNAVAILABLE": "Servidor no disponible. Inténtalo más tarde.",

@@ -56,7 +56,8 @@ export class LoginComponent {
         password: this.loginForm.get('password')?.value
       };
 
-      this.authService.login(credentials)
+      // Primero verificar el estado de la cuenta
+      this.authService.checkAccountStatus(credentials.username)
         .pipe(
           finalize(() => {
             this.isLoading = false;
@@ -65,58 +66,98 @@ export class LoginComponent {
           })
         )
         .subscribe({
-          next: (response) => {
-            console.log('Login exitoso:', response);
+          next: (accountStatus) => {
+            console.log('Estado de cuenta:', accountStatus);
             
-            // Mostrar mensaje de éxito
-            this.snackBar.open(
-              this.translate.instant('LOGIN.SUCCESS_MESSAGE'),
-              this.translate.instant('COMMON.CLOSE'),
-              { duration: 3000, panelClass: ['success-snackbar'] }
-            );
-
-            // Redirigir al dashboard
-            this.router.navigate(['/dashboard']);
+            // Si la cuenta está bloqueada, mostrar mensaje específico
+            if (accountStatus.status === 'locked') {
+              const lockoutInfo = accountStatus.lockout_info;
+              const remainingMinutes = Math.ceil(lockoutInfo.lock_remaining_seconds / 60);
+              
+              let errorMessage: string;
+              if (remainingMinutes > 0) {
+                errorMessage = this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED_WITH_TIME', { minutes: remainingMinutes });
+              } else {
+                errorMessage = this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED');
+              }
+              
+              this.snackBar.open(
+                errorMessage,
+                this.translate.instant('COMMON.CLOSE'),
+                { 
+                  duration: 8000,
+                  panelClass: ['error-snackbar']
+                }
+              );
+              return;
+            }
+            
+            // Si la cuenta no está bloqueada, proceder con el login
+            this.performLogin(credentials);
           },
           error: (error) => {
-            console.error('Error en login:', error);
-            
-            let errorMessage = this.translate.instant('LOGIN.ERROR_GENERIC');
-            
-            if (error.status === 401) {
-              errorMessage = this.translate.instant('LOGIN.ERROR_INVALID_CREDENTIALS');
-            } else if (error.status === 423) {
-              // Usuario bloqueado
-              errorMessage = this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED');
-            } else if (error.status === 404) {
-              // Usuario no encontrado
-              errorMessage = this.translate.instant('LOGIN.ERROR_USER_NOT_FOUND');
-            } else if (error.status === 429) {
-              errorMessage = this.translate.instant('LOGIN.ERROR_TOO_MANY_ATTEMPTS');
-            } else if (error.status === 0 || error.status === 503) {
-              errorMessage = this.translate.instant('LOGIN.ERROR_SERVER_UNAVAILABLE');
-            } else if (error.status === 400) {
-              // Manejar errores de validación del backend
-              if (error.error && error.error.detail) {
-                if (Array.isArray(error.error.detail)) {
-                  errorMessage = error.error.detail.join(', ');
-                } else {
-                  errorMessage = error.error.detail;
-                }
-              }
-            }
-
-            this.snackBar.open(
-              errorMessage,
-              this.translate.instant('COMMON.CLOSE'),
-              { 
-                duration: error.status === 423 ? 8000 : 5000, // Más tiempo para usuarios bloqueados
-                panelClass: ['error-snackbar']
-              }
-            );
+            console.error('Error verificando estado de cuenta:', error);
+            // Si hay error al verificar estado, proceder con el login normal
+            this.performLogin(credentials);
           }
         });
     }
+  }
+
+  private performLogin(credentials: any): void {
+    this.authService.login(credentials)
+      .subscribe({
+        next: (response) => {
+          console.log('Login exitoso:', response);
+          
+          // Mostrar mensaje de éxito
+          this.snackBar.open(
+            this.translate.instant('LOGIN.SUCCESS_MESSAGE'),
+            this.translate.instant('COMMON.CLOSE'),
+            { duration: 3000, panelClass: ['success-snackbar'] }
+          );
+
+          // Redirigir al dashboard
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          console.error('Error en login:', error);
+          
+          let errorMessage = this.translate.instant('LOGIN.ERROR_GENERIC');
+          
+          if (error.status === 401) {
+            errorMessage = this.translate.instant('LOGIN.ERROR_INVALID_CREDENTIALS');
+          } else if (error.status === 423) {
+            // Usuario bloqueado
+            errorMessage = this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED');
+          } else if (error.status === 404) {
+            // Usuario no encontrado
+            errorMessage = this.translate.instant('LOGIN.ERROR_USER_NOT_FOUND');
+          } else if (error.status === 429) {
+            errorMessage = this.translate.instant('LOGIN.ERROR_TOO_MANY_ATTEMPTS');
+          } else if (error.status === 0 || error.status === 503) {
+            errorMessage = this.translate.instant('LOGIN.ERROR_SERVER_UNAVAILABLE');
+          } else if (error.status === 400) {
+            // Manejar errores de validación del backend
+            if (error.error && error.error.detail) {
+              if (Array.isArray(error.error.detail)) {
+                errorMessage = error.error.detail.join(', ');
+              } else {
+                errorMessage = error.error.detail;
+              }
+            }
+          }
+
+          this.snackBar.open(
+            errorMessage,
+            this.translate.instant('COMMON.CLOSE'),
+            { 
+              duration: error.status === 423 ? 8000 : 5000, // Más tiempo para usuarios bloqueados
+              panelClass: ['error-snackbar']
+            }
+          );
+        }
+      });
   }
 
   // Método para probar conexión con el backend

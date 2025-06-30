@@ -32,6 +32,7 @@
     "ERROR_GENERIC": "Login error. Please try again.",
     "ERROR_INVALID_CREDENTIALS": "Invalid username or password.",
     "ERROR_ACCOUNT_LOCKED": "Account locked due to multiple failed attempts. Contact administrator.",
+    "ERROR_ACCOUNT_LOCKED_WITH_TIME": "Account locked due to multiple failed attempts. Time remaining: {minutes} minutes.",
     "ERROR_USER_NOT_FOUND": "User not found in the system.",
     "ERROR_TOO_MANY_ATTEMPTS": "Too many failed attempts. Please try again later.",
     "ERROR_SERVER_UNAVAILABLE": "Server unavailable. Please try again later.",

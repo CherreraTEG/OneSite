@@ -119,6 +119,36 @@ class AccountLockout:
             logger.error(f"Error verificando bloqueo de cuenta: {e}")
             return False
     
+    def get_account_lockout_info(self, username: str) -> dict:
+        """Obtiene información detallada sobre el estado de bloqueo de una cuenta"""
+        try:
+            lock_key = f"lockout:{username}"
+            attempt_key = f"attempts:{username}"
+            
+            is_locked = redis_client.exists(lock_key)
+            attempts = redis_client.get(attempt_key)
+            lock_ttl = redis_client.ttl(lock_key) if is_locked else -1
+            attempt_ttl = redis_client.ttl(attempt_key) if attempts else -1
+            
+            return {
+                "is_locked": bool(is_locked),
+                "failed_attempts": int(attempts) if attempts else 0,
+                "lock_remaining_seconds": lock_ttl if lock_ttl > 0 else 0,
+                "attempts_remaining_seconds": attempt_ttl if attempt_ttl > 0 else 0,
+                "max_attempts": self.max_attempts,
+                "lockout_duration_minutes": self.lockout_duration // 60
+            }
+        except Exception as e:
+            logger.error(f"Error obteniendo información de bloqueo: {e}")
+            return {
+                "is_locked": False,
+                "failed_attempts": 0,
+                "lock_remaining_seconds": 0,
+                "attempts_remaining_seconds": 0,
+                "max_attempts": self.max_attempts,
+                "lockout_duration_minutes": self.lockout_duration // 60
+            }
+    
     def record_failed_attempt(self, username: str):
         """Registra un intento fallido"""
         try:
