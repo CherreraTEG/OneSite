@@ -296,46 +296,75 @@ class LDAPAuth:
                 user=user_dn,
                 password=password,
                 authentication=SIMPLE,
-                auto_bind=True,
+                auto_bind=False,  # Cambiar a False para manejar errores manualmente
                 receive_timeout=10,
                 read_only=True
             )
             
-            if conn.bound:
-                self.secure_logger.log_login_attempt(username, True, ip_address, user_agent)
-                self.account_lockout.reset_failed_attempts(username)
-                logger.info("Autenticacion LDAP exitosa")
-                
-                # Buscar información del usuario
-                user_info = self._get_user_info(conn, username)
-                
-                if user_info:
-                    return user_info
+            # Intentar hacer bind manualmente para capturar errores específicos
+            try:
+                if conn.bind():
+                    self.secure_logger.log_login_attempt(username, True, ip_address, user_agent)
+                    self.account_lockout.reset_failed_attempts(username)
+                    logger.info("Autenticacion LDAP exitosa")
+                    
+                    # Buscar información del usuario
+                    user_info = self._get_user_info(conn, username)
+                    
+                    if user_info:
+                        return user_info
+                    else:
+                        logger.warning("Usuario no encontrado en el Directorio Activo")
+                        self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
+                        return {
+                            "error": "user_not_found",
+                            "message": "Usuario no encontrado en el Directorio Activo",
+                            "username": username
+                        }
                 else:
-                    logger.warning("Usuario no encontrado en el Directorio Activo")
+                    logger.error("La autenticacion LDAP fallo")
                     self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
+                    self.account_lockout.record_failed_attempt(username)
                     return {
-                        "error": "user_not_found",
-                        "message": "Usuario no encontrado en el Directorio Activo",
+                        "error": "invalid_credentials",
+                        "message": "Credenciales incorrectas",
                         "username": username
                     }
-            else:
-                logger.error("La autenticacion LDAP fallo")
+            except Exception as bind_error:
+                logger.error(f"Error durante el bind LDAP: {str(bind_error)}")
                 self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
                 self.account_lockout.record_failed_attempt(username)
-                return {
-                    "error": "invalid_credentials",
-                    "message": "Credenciales incorrectas",
-                    "username": username
-                }
+                
+                # Analizar el tipo de error
+                error_message = str(bind_error).lower()
+                
+                if any(keyword in error_message for keyword in [
+                    'invalid credentials', 'invalid_credentials', 'authentication failed',
+                    'invalid username or password', 'wrong password', 'password incorrect',
+                    'ldap.invalidCredentials', 'ldap_invalid_credentials', 'bind failed'
+                ]):
+                    return {
+                        "error": "invalid_credentials",
+                        "message": "Credenciales incorrectas",
+                        "username": username
+                    }
+                else:
+                    return {
+                        "error": "ldap_error",
+                        "message": "Error de conexión con el Directorio Activo",
+                        "username": username
+                    }
                 
         except Exception as e:
             logger.error(f"Error en la autenticacion LDAP: {str(e)}")
             self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
             self.account_lockout.record_failed_attempt(username)
+            
+            # Para errores externos, asumir que son credenciales incorrectas
+            # ya que los errores de conexión se manejan en el bind
             return {
-                "error": "ldap_error",
-                "message": "Error de conexión con el Directorio Activo",
+                "error": "invalid_credentials",
+                "message": "Credenciales incorrectas",
                 "username": username
             }
         finally:
