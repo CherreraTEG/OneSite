@@ -56,6 +56,9 @@ export class LoginComponent {
         password: this.loginForm.get('password')?.value
       };
 
+      // Limpiar cache del navegador para forzar verificación en tiempo real
+      this.clearBrowserCache();
+
       // Primero verificar el estado de la cuenta
       this.authService.checkAccountStatus(credentials.username)
         .pipe(
@@ -101,6 +104,17 @@ export class LoginComponent {
             this.performLogin(credentials);
           }
         });
+    }
+  }
+
+  private clearBrowserCache(): void {
+    // Forzar limpieza de cache del navegador
+    if ('caches' in window) {
+      caches.keys().then(names => {
+        names.forEach(name => {
+          caches.delete(name);
+        });
+      });
     }
   }
 
@@ -175,6 +189,48 @@ export class LoginComponent {
         console.error('Error de conexión con el backend:', error);
         this.snackBar.open(
           this.translate.instant('LOGIN.CONNECTION_ERROR'),
+          this.translate.instant('COMMON.CLOSE'),
+          { duration: 5000, panelClass: ['error-snackbar'] }
+        );
+      }
+    });
+  }
+
+  // Método para verificar manualmente el estado de una cuenta
+  checkAccountStatus(): void {
+    const username = this.loginForm.get('username')?.value;
+    if (!username) {
+      this.snackBar.open(
+        'Por favor ingrese un nombre de usuario',
+        this.translate.instant('COMMON.CLOSE'),
+        { duration: 3000, panelClass: ['error-snackbar'] }
+      );
+      return;
+    }
+
+    this.authService.checkAccountStatus(username).subscribe({
+      next: (accountStatus) => {
+        console.log('Estado de cuenta verificado:', accountStatus);
+        let message: string;
+        
+        if (accountStatus.status === 'locked') {
+          const lockoutInfo = accountStatus.lockout_info;
+          const remainingMinutes = Math.ceil(lockoutInfo.lock_remaining_seconds / 60);
+          message = `Cuenta BLOQUEADA. Tiempo restante: ${remainingMinutes} minutos`;
+        } else {
+          message = 'Cuenta ACTIVA - No está bloqueada';
+        }
+        
+        this.snackBar.open(
+          message,
+          this.translate.instant('COMMON.CLOSE'),
+          { duration: 5000, panelClass: ['info-snackbar'] }
+        );
+      },
+      error: (error) => {
+        console.error('Error verificando estado de cuenta:', error);
+        this.snackBar.open(
+          'Error al verificar estado de cuenta',
           this.translate.instant('COMMON.CLOSE'),
           { duration: 5000, panelClass: ['error-snackbar'] }
         );

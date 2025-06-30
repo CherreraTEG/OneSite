@@ -132,6 +132,13 @@ export class AuthService {
   }
 
   checkAccountStatus(username: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/v1/auth/account-status/${username}`);
+    // Agregar timestamp para evitar cacheo del navegador
+    const timestamp = new Date().getTime();
+    const headers = new HttpHeaders({
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
+    return this.http.get(`${this.apiUrl}/api/v1/auth/account-status/${username}?t=${timestamp}`, { headers });
   }
 } 

@@ -63,6 +63,16 @@
         >
           {{ 'LOGIN.TEST_CONNECTION' | translate }}
         </button>
+        
+        <!-- Botón para verificar estado de cuenta -->
+        <button 
+          type="button" 
+          (click)="checkAccountStatus()" 
+          class="check-status-button"
+          *ngIf="!isLoading && loginForm.get('username')?.value"
+        >
+          Verificar Estado de Cuenta
+        </button>
       </form>
     </div>
   </div>
