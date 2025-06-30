@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 // Material Modules
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +22,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    HttpClientModule,
     // Material Modules
     MatButtonModule,
     MatCardModule,
@@ -36,6 +38,9 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     SpinnerComponent
   ],
   exports: [
+    CommonModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     // Material Modules
     MatButtonModule,
     MatCardModule,

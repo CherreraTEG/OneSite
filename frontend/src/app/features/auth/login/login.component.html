@@ -16,9 +16,55 @@
     <div class="login-card">
       <h2>{{ 'LOGIN.TITLE' | translate }}</h2>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <input type="text" formControlName="username" [placeholder]="'LOGIN.USERNAME' | translate" />
-        <input type="password" formControlName="password" [placeholder]="'LOGIN.PASSWORD' | translate" />
-        <button type="submit" [disabled]="loginForm.invalid">{{ 'LOGIN.LOGIN_BUTTON' | translate }}</button>
+        <div class="form-group">
+          <input 
+            type="text" 
+            formControlName="username" 
+            [placeholder]="'LOGIN.USERNAME' | translate"
+            [disabled]="isLoading"
+            class="form-input"
+          />
+          <div class="error-message" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+            {{ 'LOGIN.USERNAME_REQUIRED' | translate }}
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <input 
+            type="password" 
+            formControlName="password" 
+            [placeholder]="'LOGIN.PASSWORD' | translate"
+            [disabled]="isLoading"
+            class="form-input"
+          />
+          <div class="error-message" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">
+              {{ 'LOGIN.PASSWORD_REQUIRED' | translate }}
+            </span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">
+              {{ 'LOGIN.PASSWORD_MIN_LENGTH' | translate }}
+            </span>
+          </div>
+        </div>
+        
+        <button 
+          type="submit" 
+          [disabled]="loginForm.invalid || isLoading"
+          class="login-button"
+        >
+          <span *ngIf="!isLoading">{{ 'LOGIN.LOGIN_BUTTON' | translate }}</span>
+          <span *ngIf="isLoading">{{ 'LOGIN.LOGGING_IN' | translate }}</span>
+        </button>
+        
+        <!-- Botón de prueba de conexión (solo para desarrollo) -->
+        <button 
+          type="button" 
+          (click)="testConnection()" 
+          class="test-connection-button"
+          *ngIf="!isLoading"
+        >
+          {{ 'LOGIN.TEST_CONNECTION' | translate }}
+        </button>
       </form>
     </div>
   </div>

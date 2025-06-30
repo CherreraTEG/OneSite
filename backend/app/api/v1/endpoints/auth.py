@@ -1,51 +1,198 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
-from app.core.security import create_access_token, ldap_auth
+from app.core.security import create_access_token, ldap_auth, add_token_to_blacklist, is_token_blacklisted
 from app.core.config import settings
-from pydantic import BaseModel
+from app.core.deps import get_current_user
+from pydantic import BaseModel, validator
 from typing import Optional, List
+import re
 
 router = APIRouter()
 
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str
+    expires_in: int
     user: dict
 
+class LoginCredentials(BaseModel):
+    username: str
+    password: str
+    
+    @validator('username')
+    def validate_username(cls, v):
+        if not re.match(r'^[a-zA-Z0-9._-]{3,50}$', v):
+            raise ValueError('Username inválido: debe contener solo letras, números, puntos, guiones bajos y guiones medios, entre 3 y 50 caracteres')
+        return v
+    
+    @validator('password')
+    def validate_password(cls, v):
+        if len(v) < 6:
+            raise ValueError('Contraseña debe tener al menos 6 caracteres')
+        return v
+
+class UserInfo(BaseModel):
+    username: str
+    email: Optional[str] = None
+    full_name: Optional[str] = None
+    department: Optional[str] = None
+    roles: List[str]
+    permissions: List[str]
+
 @router.post("/login", response_model=TokenResponse)
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends()):
     """
-    Autenticación de usuario contra el Directorio Activo
+    Autenticación de usuario contra el Directorio Activo con rate limiting
     
     Args:
+        request: Objeto Request de FastAPI para obtener IP del cliente
         form_data: Datos del formulario con username y password
         
     Returns:
         Token JWT y datos del usuario si la autenticación es exitosa
         
     Raises:
-        HTTPException: Si las credenciales son inválidas
+        HTTPException: Si las credenciales son inválidas o se excede el rate limit
     """
+    # Obtener información del cliente
+    client_ip = request.client.host if request.client else "unknown"
+    user_agent = request.headers.get("user-agent", "unknown")
+    
+    # Validar que los campos no estén vacíos
+    if not form_data.username or not form_data.password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Usuario y contraseña son requeridos",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Validar formato de username
+    try:
+        LoginCredentials(username=form_data.username, password=form_data.password)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
     # Intentar autenticar con LDAP
-    user = ldap_auth.authenticate(form_data.username, form_data.password)
+    user = ldap_auth.authenticate(form_data.username, form_data.password, client_ip, user_agent)
     
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Credenciales incorrectas",
+            detail="Credenciales incorrectas o cuenta bloqueada",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
     # Crear token de acceso
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user["username"], "groups": user["groups"]},
+        data={
+            "sub": user["username"],
+            "user_id": user.get("employee_id"),
+            "email": user["email"],
+            "full_name": user["full_name"],
+            "roles": user["roles"],
+            "permissions": user["permissions"],
+            "department": user.get("department")
+        },
         expires_delta=access_token_expires
     )
     
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user": user
+        "expires_in": settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+        "user": {
+            "username": user["username"],
+            "email": user["email"],
+            "full_name": user["full_name"],
+            "department": user.get("department"),
+            "roles": user["roles"],
+            "permissions": user["permissions"]
+        }
+    }
+
+@router.post("/logout")
+async def logout(current_user: dict = Depends(get_current_user), token: str = Depends(get_current_user)):
+    """
+    Logout seguro con invalidación de token
+    
+    Args:
+        current_user: Usuario actual autenticado
+        token: Token JWT actual
+        
+    Returns:
+        Mensaje de confirmación de logout
+    """
+    try:
+        # Agregar token a la blacklist
+        from datetime import datetime
+        expires_at = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        add_token_to_blacklist(token, expires_at)
+        
+        return {
+            "message": "Logout exitoso",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error durante el logout"
+        )
+
+@router.get("/me", response_model=UserInfo)
+async def get_current_user_info(current_user: dict = Depends(get_current_user)):
+    """
+    Obtiene información del usuario actual
+    
+    Args:
+        current_user: Usuario actual autenticado
+        
+    Returns:
+        Información del usuario actual
+    """
+    return {
+        "username": current_user["sub"],
+        "email": current_user.get("email"),
+        "full_name": current_user.get("full_name"),
+        "department": current_user.get("department"),
+        "roles": current_user.get("roles", []),
+        "permissions": current_user.get("permissions", [])
+    }
+
+@router.get("/permissions")
+async def get_user_permissions(current_user: dict = Depends(get_current_user)):
+    """
+    Obtiene los permisos del usuario actual
+    
+    Args:
+        current_user: Usuario actual autenticado
+        
+    Returns:
+        Lista de permisos del usuario
+    """
+    return {
+        "permissions": current_user.get("permissions", []),
+        "roles": current_user.get("roles", [])
+    }
+
+@router.post("/validate-token")
+async def validate_token(current_user: dict = Depends(get_current_user)):
+    """
+    Valida si el token actual es válido
+    
+    Args:
+        current_user: Usuario actual autenticado
+        
+    Returns:
+        Estado de validez del token
+    """
+    return {
+        "valid": True,
+        "user": current_user["sub"],
+        "expires_in": current_user.get("exp")
     } 

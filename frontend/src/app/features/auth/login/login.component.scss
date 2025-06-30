@@ -85,24 +85,51 @@
       display: flex;
       flex-direction: column;
       gap: 18px;
-      input {
-        font-family: inherit;
-        font-size: 1rem;
-        padding: 12px 14px;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
-        background: #f8fafc;
-        outline: none;
-        transition: border 0.2s;
-        color: #545386;
-        &::placeholder {
-          color: #b0b0b0;
+      
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        
+        .form-input {
+          font-family: inherit;
+          font-size: 1rem;
+          padding: 12px 14px;
+          border-radius: 8px;
+          border: 1px solid #e0e0e0;
+          background: #f8fafc;
+          outline: none;
+          transition: border 0.2s;
+          color: #545386;
+          
+          &::placeholder {
+            color: #b0b0b0;
+          }
+          
+          &:focus {
+            border: 1.5px solid #545386;
+          }
+          
+          &:disabled {
+            background: #f0f0f0;
+            color: #888;
+            cursor: not-allowed;
+          }
+          
+          &.error {
+            border: 1.5px solid #e74c3c;
+          }
         }
-        &:focus {
-          border: 1.5px solid #545386;
+        
+        .error-message {
+          color: #e74c3c;
+          font-size: 0.85rem;
+          margin-top: 2px;
+          padding-left: 4px;
         }
       }
-      button {
+      
+      .login-button {
         margin-top: 10px;
         width: 100%;
         background: #545386cc;
@@ -116,13 +143,35 @@
         cursor: pointer;
         text-transform: uppercase;
         transition: background 0.2s;
-        &:hover {
+        
+        &:hover:not(:disabled) {
           background: #545386;
         }
+        
         &:disabled {
           background: #C2DFEA;
           color: #888;
           cursor: not-allowed;
+        }
+      }
+      
+      .test-connection-button {
+        width: 100%;
+        background: transparent;
+        color: #545386;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 500;
+        font-size: 0.9rem;
+        border: 1px solid #545386;
+        border-radius: 6px;
+        padding: 8px 0;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 8px;
+        
+        &:hover {
+          background: #545386;
+          color: #fff;
         }
       }
     }

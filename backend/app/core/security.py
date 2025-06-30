@@ -5,15 +5,31 @@ from passlib.context import CryptContext
 from app.core.config import settings
 from ldap3 import Server, Connection, ALL, SIMPLE, SUBTREE
 import logging
+import ssl
+from ldap3 import Tls
+import redis
+import os
 
-# Configurar logging
+# Configurar logging seguro
 logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=getattr(logging, settings.LOG_LEVEL),
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(settings.LOG_FILE),
+        logging.StreamHandler()
+    ]
 )
 logger = logging.getLogger(__name__)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# Configurar Redis para rate limiting y blacklist
+redis_client = redis.Redis(
+    host=settings.REDIS_HOST,
+    port=settings.REDIS_PORT,
+    db=settings.REDIS_DB,
+    decode_responses=True
+)
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
@@ -39,37 +55,206 @@ def verify_token(token: str) -> Optional[Dict[str, Any]]:
     Verifica y decodifica un token JWT
     """
     try:
+        # Verificar si el token está en la blacklist
+        if is_token_blacklisted(token):
+            return None
+            
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload
     except JWTError:
         return None
 
+def is_token_blacklisted(token: str) -> bool:
+    """Verifica si un token está en la blacklist"""
+    try:
+        return redis_client.exists(f"blacklist:{token}")
+    except Exception as e:
+        logger.error(f"Error verificando blacklist: {e}")
+        return False
+
+def add_token_to_blacklist(token: str, expires_at: datetime):
+    """Agrega un token a la blacklist"""
+    try:
+        ttl = int((expires_at - datetime.utcnow()).total_seconds())
+        if ttl > 0:
+            redis_client.setex(f"blacklist:{token}", ttl, "blacklisted")
+    except Exception as e:
+        logger.error(f"Error agregando token a blacklist: {e}")
+
+class SecureLogger:
+    """Clase para logging seguro sin exponer información sensible"""
+    
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+    
+    def log_login_attempt(self, username: str, success: bool, ip_address: str, user_agent: str = None):
+        """Registra intentos de login sin exponer contraseñas"""
+        status = "SUCCESS" if success else "FAILED"
+        log_message = f"Login attempt - User: {username}, Status: {status}, IP: {ip_address}"
+        if user_agent:
+            log_message += f", User-Agent: {user_agent[:100]}"
+        
+        if success:
+            self.logger.info(log_message)
+        else:
+            self.logger.warning(log_message)
+    
+    def log_security_event(self, event_type: str, details: str, severity: str = "INFO"):
+        """Registra eventos de seguridad"""
+        self.logger.warning(f"Security Event - Type: {event_type}, Details: {details}, Severity: {severity}")
+
+class AccountLockout:
+    """Gestión de bloqueo de cuentas por intentos fallidos"""
+    
+    def __init__(self):
+        self.max_attempts = settings.MAX_LOGIN_ATTEMPTS
+        self.lockout_duration = settings.ACCOUNT_LOCKOUT_MINUTES * 60  # Convertir a segundos
+    
+    def is_account_locked(self, username: str) -> bool:
+        """Verifica si una cuenta está bloqueada"""
+        try:
+            lock_key = f"lockout:{username}"
+            return redis_client.exists(lock_key)
+        except Exception as e:
+            logger.error(f"Error verificando bloqueo de cuenta: {e}")
+            return False
+    
+    def record_failed_attempt(self, username: str):
+        """Registra un intento fallido"""
+        try:
+            attempt_key = f"attempts:{username}"
+            attempts = redis_client.incr(attempt_key)
+            
+            # Establecer TTL para el contador de intentos (1 hora)
+            if attempts == 1:
+                redis_client.expire(attempt_key, 3600)
+            
+            if attempts >= self.max_attempts:
+                lock_key = f"lockout:{username}"
+                redis_client.setex(lock_key, self.lockout_duration, "locked")
+                redis_client.delete(attempt_key)
+                logger.warning(f"Cuenta bloqueada: {username} por {self.max_attempts} intentos fallidos")
+        except Exception as e:
+            logger.error(f"Error registrando intento fallido: {e}")
+    
+    def reset_failed_attempts(self, username: str):
+        """Resetea los intentos fallidos después de un login exitoso"""
+        try:
+            attempt_key = f"attempts:{username}"
+            redis_client.delete(attempt_key)
+        except Exception as e:
+            logger.error(f"Error reseteando intentos fallidos: {e}")
+
 class LDAPAuth:
     def __init__(self):
-        self.server = Server(
-            "10.50.5.200",  # Servidor LDAP de Elite
-            get_info=ALL,
-            port=389,
-            use_ssl=False
-        )
-        self.search_base = 'DC=ELITE,DC=local'
+        # Configuración LDAP con SSL/TLS - Mejor práctica desde desarrollo
+        try:
+            if settings.AD_USE_SSL:
+                # Intentar configuración SSL estricta primero (mejor práctica)
+                logger.info("Configurando conexion LDAP con validacion SSL estricta")
+                tls_configuration = Tls(validate=ssl.CERT_REQUIRED)
+                
+                self.server = Server(
+                    settings.AD_SERVER,
+                    get_info=ALL,
+                    port=settings.AD_PORT,
+                    use_ssl=True,
+                    tls=tls_configuration
+                )
+                
+                # Probar conexión SSL estricta
+                test_conn = Connection(self.server)
+                test_conn.bind()
+                if test_conn.bound:
+                    logger.info("Conexion SSL estricta exitosa - Configuracion optima")
+                    test_conn.unbind()
+                else:
+                    raise Exception("Conexion SSL estricta fallo")
+                    
+            else:
+                # Configuración sin SSL (solo si AD_USE_SSL=false)
+                logger.warning("ADVERTENCIA: SSL deshabilitado - Conexion no segura")
+                self.server = Server(
+                    settings.AD_SERVER,
+                    get_info=ALL,
+                    port=389,
+                    use_ssl=False
+                )
+                
+        except Exception as ssl_error:
+            logger.error(f"Error en configuracion SSL estricta: {ssl_error}")
+            
+            # Si es error de certificado, intentar con validación relajada
+            if "certificate" in str(ssl_error).lower() or "ssl" in str(ssl_error).lower():
+                logger.warning("Intentando configuracion SSL con validacion relajada")
+                try:
+                    tls_configuration = Tls(validate=ssl.CERT_NONE)
+                    self.server = Server(
+                        settings.AD_SERVER,
+                        get_info=ALL,
+                        port=settings.AD_PORT,
+                        use_ssl=True,
+                        tls=tls_configuration
+                    )
+                    
+                    # Probar conexión SSL relajada
+                    test_conn = Connection(self.server)
+                    test_conn.bind()
+                    if test_conn.bound:
+                        logger.warning("Conexion SSL con validacion relajada exitosa - Configurar certificados SSL validos para produccion")
+                        test_conn.unbind()
+                    else:
+                        raise Exception("Conexion SSL relajada tambien fallo")
+                        
+                except Exception as relaxed_error:
+                    logger.error(f"Error en configuracion SSL relajada: {relaxed_error}")
+                    logger.error("Fallando a conexion no segura como ultimo recurso")
+                    
+                    # Último recurso: conexión sin SSL
+                    self.server = Server(
+                        settings.AD_SERVER,
+                        get_info=ALL,
+                        port=389,
+                        use_ssl=False
+                    )
+            else:
+                # Otro tipo de error, usar conexión sin SSL
+                logger.error("Error no relacionado con SSL, usando conexion no segura")
+                self.server = Server(
+                    settings.AD_SERVER,
+                    get_info=ALL,
+                    port=389,
+                    use_ssl=False
+                )
+        
+        self.search_base = settings.AD_BASE_DN
+        self.secure_logger = SecureLogger()
+        self.account_lockout = AccountLockout()
 
-    def authenticate(self, username: str, password: str) -> Optional[Dict[str, Any]]:
+    def authenticate(self, username: str, password: str, ip_address: str = "unknown", user_agent: str = None) -> Optional[Dict[str, Any]]:
         """
         Autentica un usuario contra el Directorio Activo
         
         Args:
             username: Nombre de usuario
             password: Contraseña del usuario
+            ip_address: Dirección IP del cliente
+            user_agent: User-Agent del cliente
             
         Returns:
             Dict con la información del usuario si la autenticación es exitosa
             None si la autenticación falla
         """
         try:
+            # Verificar si la cuenta está bloqueada
+            if self.account_lockout.is_account_locked(username):
+                self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
+                logger.warning(f"Intento de login en cuenta bloqueada: {username}")
+                return None
+            
             # Formatear el nombre de usuario para LDAP
-            user_dn = f"{username}@elite.local"
-            logger.info(f"Intentando autenticar usuario: {user_dn}")
+            user_dn = f"{username}@{settings.AD_DOMAIN}"
+            logger.info(f"Intentando autenticar usuario: {username} desde IP: {ip_address}")
             
             # Crear conexión LDAP
             conn = Connection(
@@ -83,41 +268,127 @@ class LDAPAuth:
             )
             
             if conn.bound:
-                logger.info("✅ Autenticación LDAP exitosa")
+                self.secure_logger.log_login_attempt(username, True, ip_address, user_agent)
+                self.account_lockout.reset_failed_attempts(username)
+                logger.info("Autenticacion LDAP exitosa")
                 
                 # Buscar información del usuario
-                search_filter = f'(&(objectClass=user)(sAMAccountName={username}))'
+                user_info = self._get_user_info(conn, username)
                 
-                conn.search(
-                    search_base=self.search_base,
-                    search_filter=search_filter,
-                    search_scope=SUBTREE,
-                    attributes=['cn', 'mail', 'memberOf', 'displayName']
-                )
-                
-                if conn.entries:
-                    user_info = conn.entries[0]
-                    user_data = {
-                        "username": username,
-                        "email": user_info.mail.value if hasattr(user_info, 'mail') else None,
-                        "full_name": user_info.displayName.value if hasattr(user_info, 'displayName') else None,
-                        "groups": [group.split(',')[0].split('=')[1] for group in user_info.memberOf.values] if hasattr(user_info, 'memberOf') else []
-                    }
-                    logger.info(f"✅ Usuario autenticado: {user_data['full_name']}")
-                    return user_data
+                if user_info:
+                    return user_info
                 else:
-                    logger.warning("⚠️ Usuario no encontrado en el Directorio Activo")
+                    logger.warning("Usuario no encontrado en el Directorio Activo")
+                    self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
                     return None
             else:
-                logger.error("❌ La autenticación LDAP falló")
+                logger.error("La autenticacion LDAP fallo")
+                self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
+                self.account_lockout.record_failed_attempt(username)
                 return None
                 
         except Exception as e:
-            logger.error(f"❌ Error en la autenticación LDAP: {str(e)}")
+            logger.error(f"Error en la autenticacion LDAP: {str(e)}")
+            self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
+            self.account_lockout.record_failed_attempt(username)
             return None
         finally:
             if 'conn' in locals():
                 conn.unbind()
+
+    def _get_user_info(self, conn: Connection, username: str) -> Optional[Dict[str, Any]]:
+        """Obtiene información detallada del usuario desde AD"""
+        try:
+            # Buscar usuario en AD
+            search_filter = f'(&(objectClass=user)(sAMAccountName={username}))'
+            
+            conn.search(
+                search_base=self.search_base,
+                search_filter=search_filter,
+                search_scope=SUBTREE,
+                attributes=[
+                    'cn', 'mail', 'memberOf', 'displayName', 
+                    'givenName', 'sn', 'department', 'title',
+                    'manager', 'employeeID', 'userPrincipalName'
+                ]
+            )
+            
+            if conn.entries:
+                user_entry = conn.entries[0]
+                
+                # Extraer grupos del usuario
+                groups = self._extract_groups(user_entry.memberOf.values if hasattr(user_entry, 'memberOf') else [])
+                
+                # Mapear grupos AD a roles de OneSite
+                roles = self._map_ad_groups_to_roles(groups)
+                
+                return {
+                    "username": username,
+                    "email": user_entry.mail.value if hasattr(user_entry, 'mail') else None,
+                    "full_name": user_entry.displayName.value if hasattr(user_entry, 'displayName') else None,
+                    "first_name": user_entry.givenName.value if hasattr(user_entry, 'givenName') else None,
+                    "last_name": user_entry.sn.value if hasattr(user_entry, 'sn') else None,
+                    "department": user_entry.department.value if hasattr(user_entry, 'department') else None,
+                    "title": user_entry.title.value if hasattr(user_entry, 'title') else None,
+                    "employee_id": user_entry.employeeID.value if hasattr(user_entry, 'employeeID') else None,
+                    "ad_groups": groups,
+                    "roles": roles,
+                    "permissions": self._get_permissions_from_roles(roles)
+                }
+            else:
+                return None
+                
+        except Exception as e:
+            logger.error(f"Error obteniendo información del usuario: {str(e)}")
+            return None
+
+    def _extract_groups(self, member_of: list) -> list:
+        """Extrae nombres de grupos desde memberOf"""
+        groups = []
+        for group_dn in member_of:
+            # Extraer CN del DN (ej: "CN=Operadores,OU=Groups,DC=ELITE,DC=local" -> "Operadores")
+            if group_dn.startswith("CN="):
+                group_name = group_dn.split(",")[0].replace("CN=", "")
+                groups.append(group_name)
+        return groups
+
+    def _map_ad_groups_to_roles(self, ad_groups: list) -> list:
+        """Mapea grupos de AD a roles de OneSite"""
+        role_mapping = {
+            "Operadores": "operadores",
+            "Supervisores": "supervisores", 
+            "Administradores": "administradores",
+            "Gerentes": "gerentes",
+            "Auditores": "auditores",
+            "IT_Support": "soporte_tecnico"
+        }
+        
+        roles = []
+        for group in ad_groups:
+            if group in role_mapping:
+                roles.append(role_mapping[group])
+        
+        return roles
+
+    def _get_permissions_from_roles(self, roles: list) -> list:
+        """Obtiene permisos basados en roles"""
+        permissions = {
+            "operadores": ["trucks:read", "trucks:create"],
+            "supervisores": ["trucks:read", "trucks:write", "trucks:delete", "reports:read"],
+            "administradores": ["*"],  # Todos los permisos
+            "gerentes": ["trucks:read", "trucks:write", "reports:read", "reports:write"],
+            "auditores": ["trucks:read", "audit:read", "reports:read"],
+            "soporte_tecnico": ["trucks:read", "system:read"]
+        }
+        
+        user_permissions = []
+        for role in roles:
+            if role in permissions:
+                if permissions[role] == ["*"]:
+                    return ["*"]  # Administrador tiene todos los permisos
+                user_permissions.extend(permissions[role])
+        
+        return list(set(user_permissions))  # Eliminar duplicados
 
 # Instancia global del servicio de autenticación LDAP
 ldap_auth = LDAPAuth() 
