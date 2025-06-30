@@ -200,14 +200,19 @@ export class LoginComponent {
   checkAccountStatus(): void {
     const username = this.loginForm.get('username')?.value;
     if (!username) {
-      this.snackBar.open(
-        'Por favor ingrese un nombre de usuario',
-        this.translate.instant('COMMON.CLOSE'),
-        { duration: 3000, panelClass: ['error-snackbar'] }
-      );
-      return;
+      // Si no hay usuario en el formulario, pedir que lo ingrese
+      const inputUsername = prompt('Por favor ingrese el nombre de usuario a verificar:');
+      if (!inputUsername) {
+        return; // Usuario canceló
+      }
+      
+      this.verifyAccountStatus(inputUsername);
+    } else {
+      this.verifyAccountStatus(username);
     }
+  }
 
+  private verifyAccountStatus(username: string): void {
     this.authService.checkAccountStatus(username).subscribe({
       next: (accountStatus) => {
         console.log('Estado de cuenta verificado:', accountStatus);
