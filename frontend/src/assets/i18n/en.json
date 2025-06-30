@@ -192,6 +192,7 @@
     "PROMPT_USERNAME": "Please enter the username to verify:",
     "ACCOUNT_LOCKED": "Account LOCKED",
     "ACCOUNT_ACTIVE": "Account ACTIVE - Not blocked",
-    "ERROR_VERIFYING": "Error verifying account status"
+    "ERROR_VERIFYING": "Error verifying account status",
+    "BUTTON_TEXT": "Check Account Status"
   }
 } 

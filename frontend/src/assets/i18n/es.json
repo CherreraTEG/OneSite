@@ -54,7 +54,8 @@
       "PROMPT_USERNAME": "Por favor ingrese el nombre de usuario a verificar:",
       "ACCOUNT_LOCKED": "Cuenta BLOQUEADA",
       "ACCOUNT_ACTIVE": "Cuenta ACTIVA - No está bloqueada",
-      "ERROR_VERIFYING": "Error al verificar estado de cuenta"
+      "ERROR_VERIFYING": "Error al verificar estado de cuenta",
+      "BUTTON_TEXT": "Verificar Estado de Cuenta"
     },
     "ERROR": {
       "TITLE": "Error de autenticación",
