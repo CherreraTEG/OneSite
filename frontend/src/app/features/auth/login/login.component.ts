@@ -72,18 +72,9 @@ export class LoginComponent {
           next: (accountStatus) => {
             console.log('Estado de cuenta:', accountStatus);
             
-            // Si la cuenta está bloqueada, mostrar mensaje específico
+            // Si la cuenta está bloqueada, mostrar mensaje simple
             if (accountStatus.status === 'locked') {
-              const lockoutInfo = accountStatus.lockout_info;
-              const remainingMinutes = Math.ceil(lockoutInfo.lock_remaining_seconds / 60);
-              
-              let errorMessage: string;
-              if (remainingMinutes > 0) {
-                errorMessage = this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED_WITH_TIME', { minutes: remainingMinutes });
-              } else {
-                errorMessage = this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED');
-              }
-              
+              let errorMessage = this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED');
               this.snackBar.open(
                 errorMessage,
                 this.translate.instant('COMMON.CLOSE'),
@@ -201,7 +192,8 @@ export class LoginComponent {
     const username = this.loginForm.get('username')?.value;
     if (!username) {
       // Si no hay usuario en el formulario, pedir que lo ingrese
-      const inputUsername = prompt('Por favor ingrese el nombre de usuario a verificar:');
+      const promptMessage = this.translate.instant('LOGIN.ACCOUNT_STATUS.PROMPT_USERNAME');
+      const inputUsername = prompt(promptMessage);
       if (!inputUsername) {
         return; // Usuario canceló
       }
@@ -219,11 +211,9 @@ export class LoginComponent {
         let message: string;
         
         if (accountStatus.status === 'locked') {
-          const lockoutInfo = accountStatus.lockout_info;
-          const remainingMinutes = Math.ceil(lockoutInfo.lock_remaining_seconds / 60);
-          message = `Cuenta BLOQUEADA. Tiempo restante: ${remainingMinutes} minutos`;
+          message = this.translate.instant('LOGIN.ACCOUNT_STATUS.ACCOUNT_LOCKED');
         } else {
-          message = 'Cuenta ACTIVA - No está bloqueada';
+          message = this.translate.instant('LOGIN.ACCOUNT_STATUS.ACCOUNT_ACTIVE');
         }
         
         this.snackBar.open(
@@ -235,7 +225,7 @@ export class LoginComponent {
       error: (error) => {
         console.error('Error verificando estado de cuenta:', error);
         this.snackBar.open(
-          'Error al verificar estado de cuenta',
+          this.translate.instant('LOGIN.ACCOUNT_STATUS.ERROR_VERIFYING'),
           this.translate.instant('COMMON.CLOSE'),
           { duration: 5000, panelClass: ['error-snackbar'] }
         );

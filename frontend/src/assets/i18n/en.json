@@ -187,5 +187,11 @@
     "CONFIRM_DELETE": "Are you sure you want to delete this item?",
     "YES": "Yes",
     "NO": "No"
+  },
+  "ACCOUNT_STATUS": {
+    "PROMPT_USERNAME": "Please enter the username to verify:",
+    "ACCOUNT_LOCKED": "Account LOCKED",
+    "ACCOUNT_ACTIVE": "Account ACTIVE - Not blocked",
+    "ERROR_VERIFYING": "Error verifying account status"
   }
 } 

@@ -189,5 +189,11 @@
     "CONFIRM_DELETE": "Êtes-vous sûr de vouloir supprimer cet élément ?",
     "YES": "Oui",
     "NO": "Non"
+  },
+  "ACCOUNT_STATUS": {
+    "PROMPT_USERNAME": "Veuillez entrer le nom d'utilisateur à vérifier:",
+    "ACCOUNT_LOCKED": "Compte BLOQUÉ",
+    "ACCOUNT_ACTIVE": "Compte ACTIF - Non bloqué",
+    "ERROR_VERIFYING": "Erreur lors de la vérification du statut du compte"
   }
 } 

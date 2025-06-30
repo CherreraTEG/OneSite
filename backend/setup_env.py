@@ -46,8 +46,8 @@ ACCOUNT_LOCKOUT_MINUTES=15
 # Configuración CORS
 CORS_ORIGINS=["https://teg.1sitesoft.com", "http://localhost:4200"]
 CORS_CREDENTIALS=true
-CORS_METHODS=["GET", "POST", "PUT", "DELETE"]
-CORS_HEADERS=["Authorization", "Content-Type", "X-Requested-With"]
+CORS_METHODS=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+CORS_HEADERS=["Authorization", "Content-Type", "X-Requested-With", "Cache-Control", "Pragma", "Expires"]
 
 # Configuración de Redis para rate limiting
 REDIS_HOST=localhost

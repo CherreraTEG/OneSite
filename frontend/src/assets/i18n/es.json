@@ -50,6 +50,12 @@
     "TEST_CONNECTION": "Probar Conexión",
     "CONNECTION_SUCCESS": "Conexión exitosa con el servidor",
     "CONNECTION_ERROR": "Error de conexión con el servidor",
+    "ACCOUNT_STATUS": {
+      "PROMPT_USERNAME": "Por favor ingrese el nombre de usuario a verificar:",
+      "ACCOUNT_LOCKED": "Cuenta BLOQUEADA",
+      "ACCOUNT_ACTIVE": "Cuenta ACTIVA - No está bloqueada",
+      "ERROR_VERIFYING": "Error al verificar estado de cuenta"
+    },
     "ERROR": {
       "TITLE": "Error de autenticación",
       "MESSAGE": "Usuario o contraseña incorrectos.",
