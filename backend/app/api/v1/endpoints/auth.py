@@ -57,6 +57,13 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
     """
     return await _authenticate_user(request, form_data.username, form_data.password)
 
+@router.options("/login-json")
+async def options_login_json():
+    """
+    Maneja las peticiones OPTIONS para el endpoint de login-json
+    """
+    return {"message": "OK"}
+
 @router.post("/login-json", response_model=TokenResponse)
 async def login_json(request: Request, credentials: LoginCredentials):
     """
@@ -259,6 +266,13 @@ async def validate_token(current_user: dict = Depends(get_current_user)):
         "user": current_user["sub"],
         "expires_in": current_user.get("exp")
     }
+
+@router.options("/account-status/{username}")
+async def options_account_status(username: str):
+    """
+    Maneja las peticiones OPTIONS para el endpoint de account-status
+    """
+    return {"message": "OK"}
 
 @router.get("/account-status/{username}")
 async def get_account_status(username: str):
