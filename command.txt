@@ -1,6 +1,9 @@
 -- Iniciar el backend
 python -m uvicorn app.main:app --reload --reload-dir app
 
+cd backend
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
 --- Iniciar el frontend
 ng serve --proxy-config proxy.conf.json
 
@@ -32,3 +35,24 @@ eliminar rama
 
 git checkout -b feature/idioma
 git push -u origin feature/idioma
+
+--- Configuración de múltiples bases de datos
+-- 1. Configurar múltiples bases de datos (recomendado)
+python setup_multiple_databases.py
+
+-- 2. O configurar solo SATURNO13 (alternativo)
+python setup_saturno13_connection.py
+
+-- 3. Verificar conexiones
+python test_companies_connection.py
+
+-- 2. Reiniciar backend para cargar nuevos endpoints
+cd backend
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+-- 3. Verificar endpoints en Swagger
+-- http://localhost:8000/docs
+
+-- 4. Reiniciar frontend para cargar nuevo servicio
+cd ../frontend
+ng serve --proxy-config proxy.conf.json

@@ -133,6 +133,35 @@
         color: white;
       }
     }
+
+    .company-loading,
+    .company-error,
+    .company-fallback {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 0.875rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .company-loading {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .company-error {
+      background-color: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .company-fallback {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-weight: 500;
+    }
   }
 
   .sidebar-menu {

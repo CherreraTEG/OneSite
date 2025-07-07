@@ -1,8 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { CompanyStateService } from '../../../core/services/company-state.service';
+import { CompanyService } from '../../../core/services/company.service';
+import { Company } from '../../../core/models/company.model';
 import { TruckIconComponent } from '../icons/truck-icon.component';
 import { CostsIconComponent } from '../icons/costs-icon.component';
 import { ReportsIconComponent } from '../icons/reports-icon.component';
@@ -39,25 +42,49 @@ interface MenuItem {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   @Input() collapsed: boolean = false;
   @Output() toggleSidebar = new EventEmitter<void>();
   
   selectedCompany: string = '1';
+  companies: Company[] = [];
+  loading: boolean = false;
+  error: string | null = null;
 
-  companies = [
-    { id: '1', name: 'Elite Flower' },
-    { id: '2', name: 'FlorAndina' },
-    { id: '3', name: 'Agroelite' }
-  ];
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private companyStateService: CompanyStateService,
+    private companyService: CompanyService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.selectedCompany = this.companyStateService.getSelectedCompany();
+    this.loadCompanies();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  private loadCompanies() {
+    this.loading = true;
+    this.error = null;
+    
+    this.subscription.add(
+      this.companyService.getActiveCompanies().subscribe({
+        next: (companies) => {
+          this.companies = companies;
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error al cargar empresas:', error);
+          this.error = 'Error al cargar las empresas';
+          this.loading = false;
+        }
+      })
+    );
   }
 
   menuItems: MenuItem[] = [
@@ -166,6 +193,11 @@ export class SidebarComponent implements OnInit {
     const selectedId = (event.target as HTMLSelectElement).value;
     this.selectedCompany = selectedId;
     this.companyStateService.setSelectedCompany(selectedId);
+  }
+
+  getSelectedCompanyName(): string {
+    const selectedCompany = this.companies.find(c => c.id.toString() === this.selectedCompany);
+    return selectedCompany ? selectedCompany.name : 'Empresa';
   }
 
   getTooltipText(text: string): string {

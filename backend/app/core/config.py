@@ -14,11 +14,41 @@ class Settings(BaseSettings):
     VERSION: str = "1.0.0"
     API_V1_STR: str = "/api/v1"
     
-    # Configuración de la base de datos
+    # Configuración del entorno
+    ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
+    USE_SATURNO13_COMPANIES: bool = os.getenv("USE_SATURNO13_COMPANIES", "true").lower() == "true"
+    
+    # Detectar entorno automáticamente si no está configurado
+    @property
+    def is_production(self) -> bool:
+        return self.ENVIRONMENT.lower() == "production"
+    
+    @property
+    def is_development(self) -> bool:
+        return self.ENVIRONMENT.lower() == "development"
+    
+    @property
+    def is_staging(self) -> bool:
+        return self.ENVIRONMENT.lower() == "staging"
+    
+    # Configuración de la base de datos principal (OneSite)
     DB_SERVER: str = os.getenv("DB_SERVER")
     DB_NAME: str = os.getenv("DB_NAME")
     DB_USER: str = os.getenv("DB_USER")
     DB_PASSWORD: str = os.getenv("DB_PASSWORD")
+    
+    # Configuración de la base de datos SATURNO13 (TheEliteGroup)
+    SATURNO13_SERVER: str = os.getenv("SATURNO13_SERVER")
+    SATURNO13_DB: str = os.getenv("SATURNO13_DB")
+    SATURNO13_USER: str = os.getenv("SATURNO13_USER")
+    SATURNO13_PASSWORD: str = os.getenv("SATURNO13_PASSWORD")
+    SATURNO13_SCHEMA: str = os.getenv("SATURNO13_SCHEMA", "TheEliteGroup_Parameters")
+    
+    # Configuración de la base de datos JUPITER12MIA (EFLOWER_Reports)
+    JUPITER12MIA_SERVER: str = os.getenv("JUPITER12MIA_SERVER")
+    JUPITER12MIA_DB: str = os.getenv("JUPITER12MIA_DB")
+    JUPITER12MIA_USER: str = os.getenv("JUPITER12MIA_USER")
+    JUPITER12MIA_PASSWORD: str = os.getenv("JUPITER12MIA_PASSWORD")
     
     # Configuración de JWT
     SECRET_KEY: str = os.getenv("SECRET_KEY")
@@ -56,10 +86,21 @@ class Settings(BaseSettings):
     # Configuración del entorno
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
     
-    # URL de la base de datos
+    # URLs de las bases de datos
     @property
     def DATABASE_URL(self) -> str:
+        """URL de la base de datos principal (OneSite)"""
         return f"mssql+pymssql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_SERVER}/{self.DB_NAME}"
+    
+    @property
+    def SATURNO13_DATABASE_URL(self) -> str:
+        """URL de la base de datos SATURNO13 (TheEliteGroup)"""
+        return f"mssql+pymssql://{self.SATURNO13_USER}:{self.SATURNO13_PASSWORD}@{self.SATURNO13_SERVER}/{self.SATURNO13_DB}"
+    
+    @property
+    def JUPITER12MIA_DATABASE_URL(self) -> str:
+        """URL de la base de datos JUPITER12MIA (EFLOWER_Reports)"""
+        return f"mssql+pymssql://{self.JUPITER12MIA_USER}:{self.JUPITER12MIA_PASSWORD}@{self.JUPITER12MIA_SERVER}/{self.JUPITER12MIA_DB}"
     
     class Config:
         env_file = ".env"

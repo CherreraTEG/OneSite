@@ -10,8 +10,20 @@
 
   <div class="company-selector-container" [class.collapsed]="collapsed">
     <app-company-icon [stroke]="'#fff'" [size]="'24'"></app-company-icon>
+    
+    <!-- Estado de carga -->
+    <div *ngIf="loading && !collapsed" class="company-loading">
+      <span>Cargando empresas...</span>
+    </div>
+    
+    <!-- Estado de error -->
+    <div *ngIf="error && !collapsed" class="company-error">
+      <span>{{ error }}</span>
+    </div>
+    
+    <!-- Selector de empresas -->
     <select 
-      *ngIf="!collapsed" 
+      *ngIf="!loading && !error && !collapsed" 
       class="company-selector" 
       (change)="onCompanyChange($event)"
       [value]="selectedCompany"
@@ -20,6 +32,11 @@
         {{ company.name }}
       </option>
     </select>
+    
+    <!-- Fallback cuando está colapsado -->
+    <div *ngIf="collapsed" class="company-fallback">
+      <span>{{ getSelectedCompanyName() }}</span>
+    </div>
   </div>
 
   <ul class="sidebar-menu">

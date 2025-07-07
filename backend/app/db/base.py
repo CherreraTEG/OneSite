@@ -1,20 +1,13 @@
-from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from app.core.config import settings
+from app.db.databases import get_main_db, get_saturno13_db, get_companies_db
 
-# Crear la URL de conexión para SQL Server
-SQLALCHEMY_DATABASE_URL = f"mssql+pymssql://{settings.DB_USER}:{settings.DB_PASSWORD}@{settings.DB_SERVER}/{settings.DB_NAME}"
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
+# Base declarativa para los modelos
 Base = declarative_base()
 
-# Dependency
+# Dependencies para compatibilidad
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close() 
+    """Dependency para la base de datos principal (compatibilidad)"""
+    return get_main_db()
+
+# Exportar las nuevas dependencies
+__all__ = ['Base', 'get_db', 'get_main_db', 'get_saturno13_db', 'get_companies_db'] 
