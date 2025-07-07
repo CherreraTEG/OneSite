@@ -138,6 +138,6 @@ def get_companies_db():
     Usa SATURNO13 si está configurado, sino usa la base principal.
     """
     if settings.USE_SATURNO13_COMPANIES and 'saturno13' in db_manager._engines:
-        return get_db('saturno13')
+        yield from get_db('saturno13')
     else:
-        return get_db('main') 
+        yield from get_db('main') 

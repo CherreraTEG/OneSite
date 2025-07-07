@@ -7,7 +7,7 @@ from app.schemas.company import CompanyCreate, CompanyUpdate
 class CRUDCompany:
     def get(self, db: Session, company_id: int) -> Optional[Company]:
         """Obtiene una empresa por su ID"""
-        return db.query(Company).filter(Company.id == company_id).first()
+        return db.query(Company).filter(Company.id_Company == company_id).first()
     
     def get_by_code(self, db: Session, code: str) -> Optional[Company]:
         """Obtiene una empresa por su código"""
@@ -34,6 +34,7 @@ class CRUDCompany:
         if active_only:
             query = query.filter(Company.Estado_Cargue == 1)
         
+        query = query.order_by(Company.Company)
         return query.offset(skip).limit(limit).all()
     
     def create(self, db: Session, obj_in: CompanyCreate) -> Company:
@@ -77,7 +78,7 @@ class CRUDCompany:
     
     def delete(self, db: Session, company_id: int) -> Company:
         """Elimina una empresa (soft delete marcándola como inactiva)"""
-        db_obj = db.query(Company).filter(Company.id == company_id).first()
+        db_obj = db.query(Company).filter(Company.id_Company == company_id).first()
         if db_obj:
             db_obj.is_active = False
             db.add(db_obj)
@@ -93,5 +94,12 @@ class CRUDCompany:
             query = query.filter(Company.Estado_Cargue == 1)
         
         return query.count()
+
+    def get_multi_by_ids(self, db: Session, ids: list, active_only: bool = True):
+        query = db.query(Company).filter(Company.id_Company.in_(ids))
+        if active_only:
+            query = query.filter(Company.Estado_Cargue == 1)
+        query = query.order_by(Company.Company)
+        return query.all()
 
 company = CRUDCompany() 

@@ -18,6 +18,7 @@ class Company(Base):
     Own_User = Column(String(255), nullable=True)
     Estado_Cargue = Column(Integer, nullable=True)
     Fecha_crea = Column(DateTime, nullable=True)
+    Company = Column(String(255), nullable=True, index=True)
     
     # Propiedades para compatibilidad con el frontend
     @property

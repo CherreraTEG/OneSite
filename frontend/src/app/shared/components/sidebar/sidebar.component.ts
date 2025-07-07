@@ -197,7 +197,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   getSelectedCompanyName(): string {
     const selectedCompany = this.companies.find(c => c.id.toString() === this.selectedCompany);
-    return selectedCompany ? selectedCompany.name : 'Empresa';
+    return selectedCompany ? selectedCompany.Company : 'Empresa';
   }
 
   getTooltipText(text: string): string {

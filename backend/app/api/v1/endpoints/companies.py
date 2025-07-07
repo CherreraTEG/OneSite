@@ -4,6 +4,9 @@ from typing import List
 from app.db.databases import get_companies_db
 from app.crud.crud_company import company
 from app.schemas.company import Company, CompanyCreate, CompanyUpdate, CompanyList
+from app.crud.crud_user_company_permission import crud_user_company_permission
+from app.models.user import User
+from app.core.deps import get_current_user
 
 router = APIRouter()
 
@@ -35,16 +38,18 @@ def get_companies(
 @router.get(
     "/active",
     response_model=List[Company],
-    summary="Obtener empresas activas",
-    description="Retorna todas las empresas activas sin paginación",
+    summary="Obtener empresas activas permitidas para el usuario",
+    description="Retorna todas las empresas activas a las que el usuario tiene permiso",
     tags=["Empresas"]
 )
-def get_active_companies(db: Session = Depends(get_companies_db)):
-    """
-    Obtiene todas las empresas activas.
-    Este endpoint es útil para selectores y dropdowns.
-    """
-    return company.get_multi(db, limit=1000, active_only=True)
+def get_active_companies(
+    db: Session = Depends(get_companies_db),
+    current_user: User = Depends(get_current_user)
+):
+    # Obtener los IDs de empresas permitidas para el usuario
+    company_ids = [c[0] for c in crud_user_company_permission.get_companies_for_user(db, current_user.id)]
+    # Filtrar solo las empresas activas y permitidas
+    return company.get_multi_by_ids(db, ids=company_ids, active_only=True)
 
 @router.get(
     "/{company_id}",

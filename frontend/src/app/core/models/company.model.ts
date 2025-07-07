@@ -1,6 +1,6 @@
 export interface Company {
   id: number;
-  name: string;
+  Company: string;
   code: string;
   description?: string;
   is_active: boolean;
@@ -14,14 +14,14 @@ export interface CompanyList {
 }
 
 export interface CompanyCreate {
-  name: string;
+  Company: string;
   code: string;
   description?: string;
   is_active?: boolean;
 }
 
 export interface CompanyUpdate {
-  name?: string;
+  Company?: string;
   code?: string;
   description?: string;
   is_active?: boolean;

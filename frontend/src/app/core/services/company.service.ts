@@ -8,7 +8,7 @@ import { Company, CompanyList, CompanyCreate, CompanyUpdate } from '../models/co
   providedIn: 'root'
 })
 export class CompanyService {
-  private apiUrl = `${environment.apiUrl}/companies`;
+  private apiUrl = `${environment.apiUrl}/api/v1/companies`;
 
   constructor(private http: HttpClient) {}
 
