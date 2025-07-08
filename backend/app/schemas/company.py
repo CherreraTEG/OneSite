@@ -1,32 +1,56 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 from typing import Optional
 from datetime import datetime
 
 class CompanyBase(BaseModel):
-    Company: str = Field(..., min_length=1, max_length=255, description="Nombre de la empresa")
-    code: str = Field(..., min_length=1, max_length=50, description="Código único de la empresa")
-    description: Optional[str] = Field(None, max_length=500, description="Descripción de la empresa")
-    is_active: bool = Field(True, description="Indica si la empresa está activa")
+    BU: Optional[str] = Field(None, description="Nombre de la unidad de negocio")
+    Company: Optional[str] = Field(None, description="Nombre de la empresa")  
+    Country_Company: Optional[str] = Field(None, description="País de la empresa")
+    Currency: Optional[str] = Field(None, description="Moneda")
+    id_Oracle: Optional[str] = Field(None, description="ID en Oracle")
 
 class CompanyCreate(CompanyBase):
     pass
 
 class CompanyUpdate(BaseModel):
-    Company: Optional[str] = Field(None, min_length=1, max_length=255, description="Nombre de la empresa")
-    code: Optional[str] = Field(None, min_length=1, max_length=50, description="Código único de la empresa")
-    description: Optional[str] = Field(None, max_length=500, description="Descripción de la empresa")
-    is_active: Optional[bool] = Field(None, description="Indica si la empresa está activa")
+    BU: Optional[str] = Field(None, description="Nombre de la unidad de negocio")
+    Company: Optional[str] = Field(None, description="Nombre de la empresa")
+    Country_Company: Optional[str] = Field(None, description="País de la empresa")
+    Currency: Optional[str] = Field(None, description="Moneda")
 
-class CompanyInDB(CompanyBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
+class Company(BaseModel):
+    id_Company: int = Field(..., description="ID único de la empresa")
+    BU: Optional[str] = Field(None, description="Nombre de la unidad de negocio")
+    Company: Optional[str] = Field(None, description="Nombre de la empresa")
+    Country_Company: Optional[str] = Field(None, description="País de la empresa")
+    Currency: Optional[str] = Field(None, description="Moneda")
+    id_Oracle: Optional[str] = Field(None, description="ID en Oracle")
+    Estado_Cargue: Optional[int] = Field(None, description="Estado de carga")
+    Fecha_crea: Optional[datetime] = Field(None, description="Fecha de creación")
+    
+    # Campos computados para compatibilidad con el frontend
+    @computed_field
+    @property
+    def id(self) -> int:
+        return self.id_Company
+    
+    @computed_field
+    @property 
+    def name(self) -> str:
+        return self.BU or self.Company or "Sin nombre"
+    
+    @computed_field
+    @property
+    def code(self) -> str:
+        return self.id_Oracle or str(self.id_Company)
+    
+    @computed_field
+    @property
+    def is_active(self) -> bool:
+        return self.Estado_Cargue == 1 if self.Estado_Cargue is not None else True
     
     class Config:
         from_attributes = True
-
-class Company(CompanyInDB):
-    pass
 
 class CompanyList(BaseModel):
     companies: list[Company]

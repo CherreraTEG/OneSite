@@ -20,6 +20,5 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
     
-    # Relationships
-    roles = relationship("Role", secondary=user_role, back_populates="users")
-    audit = relationship("Audit", back_populates="user") 
+    # Relationships (usando lazy import para evitar dependencias circulares)
+    roles = relationship("app.models.role.Role", secondary=user_role, back_populates="users", lazy="dynamic") 

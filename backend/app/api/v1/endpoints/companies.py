@@ -10,6 +10,11 @@ from app.core.deps import get_current_user
 
 router = APIRouter()
 
+@router.get("/test")
+def test_companies():
+    """Endpoint de prueba simple"""
+    return {"message": "Companies endpoint funcionando", "count": 0}
+
 @router.get(
     "/",
     response_model=CompanyList,
@@ -30,10 +35,13 @@ def get_companies(
     - **limit**: Número máximo de registros a retornar
     - **active_only**: Si es True, solo retorna empresas activas
     """
-    companies = company.get_multi(db, skip=skip, limit=limit, active_only=active_only)
-    total = company.count(db, active_only=active_only)
-    
-    return CompanyList(companies=companies, total=total)
+    try:
+        companies = company.get_multi(db, skip=skip, limit=limit, active_only=active_only)
+        total = company.count(db, active_only=active_only)
+        return CompanyList(companies=companies, total=total)
+    except Exception as e:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
 @router.get(
     "/active",
