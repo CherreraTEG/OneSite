@@ -182,7 +182,14 @@ class LDAPAuth:
             if settings.AD_USE_SSL:
                 # Intentar configuración SSL estricta primero (mejor práctica)
                 logger.info("Configurando conexion LDAP con validacion SSL estricta")
-                tls_configuration = Tls(validate=ssl.CERT_REQUIRED)
+                # Configurar validación SSL específica para el servidor AD
+                cert_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'elite-full-chain.pem')
+                if os.path.exists(cert_path):
+                    logger.info(f"Usando certificado CA específico: {cert_path}")
+                    tls_configuration = Tls(validate=ssl.CERT_REQUIRED, ca_certs_file=cert_path)
+                else:
+                    logger.warning("Certificado CA no encontrado, usando validación estricta con certificados del sistema")
+                    tls_configuration = Tls(validate=ssl.CERT_REQUIRED)
                 
                 self.server = Server(
                     settings.AD_SERVER,

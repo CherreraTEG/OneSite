@@ -56,7 +56,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60"))
     
     # Configuración de CORS
-    CORS_ORIGINS: List[str] = json.loads(os.getenv("CORS_ORIGINS", '["https://teg.1sitesoft.com", "http://localhost:4200"]'))
+    CORS_ORIGINS: List[str] = json.loads(os.getenv("CORS_ORIGINS", '["https://teg.1sitesoft.com", "http://localhost:4200", "http://127.0.0.1:4200"]'))
     CORS_CREDENTIALS: bool = os.getenv("CORS_CREDENTIALS", "True").lower() == "true"
     CORS_METHODS: List[str] = json.loads(os.getenv("CORS_METHODS", '["GET", "POST", "PUT", "DELETE"]'))
     CORS_HEADERS: List[str] = json.loads(os.getenv("CORS_HEADERS", '["Authorization", "Content-Type", "X-Requested-With"]'))

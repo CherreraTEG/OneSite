@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CompanyStateService } from '../../../core/services/company-state.service';
 import { CompanyService } from '../../../core/services/company.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { Company } from '../../../core/models/company.model';
 import { TruckIconComponent } from '../icons/truck-icon.component';
 import { CostsIconComponent } from '../icons/costs-icon.component';
@@ -56,12 +57,27 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(
     private companyStateService: CompanyStateService,
     private companyService: CompanyService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.selectedCompany = this.companyStateService.getSelectedCompany();
-    this.loadCompanies();
+    
+    // Suscribirse a cambios en el estado de autenticación
+    this.subscription.add(
+      this.authService.currentUser$.subscribe(user => {
+        if (user) {
+          // Usuario autenticado, cargar empresas
+          this.loadCompanies();
+        } else {
+          // Usuario no autenticado, limpiar empresas
+          this.companies = [];
+          this.loading = false;
+          this.error = null;
+        }
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -69,6 +85,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   private loadCompanies() {
+    // Solo cargar empresas si el usuario está autenticado
+    if (!this.authService.isAuthenticated()) {
+      this.companies = [];
+      this.loading = false;
+      return;
+    }
+
     this.loading = true;
     this.error = null;
     
@@ -80,11 +103,23 @@ export class SidebarComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error al cargar empresas:', error);
-          this.error = 'Error al cargar las empresas';
+          
+          // Si es error 401, el usuario no está autenticado
+          if (error.status === 401) {
+            this.companies = [];
+            this.error = null; // No mostrar error de autenticación en sidebar
+          } else {
+            this.error = 'Error al cargar las empresas';
+          }
           this.loading = false;
         }
       })
     );
+  }
+
+  // Método público para recargar empresas (útil después del login)
+  public reloadCompanies() {
+    this.loadCompanies();
   }
 
   menuItems: MenuItem[] = [

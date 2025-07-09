@@ -33,7 +33,7 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl || 'http://localhost:8000';
+  private apiUrl = environment.apiUrl || 'http://127.0.0.1:8000';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -128,7 +128,7 @@ export class AuthService {
   }
 
   testConnection(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/health`);
+    return this.http.get(`${this.apiUrl}/test`);
   }
 
   checkAccountStatus(username: string): Observable<any> {

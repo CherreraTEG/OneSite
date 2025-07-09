@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 class RoleBase(BaseModel):
     name: str
@@ -16,7 +16,7 @@ class Role(RoleBase):
 
 class UserBase(BaseModel):
     username: str
-    email: EmailStr
+    email: str
     is_active: Optional[bool] = True
 
 class UserCreate(UserBase):

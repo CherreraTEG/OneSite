@@ -25,17 +25,6 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 print("CORS_ORIGINS:", settings.CORS_ORIGINS)
 
-# Configuración de CORS segura
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=settings.CORS_CREDENTIALS,
-    allow_methods=settings.CORS_METHODS,
-    allow_headers=settings.CORS_HEADERS,
-    expose_headers=["X-Total-Count"],
-    max_age=3600
-)
-
 # Middleware de hosts confiables (recomendado para producción)
 # app.add_middleware(TrustedHostMiddleware, allowed_hosts=["teg.1sitesoft.com", "localhost", "127.0.0.1"])
 
@@ -81,6 +70,17 @@ async def log_requests(request: Request, call_next):
     
     return response
 
+# Configuración de CORS segura (debe estar después de otros middlewares)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials=settings.CORS_CREDENTIALS,
+    allow_methods=settings.CORS_METHODS,
+    allow_headers=settings.CORS_HEADERS,
+    expose_headers=["X-Total-Count"],
+    max_age=3600
+)
+
 # Incluir las rutas API
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
@@ -92,6 +92,11 @@ async def root():
         "status": "operational"
     }
 
+@app.get("/test")
+async def test_endpoint():
+    """Endpoint simple de prueba"""
+    return {"status": "ok", "message": "Test successful"}
+
 @app.get("/health")
 async def health_check():
     """Endpoint de verificación de salud del sistema"""
@@ -99,4 +104,14 @@ async def health_check():
         "status": "healthy",
         "timestamp": time.time(),
         "version": settings.VERSION
-    } 
+    }
+
+@app.options("/health")
+async def health_options():
+    """Maneja peticiones OPTIONS para CORS"""
+    return {"status": "ok"}
+
+@app.head("/health")  
+async def health_head():
+    """Maneja peticiones HEAD"""
+    return {"status": "ok"} 

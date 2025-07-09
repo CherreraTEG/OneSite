@@ -40,6 +40,21 @@ class UserInfo(BaseModel):
     roles: List[str]
     permissions: List[str]
 
+@router.get("/login")
+async def login_info():
+    """
+    Información sobre el endpoint de autenticación
+    """
+    return {
+        "message": "Este endpoint requiere una petición POST",
+        "methods": ["POST"],
+        "endpoints": {
+            "/api/v1/auth/login": "OAuth2 form authentication",
+            "/api/v1/auth/login-json": "JSON authentication"
+        },
+        "documentation": "/docs"
+    }
+
 @router.post("/login", response_model=TokenResponse)
 async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends()):
     """
@@ -56,6 +71,22 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
         HTTPException: Si las credenciales son inválidas o se excede el rate limit
     """
     return await _authenticate_user(request, form_data.username, form_data.password)
+
+@router.get("/login-json")
+async def login_json_info():
+    """
+    Información sobre el endpoint de autenticación JSON
+    """
+    return {
+        "message": "Este endpoint requiere una petición POST con credenciales JSON",
+        "method": "POST",
+        "content_type": "application/json",
+        "body_example": {
+            "username": "tu_usuario",
+            "password": "tu_contraseña"
+        },
+        "documentation": "/docs"
+    }
 
 @router.options("/login-json")
 async def options_login_json():
