@@ -67,6 +67,8 @@ class Settings(BaseSettings):
     AD_USE_SSL: bool = os.getenv("AD_USE_SSL", "True").lower() == "true"
     AD_BASE_DN: str = os.getenv("AD_BASE_DN", "DC=ELITE,DC=local")
     AD_DOMAIN: str = os.getenv("AD_DOMAIN", "elite.local")
+    AD_SSL_CERT_PATH: Optional[str] = os.getenv("AD_SSL_CERT_PATH", None)
+    AD_VERIFY_HOSTNAME: bool = os.getenv("AD_VERIFY_HOSTNAME", "True").lower() == "true"
     
     # Configuración de seguridad
     RATE_LIMIT_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_PER_MINUTE", "5"))

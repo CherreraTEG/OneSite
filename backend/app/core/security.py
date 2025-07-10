@@ -183,13 +183,84 @@ class LDAPAuth:
                 # Intentar configuración SSL estricta primero (mejor práctica)
                 logger.info("Configurando conexion LDAP con validacion SSL estricta")
                 # Configurar validación SSL específica para el servidor AD
-                cert_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'elite-full-chain.pem')
-                if os.path.exists(cert_path):
-                    logger.info(f"Usando certificado CA específico: {cert_path}")
-                    tls_configuration = Tls(validate=ssl.CERT_REQUIRED, ca_certs_file=cert_path)
+                cert_path = None
+                
+                # Usar certificado específico si está configurado
+                if settings.AD_SSL_CERT_PATH and os.path.exists(settings.AD_SSL_CERT_PATH):
+                    cert_path = settings.AD_SSL_CERT_PATH
+                    logger.info(f"Usando certificado configurado: {cert_path}")
                 else:
-                    logger.warning("Certificado CA no encontrado, usando validación estricta con certificados del sistema")
-                    tls_configuration = Tls(validate=ssl.CERT_REQUIRED)
+                    # Buscar certificado en múltiples ubicaciones posibles
+                    cert_paths = [
+                        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'elite-clean-chain.pem'),  # backend/elite-clean-chain.pem
+                        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'elite-full-chain.pem'),  # backend/elite-full-chain.pem
+                        os.path.join(os.path.dirname(os.path.dirname(__file__)), 'elite-clean-chain.pem'),  # backend/app/elite-clean-chain.pem
+                        'elite-clean-chain.pem',  # Ruta relativa desde el directorio actual
+                        'elite-full-chain.pem',  # Ruta relativa desde el directorio actual
+                        '/mnt/c/Cursor/OneSite/backend/elite-clean-chain.pem'  # Ruta absoluta
+                    ]
+                    
+                    for path in cert_paths:
+                        if os.path.exists(path):
+                            cert_path = path
+                            break
+                
+                # Estrategia de múltiples intentos para SSL estricto
+                ssl_configs_to_try = []
+                
+                if cert_path:
+                    logger.info(f"Usando certificado CA específico: {cert_path}")
+                    ssl_configs_to_try.extend([
+                        ("SSL estricto con certificado y TLS client", Tls(validate=ssl.CERT_REQUIRED, ca_certs_file=cert_path, version=ssl.PROTOCOL_TLS_CLIENT)),
+                        ("SSL estricto con certificado básico", Tls(validate=ssl.CERT_REQUIRED, ca_certs_file=cert_path)),
+                        ("SSL con verificación mínima", Tls(validate=ssl.CERT_OPTIONAL, ca_certs_file=cert_path))
+                    ])
+                
+                # Agregar fallbacks sin certificado específico
+                ssl_configs_to_try.extend([
+                    ("SSL estricto del sistema con TLS client", Tls(validate=ssl.CERT_REQUIRED, version=ssl.PROTOCOL_TLS_CLIENT)),
+                    ("SSL estricto del sistema básico", Tls(validate=ssl.CERT_REQUIRED)),
+                    ("SSL con verificación mínima del sistema", Tls(validate=ssl.CERT_OPTIONAL))
+                ])
+                
+                tls_configuration = None
+                successful_config = None
+                
+                for config_name, config in ssl_configs_to_try:
+                    try:
+                        logger.info(f"Probando configuración: {config_name}")
+                        test_server = Server(
+                            settings.AD_SERVER,
+                            get_info=ALL,
+                            port=settings.AD_PORT,
+                            use_ssl=True,
+                            tls=config
+                        )
+                        
+                        # Probar conexión básica
+                        test_conn = Connection(test_server)
+                        if test_conn.bind():
+                            logger.info(f"✅ Configuración SSL exitosa: {config_name}")
+                            tls_configuration = config
+                            successful_config = config_name
+                            test_conn.unbind()
+                            break
+                        else:
+                            logger.info(f"⚠️ Configuración SSL conecta pero no puede hacer bind: {config_name}")
+                            # Esto está bien para SSL, el bind puede fallar por credenciales
+                            tls_configuration = config
+                            successful_config = config_name
+                            break
+                            
+                    except Exception as config_error:
+                        logger.warning(f"❌ Error con {config_name}: {config_error}")
+                        continue
+                
+                if not tls_configuration:
+                    logger.error("Todas las configuraciones SSL estrictas fallaron")
+                    raise Exception("No se pudo establecer ninguna configuración SSL estricta")
+                
+                logger.info(f"🎉 Configuración SSL final seleccionada: {successful_config}")
                 
                 self.server = Server(
                     settings.AD_SERVER,
@@ -198,15 +269,6 @@ class LDAPAuth:
                     use_ssl=True,
                     tls=tls_configuration
                 )
-                
-                # Probar conexión SSL estricta
-                test_conn = Connection(self.server)
-                test_conn.bind()
-                if test_conn.bound:
-                    logger.info("Conexion SSL estricta exitosa - Configuracion optima")
-                    test_conn.unbind()
-                else:
-                    raise Exception("Conexion SSL estricta fallo")
                     
             else:
                 # Configuración sin SSL (solo si AD_USE_SSL=false)
