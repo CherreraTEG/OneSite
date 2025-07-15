@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 from typing import List, Optional
 from app.models.company import Company
 from app.schemas.company import CompanyCreate, CompanyUpdate
@@ -101,5 +101,51 @@ class CRUDCompany:
             query = query.filter(Company.Estado_Cargue == 1)
         query = query.order_by(Company.Company)
         return query.all()
+    
+    def get_active_companies(self, db: Session) -> List[Company]:
+        """Obtiene todas las empresas activas"""
+        return db.query(Company).filter(Company.Estado_Cargue == 1).order_by(Company.Company).all()
+    
+    def get_companies_for_user(self, db: Session, user_id: int) -> List[Company]:
+        """Obtiene las empresas asignadas a un usuario específico"""
+        from app.models.user_company_permission import UserCompanyPermission
+        
+        # Hacer join entre Company y UserCompanyPermission para obtener solo las empresas del usuario
+        return db.query(Company).join(
+            UserCompanyPermission, 
+            Company.id_Company == UserCompanyPermission.company_id
+        ).filter(
+            UserCompanyPermission.user_id == user_id,
+            Company.Estado_Cargue == 1  # Solo empresas activas
+        ).order_by(Company.Company).all()
+    
+    def get_companies_by_codes(self, db: Session, company_codes: List[str]) -> List[Company]:
+        """Obtiene empresas por una lista de códigos (id_Oracle o id_Company)"""
+        if not company_codes:
+            return []
+        
+        # Separar códigos numéricos y alfanuméricos
+        numeric_codes = [int(code) for code in company_codes if code.isdigit()]
+        oracle_codes = [code for code in company_codes if not code.isdigit()]
+        
+        # Crear filtros
+        filters = []
+        if oracle_codes:
+            filters.append(Company.id_Oracle.in_(oracle_codes))
+        if numeric_codes:
+            filters.append(Company.id_Company.in_(numeric_codes))
+        
+        if not filters:
+            return []
+        
+        # Aplicar filtros con OR
+        query = db.query(Company).filter(
+            and_(
+                or_(*filters),
+                Company.Estado_Cargue == 1  # Solo empresas activas
+            )
+        )
+        
+        return query.order_by(Company.Company).all()
 
 company = CRUDCompany() 

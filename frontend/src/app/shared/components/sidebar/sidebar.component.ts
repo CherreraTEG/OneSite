@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { CompanyStateService } from '../../../core/services/company-state.service';
 import { CompanyService } from '../../../core/services/company.service';
@@ -58,7 +58,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     private companyStateService: CompanyStateService,
     private companyService: CompanyService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {}
 
   ngOnInit() {
@@ -67,8 +68,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     // Suscribirse a cambios en el estado de autenticación
     this.subscription.add(
       this.authService.currentUser$.subscribe(user => {
-        if (user) {
-          // Usuario autenticado, cargar empresas
+        if (user && this.authService.isAuthenticated()) {
+          // Usuario autenticado, cargar empresas asignadas
           this.loadCompanies();
         } else {
           // Usuario no autenticado, limpiar empresas
@@ -78,6 +79,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
       })
     );
+    
+    // Cargar empresas inmediatamente si ya está autenticado
+    if (this.authService.isAuthenticated()) {
+      this.loadCompanies();
+    }
   }
 
   ngOnDestroy() {
@@ -91,7 +97,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.loading = false;
       return;
     }
-
+    
     this.loading = true;
     this.error = null;
     
@@ -100,16 +106,44 @@ export class SidebarComponent implements OnInit, OnDestroy {
         next: (companies) => {
           this.companies = companies;
           this.loading = false;
+          
+          // Log para verificar el comportamiento
+          if (companies.length === 0) {
+            console.log('Usuario autenticado sin empresas asignadas - se mostrará mensaje correspondiente');
+          } else {
+            console.log(`Usuario tiene ${companies.length} empresas asignadas`);
+          }
         },
         error: (error) => {
-          console.error('Error al cargar empresas:', error);
+          console.error('=== ERROR DETALLADO ===');
+          console.error('Error completo:', error);
+          console.error('Status:', error.status);
+          console.error('Status Text:', error.statusText);
+          console.error('Message:', error.message);
+          console.error('URL:', error.url);
+          console.error('Error body:', error.error);
+          console.error('Headers:', error.headers);
+          console.error('========================');
           
           // Si es error 401, el usuario no está autenticado
           if (error.status === 401) {
             this.companies = [];
             this.error = null; // No mostrar error de autenticación en sidebar
+            console.log('Error 401: Usuario no autenticado');
+          } else if (error.status === 403) {
+            // Usuario no registrado en OneSite
+            this.error = this.translate.instant('SIDEBAR.COMPANY.USER_NOT_REGISTERED');
+            console.error('Error 403: Usuario no registrado en OneSite');
+          } else if (error.status === 0) {
+            // Error de conexión (CORS, servidor no disponible, etc.)
+            this.error = 'Error de conexión con el servidor';
+            console.error('Error 0: Problema de conexión/CORS');
+          } else if (error.status === 500) {
+            this.error = 'Error interno del servidor';
+            console.error('Error 500: Error interno del servidor');
           } else {
-            this.error = 'Error al cargar las empresas';
+            this.error = `Error al cargar las empresas (${error.status})`;
+            console.error(`Error ${error.status}: ${error.statusText}`);
           }
           this.loading = false;
         }
@@ -198,6 +232,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
       icon: 'permissions', 
       label: 'SIDEBAR.MENU.PERMISSIONS', 
       route: '/permissions' 
+    },
+    { 
+      icon: 'people', 
+      label: 'SIDEBAR.MENU.USERS', 
+      route: '/users' 
     }
   ];
 
@@ -231,6 +270,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   getSelectedCompanyName(): string {
+    if (this.companies.length === 0) {
+      return 'Sin empresas';
+    }
     const selectedCompany = this.companies.find(c => c.id.toString() === this.selectedCompany);
     return selectedCompany ? selectedCompany.Company : 'Empresa';
   }

@@ -1,0 +1,281 @@
+.user-management-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tab-content {
+  padding: 20px 0;
+}
+
+// Formulario de búsqueda
+.search-form {
+  margin-bottom: 20px;
+}
+
+.search-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .search-field {
+    flex: 1;
+    min-width: 300px;
+  }
+
+  .active-filter {
+    white-space: nowrap;
+  }
+}
+
+// Tabla de usuarios
+.table-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.users-table {
+  width: 100%;
+
+  th {
+    font-weight: 600;
+    color: #424242;
+    background-color: #f5f5f5;
+  }
+
+  td {
+    padding: 12px 8px;
+  }
+}
+
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .superuser-badge {
+    background: #ff5722;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+  }
+}
+
+.companies-cell {
+  .company-count {
+    display: inline-block;
+    background: #2196f3;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+
+  small {
+    color: #666;
+    font-size: 11px;
+    line-height: 1.2;
+    max-width: 200px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &.active {
+    background: #e8f5e8;
+    color: #2e7d32;
+  }
+
+  &.inactive {
+    background: #ffebee;
+    color: #c62828;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #ccc;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+.loading-container {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+
+  .loading-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 16px;
+  }
+}
+
+// Formulario de usuario
+.user-form {
+  max-width: 800px;
+}
+
+.form-section {
+  margin-bottom: 32px;
+
+  h3 {
+    margin: 0 0 20px 0;
+    color: #424242;
+    font-size: 18px;
+    font-weight: 500;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 8px;
+  }
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+
+  .form-field {
+    flex: 1;
+    min-width: 250px;
+  }
+}
+
+.permission-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+
+  .company-select {
+    flex: 2;
+    min-width: 200px;
+  }
+
+  .permission-select {
+    flex: 1;
+    min-width: 150px;
+  }
+}
+
+.add-permission-btn {
+  margin-top: 8px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+// Animaciones
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-icon {
+  animation: spin 2s linear infinite;
+}
+
+// Responsividad
+@media (max-width: 768px) {
+  .user-management-container {
+    padding: 10px;
+  }
+
+  .search-controls {
+    flex-direction: column;
+    align-items: stretch;
+
+    .search-field {
+      min-width: auto;
+    }
+  }
+
+  .form-row {
+    flex-direction: column;
+
+    .form-field {
+      min-width: auto;
+    }
+  }
+
+  .permission-row {
+    flex-direction: column;
+    align-items: stretch;
+
+    .company-select,
+    .permission-select {
+      min-width: auto;
+    }
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .users-table {
+    font-size: 14px;
+
+    td, th {
+      padding: 8px 4px;
+    }
+  }
+
+  .companies-cell small {
+    max-width: 120px;
+  }
+}
+
+// Estilos para snackbar
+::ng-deep {
+  .success-snackbar {
+    background: #4caf50 !important;
+    color: white !important;
+  }
+
+  .error-snackbar {
+    background: #f44336 !important;
+    color: white !important;
+  }
+}

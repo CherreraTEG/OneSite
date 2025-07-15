@@ -32,6 +32,7 @@
     "SUCCESS_MESSAGE": "Connexion réussie !",
     "ERROR_GENERIC": "Erreur de connexion. Veuillez réessayer.",
     "ERROR_INVALID_CREDENTIALS": "Nom d'utilisateur ou mot de passe incorrect.",
+    "ERROR_USER_NOT_REGISTERED": "Utilisateur non enregistré dans OneSite. Contactez l'administrateur.",
     "ERROR_ACCOUNT_LOCKED": "Compte verrouillé en raison de plusieurs tentatives échouées. Contactez l'administrateur.",
     "ERROR_ACCOUNT_LOCKED_WITH_TIME": "Compte verrouillé en raison de plusieurs tentatives échouées. Temps restant : {minutes} minutes.",
     "ERROR_USER_NOT_FOUND": "Utilisateur introuvable dans le système.",
@@ -73,6 +74,11 @@
       "DISPATCHES": "Expéditions",
       "RPA": "RPA",
       "PERMISSIONS": "Autorisations"
+    },
+    "COMPANY": {
+      "LOADING": "Chargement des entreprises...",
+      "NO_COMPANIES_ASSIGNED": "Vous n'avez aucune entreprise assignée",
+      "USER_NOT_REGISTERED": "Utilisateur non enregistré dans OneSite. Contactez l'administrateur."
     },
     "PROFILE": {
       "LOGOUT": "Déconnexion"

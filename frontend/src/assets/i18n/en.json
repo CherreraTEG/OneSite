@@ -31,6 +31,7 @@
     "SUCCESS_MESSAGE": "Login successful!",
     "ERROR_GENERIC": "Login error. Please try again.",
     "ERROR_INVALID_CREDENTIALS": "Invalid username or password.",
+    "ERROR_USER_NOT_REGISTERED": "User not registered in OneSite. Contact administrator.",
     "ERROR_ACCOUNT_LOCKED": "Account locked due to multiple failed attempts. Contact administrator.",
     "ERROR_ACCOUNT_LOCKED_WITH_TIME": "Account locked due to multiple failed attempts. Time remaining: {minutes} minutes.",
     "ERROR_USER_NOT_FOUND": "User not found in the system.",
@@ -72,6 +73,11 @@
       "DISPATCHES": "Dispatches",
       "RPA": "RPA",
       "PERMISSIONS": "Permissions"
+    },
+    "COMPANY": {
+      "LOADING": "Loading companies...",
+      "NO_COMPANIES_ASSIGNED": "You have no assigned companies",
+      "USER_NOT_REGISTERED": "User not registered in OneSite. Contact administrator."
     },
     "PROFILE": {
       "LOGOUT": "Logout"

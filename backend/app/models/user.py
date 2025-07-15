@@ -1,24 +1,18 @@
-from sqlalchemy import Column, Integer, String, Boolean, Table, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy.sql import func
 from app.db.base import Base
-
-# Many-to-many relationship table for roles
-user_role = Table(
-    'user_role',
-    Base.metadata,
-    Column('user_id', Integer, ForeignKey('user.id')),
-    Column('role_id', Integer, ForeignKey('role.id'))
-)
 
 class User(Base):
     __tablename__ = "user"
+    __table_args__ = {"schema": "OneSite"}
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, index=True, nullable=False)
     email = Column(String(100), unique=True, index=True, nullable=False)
-    hashed_password = Column(String(100), nullable=False)
+    full_name = Column(String(150), nullable=True)
+    hashed_password = Column(String(255), nullable=False)
     is_active = Column(Boolean, default=True)
     is_superuser = Column(Boolean, default=False)
-    
-    # Relationships (usando lazy import para evitar dependencias circulares)
-    roles = relationship("app.models.role.Role", secondary=user_role, back_populates="users", lazy="dynamic") 
+    created_at = Column(DateTime, server_default=func.getutcdate())
+    updated_at = Column(DateTime, server_default=func.getutcdate(), onupdate=func.getutcdate())
+    last_login = Column(DateTime, nullable=True) 

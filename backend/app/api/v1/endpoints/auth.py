@@ -188,6 +188,41 @@ async def _authenticate_user(request: Request, username: str, password: str):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
+    # Verificar si el usuario existe en OneSite después de autenticación LDAP exitosa
+    from app.db.databases import get_main_db
+    from sqlalchemy import text
+    
+    main_db_gen = get_main_db()
+    main_db = next(main_db_gen)
+    
+    try:
+        # Verificar si el usuario existe en OneSite
+        result = main_db.execute(
+            text("SELECT id, username, is_active FROM OneSite.[user] WHERE username = :username"),
+            {"username": username}
+        ).fetchone()
+        
+        if not result:
+            # Usuario autenticado en AD pero no existe en OneSite
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Usuario no registrado en OneSite. Contacte al administrador para obtener acceso.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        
+        user_id, db_username, is_active = result
+        
+        if not is_active:
+            # Usuario existe pero está inactivo
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Usuario inactivo en OneSite. Contacte al administrador.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+            
+    finally:
+        main_db.close()
+    
     # Crear token de acceso
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(

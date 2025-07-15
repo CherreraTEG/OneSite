@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import permisos, auth, companies
+from app.api.v1.endpoints import permisos, auth, companies, users
 from app.api.v1.endpoints import trucks
 
 api_router = APIRouter()
@@ -14,4 +14,7 @@ api_router.include_router(permisos.router, prefix="/permisos", tags=["permisos"]
 api_router.include_router(trucks.router, prefix="", tags=["trucks"])
 
 # Incluir router de empresas
-api_router.include_router(companies.router, prefix="/companies", tags=["empresas"]) 
+api_router.include_router(companies.router, prefix="/companies", tags=["empresas"])
+
+# Incluir router de usuarios
+api_router.include_router(users.router, prefix="/users", tags=["usuarios"]) 

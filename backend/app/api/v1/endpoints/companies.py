@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from typing import List
 from app.db.databases import get_companies_db
 from app.crud.crud_company import company
@@ -12,6 +13,43 @@ router = APIRouter()
 def test_companies():
     """Endpoint de prueba simple"""
     return {"message": "Companies endpoint funcionando", "count": 0}
+
+@router.get("/debug")
+def debug_companies(
+    db: Session = Depends(get_companies_db),
+    current_user: dict = Depends(get_current_user)
+):
+    """Endpoint de debug para verificar el estado"""
+    try:
+        # Información del usuario actual
+        user_info = {
+            "username": current_user.get("username"),
+            "user_data": current_user
+        }
+        
+        # Contar empresas totales
+        total_companies = db.query(Company).count()
+        active_companies = db.query(Company).filter(Company.Estado_Cargue == 1).count()
+        
+        # Información de la base de datos
+        db_info = {
+            "total_companies": total_companies,
+            "active_companies": active_companies
+        }
+        
+        return {
+            "status": "ok",
+            "user": user_info,
+            "database": db_info,
+            "message": "Debug endpoint funcionando correctamente"
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "message": "Error en debug endpoint"
+        }
 
 @router.get(
     "/",
@@ -52,9 +90,73 @@ def get_active_companies(
     db: Session = Depends(get_companies_db),
     current_user: dict = Depends(get_current_user)
 ):
-    # Por ahora, devolver todas las empresas activas
-    # TODO: Implementar sistema de permisos de usuario por empresa
-    return company.get_active_companies(db)
+    """
+    Obtiene las empresas activas asignadas al usuario actual.
+    Si el usuario no tiene empresas asignadas, retorna una lista vacía.
+    """
+    try:
+        username = current_user["sub"]
+        
+        # SIMPLIFICADO: Verificar usuario directamente con SQL
+        from app.db.databases import get_main_db
+        
+        main_db_gen = get_main_db()
+        main_db = next(main_db_gen)
+        
+        try:
+            # Consulta SQL directa para evitar problemas de mappers
+            result = main_db.execute(
+                text("SELECT id, username, is_superuser FROM OneSite.[user] WHERE username = :username AND is_active = 1"),
+                {"username": username}
+            ).fetchone()
+            
+            if not result:
+                # Usuario no existe en OneSite - rechazar acceso
+                print(f"⚠️  Usuario {username} no existe en OneSite - acceso denegado")
+                raise HTTPException(
+                    status_code=403,
+                    detail="Usuario no registrado en OneSite. Contacte al administrador para obtener acceso."
+                )
+            
+            user_id, db_username, is_superuser = result
+            
+            # Si es superuser, retornar todas las empresas
+            if is_superuser:
+                all_companies = company.get_multi(db, skip=0, limit=100, active_only=True)
+                print(f"Usuario {username} (superuser) - {len(all_companies)} empresas disponibles")
+                return all_companies
+            
+            # Para usuarios regulares, verificar permisos específicos
+            permissions_result = main_db.execute(
+                text("SELECT company_code FROM OneSite.user_company_permission WHERE user_id = :user_id AND is_active = 1"),
+                {"user_id": user_id}
+            ).fetchall()
+            
+            if not permissions_result:
+                print(f"Usuario {username} sin permisos específicos de empresa")
+                return []
+            
+            # Obtener códigos de empresa permitidos
+            allowed_company_codes = [row[0] for row in permissions_result]
+            
+            # Filtrar empresas por códigos permitidos
+            user_companies = company.get_companies_by_codes(db, allowed_company_codes)
+            
+            print(f"Usuario {username} (ID: {user_id}) tiene acceso a {len(user_companies)} empresas")
+            if user_companies:
+                company_names = [comp.Company or comp.BU for comp in user_companies]
+                print(f"Empresas permitidas: {company_names[:5]}{'...' if len(company_names) > 5 else ''}")
+            
+            return user_companies
+            
+        finally:
+            main_db.close()
+        
+    except HTTPException:
+        # Re-lanzar HTTPExceptions sin modificar
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error obteniendo empresas del usuario: {str(e)}")
 
 @router.get(
     "/{company_id}",

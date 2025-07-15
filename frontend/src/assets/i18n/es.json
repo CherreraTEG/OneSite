@@ -15,7 +15,13 @@
       "AUDITS_WAREHOUSE": "Auditoria de bodegas",
       "DISPATCHES": "Despachos",
       "RPA": "RPA",
-      "PERMISSIONS": "Permisos"
+      "PERMISSIONS": "Permisos",
+      "USERS": "Usuarios"
+    },
+    "COMPANY": {
+      "LOADING": "Cargando empresas...",
+      "NO_COMPANIES_ASSIGNED": "No tienes empresas asignadas",
+      "USER_NOT_REGISTERED": "Usuario no registrado en OneSite. Contacte al administrador."
     },
     "PROFILE": {
       "LOGOUT": "Cerrar Sesión"
@@ -39,6 +45,7 @@
     "SUCCESS_MESSAGE": "¡Inicio de sesión exitoso!",
     "ERROR_GENERIC": "Error al iniciar sesión. Inténtalo de nuevo.",
     "ERROR_INVALID_CREDENTIALS": "Usuario o contraseña incorrectos.",
+    "ERROR_USER_NOT_REGISTERED": "Usuario no registrado en OneSite. Contacte al administrador.",
     "ERROR_ACCOUNT_LOCKED": "Cuenta bloqueada por múltiples intentos fallidos. Contacta al administrador.",
     "ERROR_ACCOUNT_LOCKED_WITH_TIME": "Cuenta bloqueada por múltiples intentos fallidos. Tiempo restante: {minutes} minutos.",
     "ERROR_USER_NOT_FOUND": "Usuario no encontrado en el sistema.",
@@ -154,5 +161,71 @@
     "ACTIONS": "Acciones",
     "CANCEL": "Cancelar",
     "CLOSE": "Cerrar"
+  },
+  "USER_MANAGEMENT": {
+    "TITLE": "Gestión de Usuarios",
+    "TABS": {
+      "USER_LIST": "Lista de Usuarios",
+      "CREATE_USER": "Crear Usuario",
+      "EDIT_USER": "Editar Usuario"
+    },
+    "SEARCH": {
+      "PLACEHOLDER": "Buscar por usuario, email o nombre...",
+      "ACTIVE_ONLY": "Solo usuarios activos",
+      "BUTTON": "Buscar"
+    },
+    "CREATE_USER": "Crear Usuario",
+    "TABLE": {
+      "USERNAME": "Usuario",
+      "EMAIL": "Email",
+      "FULL_NAME": "Nombre Completo",
+      "COMPANIES": "Empresas",
+      "STATUS": "Estado",
+      "ACTIONS": "Acciones"
+    },
+    "STATUS": {
+      "ACTIVE": "Activo",
+      "INACTIVE": "Inactivo"
+    },
+    "ACTIONS": {
+      "EDIT": "Editar",
+      "DELETE": "Desactivar"
+    },
+    "FORM": {
+      "BASIC_INFO": "Información Básica",
+      "USERNAME": "Nombre de Usuario",
+      "USERNAME_PLACEHOLDER": "Ingrese el nombre de usuario",
+      "EMAIL": "Correo Electrónico",
+      "EMAIL_PLACEHOLDER": "usuario@empresa.com",
+      "FULL_NAME": "Nombre Completo",
+      "FULL_NAME_PLACEHOLDER": "Nombre y apellidos del usuario",
+      "PASSWORD": "Contraseña",
+      "PASSWORD_PLACEHOLDER": "Mínimo 6 caracteres",
+      "PASSWORD_OPTIONAL": "Dejar vacío para mantener contraseña actual",
+      "IS_ACTIVE": "Usuario Activo",
+      "IS_SUPERUSER": "Administrador del Sistema",
+      "COMPANY_PERMISSIONS": "Permisos de Empresa",
+      "COMPANY": "Empresa",
+      "PERMISSION_TYPE": "Tipo de Permiso",
+      "ADD_COMPANY": "Agregar Empresa",
+      "CREATE": "Crear Usuario",
+      "UPDATE": "Actualizar Usuario",
+      "CANCEL": "Cancelar"
+    },
+    "PERMISSIONS": {
+      "READ": "Solo Lectura",
+      "WRITE": "Lectura y Escritura",
+      "ADMIN": "Administrador"
+    },
+    "VALIDATION": {
+      "USERNAME_REQUIRED": "El nombre de usuario es requerido",
+      "USERNAME_MIN_LENGTH": "El nombre de usuario debe tener al menos 3 caracteres",
+      "EMAIL_REQUIRED": "El correo electrónico es requerido",
+      "EMAIL_INVALID": "Ingrese un correo electrónico válido",
+      "PASSWORD_REQUIRED": "La contraseña es requerida",
+      "PASSWORD_MIN_LENGTH": "La contraseña debe tener al menos 6 caracteres"
+    },
+    "NO_USERS_FOUND": "No se encontraron usuarios",
+    "LOADING": "Cargando usuarios..."
   }
 } 

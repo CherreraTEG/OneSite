@@ -13,7 +13,7 @@
     
     <!-- Estado de carga -->
     <div *ngIf="loading && !collapsed" class="company-loading">
-      <span>Cargando empresas...</span>
+      <span>{{ 'SIDEBAR.COMPANY.LOADING' | translate }}</span>
     </div>
     
     <!-- Estado de error -->
@@ -21,9 +21,14 @@
       <span>{{ error }}</span>
     </div>
     
+    <!-- Sin empresas asignadas -->
+    <div *ngIf="!loading && !error && !collapsed && companies.length === 0" class="no-companies">
+      <span>{{ 'SIDEBAR.COMPANY.NO_COMPANIES_ASSIGNED' | translate }}</span>
+    </div>
+    
     <!-- Selector de empresas -->
     <select 
-      *ngIf="!loading && !error && !collapsed" 
+      *ngIf="!loading && !error && !collapsed && companies.length > 0" 
       class="company-selector" 
       (change)="onCompanyChange($event)"
       [value]="selectedCompany"

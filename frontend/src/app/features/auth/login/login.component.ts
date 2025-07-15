@@ -110,6 +110,7 @@ export class LoginComponent {
   }
 
   private performLogin(credentials: any): void {
+    console.log('=== INICIANDO performLogin ===');
     this.authService.login(credentials)
       .subscribe({
         next: (response) => {
@@ -126,12 +127,27 @@ export class LoginComponent {
           this.router.navigate(['/dashboard']);
         },
         error: (error) => {
+          console.log('=== ERROR EN performLogin ===');
           console.error('Error en login:', error);
+          console.error('Error status:', error.status);
+          console.error('Error detail:', error.error?.detail);
           
           let errorMessage = this.translate.instant('LOGIN.ERROR_GENERIC');
+          console.log('Mensaje genérico inicial:', errorMessage);
           
           if (error.status === 401) {
             errorMessage = this.translate.instant('LOGIN.ERROR_INVALID_CREDENTIALS');
+          } else if (error.status === 403) {
+            // Usuario no registrado en OneSite
+            console.log('=== STATUS 403 DETECTADO ===');
+            console.log('Aplicando mensaje de usuario no registrado');
+            errorMessage = this.translate.instant('LOGIN.ERROR_USER_NOT_REGISTERED');
+            console.log('Mensaje traducido:', errorMessage);
+            // Si el servidor envía un mensaje específico, usarlo
+            if (error.error && error.error.detail) {
+              console.log('Usando mensaje del servidor:', error.error.detail);
+              errorMessage = error.error.detail;
+            }
           } else if (error.status === 423) {
             // Usuario bloqueado
             errorMessage = this.translate.instant('LOGIN.ERROR_ACCOUNT_LOCKED');
@@ -153,6 +169,9 @@ export class LoginComponent {
             }
           }
 
+          console.log('=== MENSAJE FINAL ===');
+          console.log('Mensaje que se mostrará:', errorMessage);
+          
           this.snackBar.open(
             errorMessage,
             this.translate.instant('COMMON.CLOSE'),

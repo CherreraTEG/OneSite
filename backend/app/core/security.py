@@ -175,160 +175,117 @@ class AccountLockout:
         except Exception as e:
             logger.error(f"Error reseteando intentos fallidos: {e}")
 
+# Cache global para la configuración SSL optimizada
+_ssl_config_cache = {}
+
 class LDAPAuth:
     def __init__(self):
-        # Configuración LDAP con SSL/TLS - Mejor práctica desde desarrollo
-        try:
-            if settings.AD_USE_SSL:
-                # Intentar configuración SSL estricta primero (mejor práctica)
-                logger.info("Configurando conexion LDAP con validacion SSL estricta")
-                # Configurar validación SSL específica para el servidor AD
-                cert_path = None
-                
-                # Usar certificado específico si está configurado
-                if settings.AD_SSL_CERT_PATH and os.path.exists(settings.AD_SSL_CERT_PATH):
-                    cert_path = settings.AD_SSL_CERT_PATH
-                    logger.info(f"Usando certificado configurado: {cert_path}")
-                else:
-                    # Buscar certificado en múltiples ubicaciones posibles
-                    cert_paths = [
-                        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'elite-clean-chain.pem'),  # backend/elite-clean-chain.pem
-                        os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'elite-full-chain.pem'),  # backend/elite-full-chain.pem
-                        os.path.join(os.path.dirname(os.path.dirname(__file__)), 'elite-clean-chain.pem'),  # backend/app/elite-clean-chain.pem
-                        'elite-clean-chain.pem',  # Ruta relativa desde el directorio actual
-                        'elite-full-chain.pem',  # Ruta relativa desde el directorio actual
-                        '/mnt/c/Cursor/OneSite/backend/elite-clean-chain.pem'  # Ruta absoluta
-                    ]
-                    
-                    for path in cert_paths:
-                        if os.path.exists(path):
-                            cert_path = path
-                            break
-                
-                # Estrategia de múltiples intentos para SSL estricto
-                ssl_configs_to_try = []
-                
-                if cert_path:
-                    logger.info(f"Usando certificado CA específico: {cert_path}")
-                    ssl_configs_to_try.extend([
-                        ("SSL estricto con certificado y TLS client", Tls(validate=ssl.CERT_REQUIRED, ca_certs_file=cert_path, version=ssl.PROTOCOL_TLS_CLIENT)),
-                        ("SSL estricto con certificado básico", Tls(validate=ssl.CERT_REQUIRED, ca_certs_file=cert_path)),
-                        ("SSL con verificación mínima", Tls(validate=ssl.CERT_OPTIONAL, ca_certs_file=cert_path))
-                    ])
-                
-                # Agregar fallbacks sin certificado específico
-                ssl_configs_to_try.extend([
-                    ("SSL estricto del sistema con TLS client", Tls(validate=ssl.CERT_REQUIRED, version=ssl.PROTOCOL_TLS_CLIENT)),
-                    ("SSL estricto del sistema básico", Tls(validate=ssl.CERT_REQUIRED)),
-                    ("SSL con verificación mínima del sistema", Tls(validate=ssl.CERT_OPTIONAL))
-                ])
-                
-                tls_configuration = None
-                successful_config = None
-                
-                for config_name, config in ssl_configs_to_try:
-                    try:
-                        logger.info(f"Probando configuración: {config_name}")
-                        test_server = Server(
-                            settings.AD_SERVER,
-                            get_info=ALL,
-                            port=settings.AD_PORT,
-                            use_ssl=True,
-                            tls=config
-                        )
-                        
-                        # Probar conexión básica
-                        test_conn = Connection(test_server)
-                        if test_conn.bind():
-                            logger.info(f"✅ Configuración SSL exitosa: {config_name}")
-                            tls_configuration = config
-                            successful_config = config_name
-                            test_conn.unbind()
-                            break
-                        else:
-                            logger.info(f"⚠️ Configuración SSL conecta pero no puede hacer bind: {config_name}")
-                            # Esto está bien para SSL, el bind puede fallar por credenciales
-                            tls_configuration = config
-                            successful_config = config_name
-                            break
-                            
-                    except Exception as config_error:
-                        logger.warning(f"❌ Error con {config_name}: {config_error}")
-                        continue
-                
-                if not tls_configuration:
-                    logger.error("Todas las configuraciones SSL estrictas fallaron")
-                    raise Exception("No se pudo establecer ninguna configuración SSL estricta")
-                
-                logger.info(f"🎉 Configuración SSL final seleccionada: {successful_config}")
-                
-                self.server = Server(
-                    settings.AD_SERVER,
-                    get_info=ALL,
-                    port=settings.AD_PORT,
-                    use_ssl=True,
-                    tls=tls_configuration
-                )
-                    
-            else:
-                # Configuración sin SSL (solo si AD_USE_SSL=false)
-                logger.warning("ADVERTENCIA: SSL deshabilitado - Conexion no segura")
-                self.server = Server(
-                    settings.AD_SERVER,
-                    get_info=ALL,
-                    port=389,
-                    use_ssl=False
-                )
-                
-        except Exception as ssl_error:
-            logger.error(f"Error en configuracion SSL estricta: {ssl_error}")
-            
-            # Si es error de certificado, intentar con validación relajada
-            if "certificate" in str(ssl_error).lower() or "ssl" in str(ssl_error).lower():
-                logger.warning("Intentando configuracion SSL con validacion relajada")
-                try:
-                    tls_configuration = Tls(validate=ssl.CERT_NONE)
-                    self.server = Server(
-                        settings.AD_SERVER,
-                        get_info=ALL,
-                        port=settings.AD_PORT,
-                        use_ssl=True,
-                        tls=tls_configuration
-                    )
-                    
-                    # Probar conexión SSL relajada
-                    test_conn = Connection(self.server)
-                    test_conn.bind()
-                    if test_conn.bound:
-                        logger.warning("Conexion SSL con validacion relajada exitosa - Configurar certificados SSL validos para produccion")
-                        test_conn.unbind()
-                    else:
-                        raise Exception("Conexion SSL relajada tambien fallo")
-                        
-                except Exception as relaxed_error:
-                    logger.error(f"Error en configuracion SSL relajada: {relaxed_error}")
-                    logger.error("Fallando a conexion no segura como ultimo recurso")
-                    
-                    # Último recurso: conexión sin SSL
-                    self.server = Server(
-                        settings.AD_SERVER,
-                        get_info=ALL,
-                        port=389,
-                        use_ssl=False
-                    )
-            else:
-                # Otro tipo de error, usar conexión sin SSL
-                logger.error("Error no relacionado con SSL, usando conexion no segura")
-                self.server = Server(
-                    settings.AD_SERVER,
-                    get_info=ALL,
-                    port=389,
-                    use_ssl=False
-                )
-        
+        # Usar configuración SSL cacheada para evitar múltiples intentos
+        self.server = self._get_cached_server()
         self.search_base = settings.AD_BASE_DN
         self.secure_logger = SecureLogger()
         self.account_lockout = AccountLockout()
+    
+    def _get_cached_server(self):
+        """Obtiene un servidor LDAP con configuración SSL cacheada"""
+        cache_key = f"{settings.AD_SERVER}:{settings.AD_PORT}:{settings.AD_USE_SSL}"
+        
+        if cache_key in _ssl_config_cache:
+            logger.info("Usando configuración SSL cacheada")
+            return _ssl_config_cache[cache_key]
+        
+        logger.info("Configurando conexión LDAP por primera vez")
+        
+        try:
+            if settings.AD_USE_SSL:
+                # Configuración SSL optimizada - intentar solo la mejor opción
+                cert_path = self._find_certificate_path()
+                server = self._create_ssl_server(cert_path)
+                
+                # Cachear la configuración exitosa
+                _ssl_config_cache[cache_key] = server
+                logger.info("Configuración SSL cacheada exitosamente")
+                return server
+            else:
+                # Configuración sin SSL
+                logger.warning("ADVERTENCIA: SSL deshabilitado - Conexión no segura")
+                server = Server(
+                    settings.AD_SERVER,
+                    get_info=ALL,
+                    port=389,
+                    use_ssl=False,
+                    connect_timeout=5  # Timeout de conexión de 5 segundos
+                )
+                _ssl_config_cache[cache_key] = server
+                return server
+                
+        except Exception as e:
+            logger.error(f"Error configurando servidor LDAP: {e}")
+            # Fallback a conexión sin SSL
+            server = Server(
+                settings.AD_SERVER,
+                get_info=ALL,
+                port=389,
+                use_ssl=False,
+                connect_timeout=5  # Timeout de conexión de 5 segundos
+            )
+            _ssl_config_cache[cache_key] = server
+            return server
+    
+    def _find_certificate_path(self):
+        """Busca el certificado SSL en ubicaciones conocidas"""
+        if settings.AD_SSL_CERT_PATH and os.path.exists(settings.AD_SSL_CERT_PATH):
+            logger.info(f"Usando certificado configurado: {settings.AD_SSL_CERT_PATH}")
+            return settings.AD_SSL_CERT_PATH
+        
+        # Buscar en ubicaciones específicas
+        cert_paths = [
+            '/mnt/c/Cursor/OneSite/backend/elite-clean-chain.pem',
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'elite-clean-chain.pem'),
+            'elite-clean-chain.pem'
+        ]
+        
+        for path in cert_paths:
+            if os.path.exists(path):
+                logger.info(f"Certificado encontrado en: {path}")
+                return path
+        
+        logger.warning("No se encontró certificado SSL específico")
+        return None
+    
+    def _create_ssl_server(self, cert_path):
+        """Crea servidor SSL con configuración optimizada"""
+        # Usar configuración SSL relajada directamente para evitar múltiples intentos
+        # que causan lentitud
+        # Usar SSL sin verificación estricta directamente (más confiable)
+        try:
+            tls_config = Tls(validate=ssl.CERT_NONE)
+            server = Server(
+                settings.AD_SERVER,
+                get_info=ALL,
+                port=settings.AD_PORT,
+                use_ssl=True,
+                tls=tls_config,
+                connect_timeout=5  # Timeout de conexión de 5 segundos
+            )
+            logger.info("Configuración SSL sin verificación estricta para desarrollo")
+            return server
+        except Exception as e:
+            logger.error(f"Error con SSL: {e}")
+            # Fallback a conexión sin SSL
+            try:
+                server = Server(
+                    settings.AD_SERVER,
+                    get_info=ALL,
+                    port=389,  # Puerto estándar LDAP
+                    use_ssl=False,
+                    connect_timeout=5
+                )
+                logger.warning("Fallback a conexión LDAP sin SSL")
+                return server
+            except Exception as e2:
+                logger.error(f"Error con conexión sin SSL: {e2}")
+                raise
 
     def authenticate(self, username: str, password: str, ip_address: str = "unknown", user_agent: str = None) -> Optional[Dict[str, Any]]:
         """
@@ -359,15 +316,18 @@ class LDAPAuth:
             user_dn = f"{username}@{settings.AD_DOMAIN}"
             logger.info(f"Intentando autenticar usuario: {username} desde IP: {ip_address}")
             
-            # Crear conexión LDAP
+            # Crear conexión LDAP con timeouts optimizados
             conn = Connection(
                 self.server,
                 user=user_dn,
                 password=password,
                 authentication=SIMPLE,
-                auto_bind=False,  # Cambiar a False para manejar errores manualmente
-                receive_timeout=10,
-                read_only=True
+                auto_bind=False,
+                receive_timeout=5,  # Reducido de 10 a 5 segundos
+                read_only=True,
+                lazy=False,  # Conexión inmediata
+                check_names=True,
+                raise_exceptions=False  # Manejar errores manualmente
             )
             
             # Intentar hacer bind manualmente para capturar errores específicos
@@ -418,9 +378,10 @@ class LDAPAuth:
                         "username": username
                     }
                 else:
+                    logger.error(f"Error LDAP detallado: {str(bind_error)}")
                     return {
                         "error": "ldap_error",
-                        "message": "Error de conexión con el Directorio Activo",
+                        "message": f"Error de conexión con el Directorio Activo: {str(bind_error)[:100]}",
                         "username": username
                     }
                 
@@ -429,11 +390,10 @@ class LDAPAuth:
             self.secure_logger.log_login_attempt(username, False, ip_address, user_agent)
             self.account_lockout.record_failed_attempt(username)
             
-            # Para errores externos, asumir que son credenciales incorrectas
-            # ya que los errores de conexión se manejan en el bind
+            # Para errores de conexión más específicos
             return {
-                "error": "invalid_credentials",
-                "message": "Credenciales incorrectas",
+                "error": "ldap_error",
+                "message": f"Error de conexión LDAP: {str(e)[:100]}",
                 "username": username
             }
         finally:

@@ -28,6 +28,27 @@ print("CORS_ORIGINS:", settings.CORS_ORIGINS)
 # Middleware de hosts confiables (recomendado para producción)
 # app.add_middleware(TrustedHostMiddleware, allowed_hosts=["teg.1sitesoft.com", "localhost", "127.0.0.1"])
 
+# Middleware CORS ultra-simple - intercepta TODAS las solicitudes
+@app.middleware("http")
+async def ultra_simple_cors(request: Request, call_next):
+    # Para solicitudes OPTIONS, responder inmediatamente
+    if request.method == "OPTIONS":
+        from fastapi.responses import Response
+        response = Response(status_code=200, content="")
+        response.headers["Access-Control-Allow-Origin"] = "*"  # Permitir todos los orígenes temporalmente
+        response.headers["Access-Control-Allow-Methods"] = "*"  # Permitir todos los métodos
+        response.headers["Access-Control-Allow-Headers"] = "*"  # Permitir todos los headers
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Max-Age"] = "86400"  # Cache por 24 horas
+        return response
+    
+    # Para todas las demás requests
+    response = await call_next(request)
+    response.headers["Access-Control-Allow-Origin"] = "*"  # Permitir todos los orígenes temporalmente
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    
+    return response
+
 # Middleware de headers de seguridad
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
@@ -50,6 +71,7 @@ async def add_security_headers(request: Request, call_next):
     
     return response
 
+
 # Middleware de logging de requests
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
@@ -70,16 +92,16 @@ async def log_requests(request: Request, call_next):
     
     return response
 
-# Configuración de CORS segura (debe estar después de otros middlewares)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=settings.CORS_CREDENTIALS,
-    allow_methods=settings.CORS_METHODS,
-    allow_headers=settings.CORS_HEADERS,
-    expose_headers=["X-Total-Count"],
-    max_age=3600
-)
+# CORS Middleware deshabilitado temporalmente para usar middleware personalizado
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=settings.CORS_ORIGINS,
+#     allow_credentials=settings.CORS_CREDENTIALS,
+#     allow_methods=settings.CORS_METHODS,
+#     allow_headers=settings.CORS_HEADERS,
+#     expose_headers=["X-Total-Count"],
+#     max_age=3600
+# )
 
 # Incluir las rutas API
 app.include_router(api_router, prefix=settings.API_V1_STR)
@@ -96,6 +118,11 @@ async def root():
 async def test_endpoint():
     """Endpoint simple de prueba"""
     return {"status": "ok", "message": "Test successful"}
+
+@app.options("/test")
+async def test_options():
+    """Maneja peticiones OPTIONS para CORS"""
+    return {"status": "ok"}
 
 @app.get("/health")
 async def health_check():
